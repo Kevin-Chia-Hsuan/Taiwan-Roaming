@@ -1,0 +1,20 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+body {
+  line-height: 1.5;
+}
+// 響應式圖片設定
+img {
+  vertical-align: middle;
+  max-width: 100%;
+  height: auto;
+  // 圖片不變形
+  object-fit: cover;
+}
+a {
+  display: block;
+  text-decoration: none;
+}

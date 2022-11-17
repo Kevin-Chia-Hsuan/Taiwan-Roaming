@@ -1,0 +1,19 @@
+.subscription {
+  background: url(../images/subscription.jpg) center 70% / cover;
+  height: 250px;
+  @include mobile {
+    height: 150px;
+  }
+}
+.banner {
+  background: url(../images/bg_home.jpg) center 60% / cover;
+  height: 555px;
+  opacity: 0.9;
+  @include mobile {
+    background: url(../images/bg_home_mobile.jpg) center 100% / cover;
+    height: 333px;
+  }
+}
+.bg-light-opacity-25 {
+  background-color: rgba(255, 255, 255, 0.75);
+}
