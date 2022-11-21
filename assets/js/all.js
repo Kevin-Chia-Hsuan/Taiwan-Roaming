@@ -29,18 +29,18 @@ subscriptionBtn.addEventListener('click', function () {
 // $filter=Picture/PictureUrl1 ne null
 // 宣告列表
 
-var tourList = document.querySelector('.tour-list'); // 存放觀光景點資料
+var attractionsList = document.querySelector('.attractions-list'); // 存放觀光景點資料
 
-var tourData = []; // Modal
+var attractionsData = []; // Modal
 
-var ScenicSpotModal = document.querySelector('#tourScenicSpotModal'); //  渲染列表
+var ScenicSpotModal = document.querySelector('#attractionsScenicSpotModal'); //  渲染列表
 
-function renderTourList(data) {
+function renderAttractionsList(data) {
   var str = ''; // console.log(data.length);
 
   if (data.length === 0) {
     str = "<li class=\"d-flex justify-content-center align-items-center\">\n    <span class=\"material-icons text-sm-m text-md-lg text-2xl me-4\">\n      error_outline\n    </span>\n    <p class=\"text-sm-m text-md-lg text-2xl text-center\">\u76EE\u524D\u6C92\u6709\u8CC7\u6599\n    </p>\n  </li>";
-    tourList.innerHTML = str;
+    attractionsList.innerHTML = str;
   } else {
     data.forEach(function (item) {
       // console.log(item);
@@ -49,23 +49,23 @@ function renderTourList(data) {
       //   return;
       // }
       if (item.OpenTime === undefined) {
-        str += "<li class=\"col-md-6 col-lg-4 d-flex flex-column\">\n        <div class=\"card my-2 my-md-4 my-lg-6 card-shadow-hover h-100\">\n          <a href=\"\" class=\"stretched-link\" data-bs-toggle=\"modal\" data-bs-target=\"#tourScenicSpotModal\"\n            data-bs-whatever=\"".concat(item.ScenicSpotID, "\">\n            <img src=\"").concat(item.Picture.PictureUrl1, "\"\n              onerror=\"this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null\"\n              class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n          </a>\n          <div class=\"card-body\">\n            <h4 class=\"text-sm-m text-lg text-primary\">").concat(item.ScenicSpotName, "</h4>\n            <p class=\"text-sm-xs text-s text-primary mt-2\">\u958B\u653E\u6642\u9593\uFF1A\u672A\u63D0\u4F9B\u76F8\u95DC\u6642\u9593</p>\n            <p class=\"text-sm-xs text-s text-primary mt-2\">\u9023\u7D61\u96FB\u8A71\uFF1A").concat(item.Phone, "</p>\n          </div>\n        </div>\n      </li>");
+        str += "<li class=\"col-md-6 col-lg-4 d-flex flex-column\">\n        <div class=\"card my-2 my-md-4 my-lg-6 card-shadow-hover h-100\">\n          <a href=\"\" class=\"stretched-link\" data-bs-toggle=\"modal\" data-bs-target=\"#attractionsScenicSpotModal\"\n            data-bs-whatever=\"".concat(item.ScenicSpotID, "\">\n            <img src=\"").concat(item.Picture.PictureUrl1, "\"\n              onerror=\"this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null\"\n              class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n          </a>\n          <div class=\"card-body\">\n            <h4 class=\"text-sm-m text-lg text-warning\">").concat(item.ScenicSpotName, "</h4>\n            <div class=\"d-flex\">\n              <p class=\"text-sm-xs text-s text-success mt-2\">\u958B\u653E\u6642\u9593\uFF1A\u672A\u63D0\u4F9B\u76F8\u95DC\u6642\u9593</p>\n            </div>\n            <p class=\"text-sm-xs text-s text-success mt-2\">\u9023\u7D61\u96FB\u8A71\uFF1A").concat(item.Phone, "</p>\n          </div>\n        </div>\n      </li>");
       } else {
-        str += "<li class=\"col-md-6 col-lg-4 d-flex flex-column\">\n        <div class=\"card my-2 my-md-4 my-lg-6 card-shadow-hover h-100\">\n          <a href=\"\" class=\"stretched-link\" data-bs-toggle=\"modal\" data-bs-target=\"#tourScenicSpotModal\"\n            data-bs-whatever=\"".concat(item.ScenicSpotID, "\">\n            <img src=\"").concat(item.Picture.PictureUrl1, "\"\n              onerror=\"this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null\"\n              class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n          </a>\n          <div class=\"card-body\">\n            <h4 class=\"text-sm-m text-lg text-primary\">").concat(item.ScenicSpotName, "</h4>\n            <p class=\"text-sm-xs text-s text-primary mt-2\">\u958B\u653E\u6642\u9593\uFF1A").concat(item.OpenTime, "</p>\n            <p class=\"text-sm-xs text-s text-primary mt-2\">\u9023\u7D61\u96FB\u8A71\uFF1A").concat(item.Phone, "</p>\n          </div>\n        </div>\n      </li>");
+        str += "<li class=\"col-md-6 col-lg-4 d-flex flex-column\">\n        <div class=\"card my-2 my-md-4 my-lg-6 card-shadow-hover h-100\">\n          <a href=\"\" class=\"stretched-link\" data-bs-toggle=\"modal\" data-bs-target=\"#attractionsScenicSpotModal\"\n            data-bs-whatever=\"".concat(item.ScenicSpotID, "\">\n            <img src=\"").concat(item.Picture.PictureUrl1, "\"\n              onerror=\"this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null\"\n              class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n          </a>\n          <div class=\"card-body\">\n            <h4 class=\"text-sm-m text-lg text-warning\">").concat(item.ScenicSpotName, "</h4>\n            <p class=\"text-sm-xs text-s text-success mt-2\">\u958B\u653E\u6642\u9593\uFF1A").concat(item.OpenTime, "</p>\n            <p class=\"text-sm-xs text-s text-success mt-2\">\u9023\u7D61\u96FB\u8A71\uFF1A").concat(item.Phone, "</p>\n          </div>\n        </div>\n      </li>");
       }
     });
-    tourList.innerHTML = str;
+    attractionsList.innerHTML = str;
   }
 } // 取得預設景點資料
 
 
-function getAllTourList() {
-  var url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot/Taipei?%24filter=contains%28Class1%2C%27%E9%81%8A%E6%86%A9%E9%A1%9E%27%29&%24top=6&%24skip=9&%24format=JSON';
+function getAllAttractionsList() {
+  var url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot/Taipei?$filter=contains(Class1,%27%E9%81%8A%E6%86%A9%E9%A1%9E%27)&$top=6&$skip=9&$format=JSON';
   axios.get(url, {
     headers: GetAuthorizationHeader()
   }).then(function (res) {
-    tourData = res.data;
-    renderTourList(tourData); // console.log(tourData);
+    attractionsData = res.data;
+    renderAttractionsList(attractionsData); // console.log(attractionsData);
   })["catch"](function (error) {
     console.log(error);
   });
@@ -82,7 +82,7 @@ ScenicSpotModal.addEventListener('show.bs.modal', function (e) {
   var description = ScenicSpotModal.querySelector('.card-text');
   var openTime = ScenicSpotModal.querySelector('.openTime');
   var phone = ScenicSpotModal.querySelector('.phone');
-  tourData.forEach(function (item) {
+  attractionsData.forEach(function (item) {
     // console.log(item);
     if (item.ScenicSpotID === id) {
       img.setAttribute('src', "".concat(item.Picture.PictureUrl1));
@@ -104,7 +104,7 @@ function init() {
   // 呼叫取得token函式
   // GetAuthorizationHeader();
   // 呼叫取得預設觀光景點資料
-  getAllTourList();
+  getAllAttractionsList();
 }
 
 init();
