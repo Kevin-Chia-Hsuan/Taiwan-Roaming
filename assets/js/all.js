@@ -1,16 +1,10 @@
 "use strict";
 
-var _AuthorizationHeader = _interopRequireDefault(require("./AuthorizationHeader.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 /* global axios */
 
 /* 訂閱區塊 */
 // 請自行更換 client_id 與 client_secret
 // GetApiResponse() 中 axios.get('URL') 的 URL 可替換成想要取得的網址。
-// eslint-disable-next-line import/extensions
-// API 認證，取得 token
 var subscriptionInfoForm = document.querySelector('.subscriptionInfo-form'); // 訂閱input輸入
 
 var subscriptionEmail = document.querySelector('.subscription-email'); // 訂閱按鈕
@@ -68,7 +62,7 @@ function renderTourList(data) {
 function getAllTourList() {
   var url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot/Taipei?%24filter=contains%28Class1%2C%27%E9%81%8A%E6%86%A9%E9%A1%9E%27%29&%24top=6&%24skip=9&%24format=JSON';
   axios.get(url, {
-    headers: (0, _AuthorizationHeader["default"])()
+    headers: GetAuthorizationHeader()
   }).then(function (res) {
     tourData = res.data;
     renderTourList(tourData); // console.log(tourData);
@@ -116,15 +110,11 @@ function init() {
 init();
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = GetAuthorizationHeader;
-
 /* global axios */
 // 請自行更換 client_id 與 client_secret
 // GetApiResponse() 中 axios.get('URL') 的 URL 可替換成想要取得的網址。
 // API 認證，取得 token
+// eslint-disable-next-line no-unused-vars
 function GetAuthorizationHeader() {
   var authUrl = 'https://tdx.transportdata.tw/auth/realms/TDXConnect/protocol/openid-connect/token';
   var parameter = {
