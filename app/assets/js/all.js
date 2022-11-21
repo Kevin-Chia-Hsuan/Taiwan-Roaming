@@ -4,10 +4,6 @@
 // 請自行更換 client_id 與 client_secret
 // GetApiResponse() 中 axios.get('URL') 的 URL 可替換成想要取得的網址。
 
-// eslint-disable-next-line import/extensions
-// API 認證，取得 token
-import GetAuthorizationHeader from './AuthorizationHeader.js';
-
 const subscriptionInfoForm = document.querySelector('.subscriptionInfo-form');
 // 訂閱input輸入
 const subscriptionEmail = document.querySelector('.subscription-email');

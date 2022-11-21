@@ -4,7 +4,8 @@
 // GetApiResponse() 中 axios.get('URL') 的 URL 可替換成想要取得的網址。
 
 // API 認證，取得 token
-export default function GetAuthorizationHeader() {
+// eslint-disable-next-line no-unused-vars
+function GetAuthorizationHeader() {
     const authUrl = 'https://tdx.transportdata.tw/auth/realms/TDXConnect/protocol/openid-connect/token';
 
       const parameter = {
