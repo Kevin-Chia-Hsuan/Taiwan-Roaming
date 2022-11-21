@@ -31,16 +31,16 @@ subscriptionBtn.addEventListener('click', () => {
 // $filter=Picture/PictureUrl1 ne null
 
 // 宣告列表
-const tourList = document.querySelector('.tour-list');
+const attractionsList = document.querySelector('.attractions-list');
 
 // 存放觀光景點資料
-let tourData = [];
+let attractionsData = [];
 
 // Modal
-const ScenicSpotModal = document.querySelector('#tourScenicSpotModal');
+const ScenicSpotModal = document.querySelector('#attractionsScenicSpotModal');
 
 //  渲染列表
-function renderTourList(data) {
+function renderAttractionsList(data) {
   let str = '';
   // console.log(data.length);
   if (data.length === 0) {
@@ -51,7 +51,7 @@ function renderTourList(data) {
     <p class="text-sm-m text-md-lg text-2xl text-center">目前沒有資料
     </p>
   </li>`;
-    tourList.innerHTML = str;
+    attractionsList.innerHTML = str;
   } else {
     data.forEach((item) => {
       // console.log(item);
@@ -63,53 +63,55 @@ function renderTourList(data) {
       if (item.OpenTime === undefined) {
         str += `<li class="col-md-6 col-lg-4 d-flex flex-column">
         <div class="card my-2 my-md-4 my-lg-6 card-shadow-hover h-100">
-          <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#tourScenicSpotModal"
+          <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#attractionsScenicSpotModal"
             data-bs-whatever="${item.ScenicSpotID}">
             <img src="${item.Picture.PictureUrl1}"
               onerror="this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null"
               class="card-img-top img-fluid" alt=".${item.Picture.PictureDescription1}">
           </a>
           <div class="card-body">
-            <h4 class="text-sm-m text-lg text-primary">${item.ScenicSpotName}</h4>
-            <p class="text-sm-xs text-s text-primary mt-2">開放時間：未提供相關時間</p>
-            <p class="text-sm-xs text-s text-primary mt-2">連絡電話：${item.Phone}</p>
+            <h4 class="text-sm-m text-lg text-warning">${item.ScenicSpotName}</h4>
+            <div class="d-flex">
+              <p class="text-sm-xs text-s text-success mt-2">開放時間：未提供相關時間</p>
+            </div>
+            <p class="text-sm-xs text-s text-success mt-2">連絡電話：${item.Phone}</p>
           </div>
         </div>
       </li>`;
       } else {
         str += `<li class="col-md-6 col-lg-4 d-flex flex-column">
         <div class="card my-2 my-md-4 my-lg-6 card-shadow-hover h-100">
-          <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#tourScenicSpotModal"
+          <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#attractionsScenicSpotModal"
             data-bs-whatever="${item.ScenicSpotID}">
             <img src="${item.Picture.PictureUrl1}"
               onerror="this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null"
               class="card-img-top img-fluid" alt=".${item.Picture.PictureDescription1}">
           </a>
           <div class="card-body">
-            <h4 class="text-sm-m text-lg text-primary">${item.ScenicSpotName}</h4>
-            <p class="text-sm-xs text-s text-primary mt-2">開放時間：${item.OpenTime}</p>
-            <p class="text-sm-xs text-s text-primary mt-2">連絡電話：${item.Phone}</p>
+            <h4 class="text-sm-m text-lg text-warning">${item.ScenicSpotName}</h4>
+            <p class="text-sm-xs text-s text-success mt-2">開放時間：${item.OpenTime}</p>
+            <p class="text-sm-xs text-s text-success mt-2">連絡電話：${item.Phone}</p>
           </div>
         </div>
       </li>`;
       }
     });
-    tourList.innerHTML = str;
+    attractionsList.innerHTML = str;
   }
 }
 
 // 取得預設景點資料
-function getAllTourList() {
-  const url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot/Taipei?%24filter=contains%28Class1%2C%27%E9%81%8A%E6%86%A9%E9%A1%9E%27%29&%24top=6&%24skip=9&%24format=JSON';
+function getAllAttractionsList() {
+  const url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot/Taipei?$filter=contains(Class1,%27%E9%81%8A%E6%86%A9%E9%A1%9E%27)&$top=6&$skip=9&$format=JSON';
   axios.get(
     url,
     {
       headers: GetAuthorizationHeader(),
     },
     ).then((res) => {
-      tourData = res.data;
-      renderTourList(tourData);
-      // console.log(tourData);
+      attractionsData = res.data;
+      renderAttractionsList(attractionsData);
+      // console.log(attractionsData);
     })
     .catch((error) => {
       console.log(error);
@@ -127,7 +129,7 @@ ScenicSpotModal.addEventListener('show.bs.modal', (e) => {
   const openTime = ScenicSpotModal.querySelector('.openTime');
   const phone = ScenicSpotModal.querySelector('.phone');
 
-  tourData.forEach((item) => {
+  attractionsData.forEach((item) => {
     // console.log(item);
     if (item.ScenicSpotID === id) {
       img.setAttribute('src', `${item.Picture.PictureUrl1}`);
@@ -159,7 +161,7 @@ function init() {
   // GetAuthorizationHeader();
 
   // 呼叫取得預設觀光景點資料
-  getAllTourList();
+  getAllAttractionsList();
 }
 
 init();
