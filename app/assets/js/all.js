@@ -1,9 +1,6 @@
 /* global axios */
 
-/* 訂閱區塊 */
-// 請自行更換 client_id 與 client_secret
-// GetApiResponse() 中 axios.get('URL') 的 URL 可替換成想要取得的網址。
-
+/* 訂閱區塊JS */
 const subscriptionInfoForm = document.querySelector('.subscriptionInfo-form');
 // 訂閱input輸入
 const subscriptionEmail = document.querySelector('.subscription-email');
@@ -72,9 +69,9 @@ function renderAttractionsList(data) {
           <div class="card-body">
             <h4 class="text-sm-m text-lg text-warning">${item.ScenicSpotName}</h4>
             <div class="d-flex">
-              <p class="text-sm-xs text-s text-success mt-2">開放時間：未提供相關時間</p>
+              <p class="text-s text-success mt-2">開放時間：未提供相關時間</p>
             </div>
-            <p class="text-sm-xs text-s text-success mt-2">連絡電話：${item.Phone}</p>
+            <p class="text-s text-success mt-2">連絡電話：${item.Phone}</p>
           </div>
         </div>
       </li>`;
@@ -89,8 +86,8 @@ function renderAttractionsList(data) {
           </a>
           <div class="card-body">
             <h4 class="text-sm-m text-lg text-warning">${item.ScenicSpotName}</h4>
-            <p class="text-sm-xs text-s text-success mt-2">開放時間：${item.OpenTime}</p>
-            <p class="text-sm-xs text-s text-success mt-2">連絡電話：${item.Phone}</p>
+            <p class="text-s text-success mt-2">開放時間：${item.OpenTime}</p>
+            <p class="text-s text-success mt-2">連絡電話：${item.Phone}</p>
           </div>
         </div>
       </li>`;
