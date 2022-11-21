@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*!
  * Bootstrap v5.0.2 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors
@@ -14827,6 +14828,15 @@ a {
 
 .bg-light-opacity-25 {
   background-color: rgba(255, 255, 255, 0.75);
+}
+
+.tour-list li img {
+  height: 250px;
+  background-size: cover;
+  background-position: center center;
+  /* 防止圖片變形 */
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .hover-success:hover {
