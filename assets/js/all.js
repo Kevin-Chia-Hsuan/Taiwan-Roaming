@@ -139,15 +139,15 @@ function getAllFoodList() {
 }
 
 FoodSpotModal.addEventListener('show.bs.modal', function (e) {
-  console.log(e.relatedTarget);
+  // console.log(e.relatedTarget);
   var modalBtn = e.relatedTarget; // 被點擊的元素可作為事件的 relatedTarget 屬性
 
   var id = modalBtn.getAttribute('data-bs-whatever');
-  var img = ScenicSpotModal.querySelector('.card-img-top');
-  var title = ScenicSpotModal.querySelector('.card-title');
-  var description = ScenicSpotModal.querySelector('.card-text');
-  var openTime = ScenicSpotModal.querySelector('.openTime');
-  var phone = ScenicSpotModal.querySelector('.phone');
+  var img = FoodSpotModal.querySelector('.card-img-top');
+  var title = FoodSpotModal.querySelector('.card-title');
+  var description = FoodSpotModal.querySelector('.card-text');
+  var openTime = FoodSpotModal.querySelector('.openTime');
+  var phone = FoodSpotModal.querySelector('.phone');
   foodData.forEach(function (item) {
     // console.log(item.RestaurantID);
     if (item.RestaurantID === id) {
