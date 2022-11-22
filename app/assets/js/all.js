@@ -27,18 +27,22 @@ subscriptionBtn.addEventListener('click', () => {
 // API 的 filter 用法：例如: 沒有圖片時
 // $filter=Picture/PictureUrl1 ne null
 
-// 宣告列表
+// 宣告List列表
 const attractionsList = document.querySelector('.attractions-list');
 const foodList = document.querySelector('.food-list');
+const roomList = document.querySelector('.room-list');
 
 // 存放觀光景點資料
 let attractionsData = [];
-// 存放美食景點資料
+// 存放觀光美食資料
 let foodData = [];
+// 存放觀光旅宿資料
+let roomData = [];
 
 // Modal
 const ScenicSpotModal = document.querySelector('#attractionsScenicSpotModal');
 const FoodSpotModal = document.querySelector('#foodScenicSpotModal');
+const RoomSpotModal = document.querySelector('#roomScenicSpotModal');
 
 // 渲染預設景點列表
 function renderAttractionsList(data) {
@@ -233,6 +237,7 @@ function getAllFoodList() {
       console.log(error);
     });
 }
+// 監聽
 FoodSpotModal.addEventListener('show.bs.modal', (e) => {
   // console.log(e.relatedTarget);
   const modalBtn = e.relatedTarget; // 被點擊的元素可作為事件的 relatedTarget 屬性
@@ -269,6 +274,99 @@ FoodSpotModal.addEventListener('show.bs.modal', (e) => {
   });
 });
 
+// 渲染預設旅宿列表
+function renderRoomsList(data) {
+  let str = '';
+  // console.log(data.length);
+  if (data.length === 0) {
+    str = `<li class="d-flex justify-content-center align-items-center">
+    <span class="material-icons text-sm-m text-md-lg text-2xl me-4">
+      error_outline
+    </span>
+    <p class="text-sm-m text-md-lg text-2xl text-center">目前沒有資料
+    </p>
+  </li>`;
+  roomList.innerHTML = str;
+  } else {
+    data.forEach((item) => {
+      // console.log(item);
+      // 若API有提供圖片網址，但圖片網址失效時，使用 onerror="this.src='https://i.ibb.co/5WGrGkK/404.jpg'" 替代
+      // if (JSON.stringify(item.Picture) === '{}') {
+      //   return;
+      // }
+      str += `<li class="col-md-6 col-lg-4 d-flex flex-column">
+      <div class="card my-2 my-md-4 my-lg-6 card-shadow-hover h-100">
+        <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#roomScenicSpotModal"
+          data-bs-whatever="${item.HotelID}">
+          <img src="${item.Picture.PictureUrl1}"
+            onerror="this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null"
+            class="card-img-top img-fluid" alt=".${item.Picture.PictureDescription1}">
+        </a>
+        <div class="card-body">
+          <h4 class="text-sm-m text-lg text-warning">${item.HotelName}</h4>
+          <p class="text-s text-success mt-2">所在地址：${item.Address}</p>
+          <p class="text-s text-success mt-2">連絡電話：${item.Phone}</p>
+        </div>
+      </div>
+    </li>`;
+    });
+    roomList.innerHTML = str;
+  }
+}
+// 取得預設景點資料
+function getAllRoomsList() {
+  const url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/Hotel?%24filter=contains%28Class%2C%27%E5%9C%8B%E9%9A%9B%E8%A7%80%E5%85%89%E6%97%85%E9%A4%A8%27%29&%24orderby=HotelID&%24top=6&%24format=JSON';
+  axios.get(
+    url,
+    {
+      headers: GetAuthorizationHeader(),
+    },
+    ).then((res) => {
+      roomData = res.data;
+      renderRoomsList(roomData);
+      // console.log(roomData);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+// 監聽
+RoomSpotModal.addEventListener('show.bs.modal', (e) => {
+  // console.log(e.relatedTarget);
+  const modalBtn = e.relatedTarget; // 被點擊的元素可作為事件的 relatedTarget 屬性
+  const id = modalBtn.getAttribute('data-bs-whatever');
+  const img = RoomSpotModal.querySelector('.card-img-top');
+  const title = RoomSpotModal.querySelector('.card-title');
+  const description = RoomSpotModal.querySelector('.card-text');
+  const grade = RoomSpotModal.querySelector('.grade');
+  const phone = RoomSpotModal.querySelector('.phone');
+
+  roomData.forEach((item) => {
+    // console.log(item.HotelID);
+    if (item.HotelID === id) {
+      img.setAttribute('src', `${item.Picture.PictureUrl1}`);
+      title.textContent = `${item.HotelName}`;
+      description.textContent = `${item.Description}`;
+      if (item.Grade === undefined) {
+        // eslint-disable-next-line no-param-reassign
+        item.Grade = '未提供星級資料';
+      }
+      grade.innerHTML = `
+        <span class="material-icons-outlined me-2">
+          star
+        </span>
+        ${item.Grade}
+      `;
+      phone.innerHTML = `
+        <span class="material-icons me-2">
+          call
+        </span>
+        <a href="tel:+${item.Phone}">${item.Phone}</a>
+      `;
+    }
+  });
+});
+
 // ------ 初始化
 function init() {
   // 呼叫取得token函式
@@ -278,6 +376,8 @@ function init() {
   getAllAttractionsList();
   // 呼叫取得預設觀光美食資料
   getAllFoodList();
+  // 呼叫取得預設觀光旅宿資料
+  getAllRoomsList();
 }
 
 init();
