@@ -14834,7 +14834,8 @@ a {
 }
 
 .attractions-list li img,
-.food-list li img {
+.food-list li img,
+.room-list li img {
   height: 250px;
   background-size: cover;
   background-position: center center;

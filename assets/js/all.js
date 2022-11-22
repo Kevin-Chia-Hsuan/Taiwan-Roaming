@@ -25,17 +25,21 @@ subscriptionBtn.addEventListener('click', function () {
   }
 }); // API 的 filter 用法：例如: 沒有圖片時
 // $filter=Picture/PictureUrl1 ne null
-// 宣告列表
+// 宣告List列表
 
 var attractionsList = document.querySelector('.attractions-list');
-var foodList = document.querySelector('.food-list'); // 存放觀光景點資料
+var foodList = document.querySelector('.food-list');
+var roomList = document.querySelector('.room-list'); // 存放觀光景點資料
 
-var attractionsData = []; // 存放美食景點資料
+var attractionsData = []; // 存放觀光美食資料
 
-var foodData = []; // Modal
+var foodData = []; // 存放觀光旅宿資料
+
+var roomData = []; // Modal
 
 var ScenicSpotModal = document.querySelector('#attractionsScenicSpotModal');
-var FoodSpotModal = document.querySelector('#foodScenicSpotModal'); // 渲染預設景點列表
+var FoodSpotModal = document.querySelector('#foodScenicSpotModal');
+var RoomSpotModal = document.querySelector('#roomScenicSpotModal'); // 渲染預設景點列表
 
 function renderAttractionsList(data) {
   var str = ''; // console.log(data.length);
@@ -136,7 +140,8 @@ function getAllFoodList() {
   })["catch"](function (error) {
     console.log(error);
   });
-}
+} // 監聽
+
 
 FoodSpotModal.addEventListener('show.bs.modal', function (e) {
   // console.log(e.relatedTarget);
@@ -164,6 +169,67 @@ FoodSpotModal.addEventListener('show.bs.modal', function (e) {
       phone.innerHTML = "\n        <span class=\"material-icons me-2\">\n          call\n        </span>\n        <a href=\"tel:+".concat(item.Phone, "\">").concat(item.Phone, "</a>\n      ");
     }
   });
+}); // 渲染預設旅宿列表
+
+function renderRoomsList(data) {
+  var str = ''; // console.log(data.length);
+
+  if (data.length === 0) {
+    str = "<li class=\"d-flex justify-content-center align-items-center\">\n    <span class=\"material-icons text-sm-m text-md-lg text-2xl me-4\">\n      error_outline\n    </span>\n    <p class=\"text-sm-m text-md-lg text-2xl text-center\">\u76EE\u524D\u6C92\u6709\u8CC7\u6599\n    </p>\n  </li>";
+    roomList.innerHTML = str;
+  } else {
+    data.forEach(function (item) {
+      // console.log(item);
+      // 若API有提供圖片網址，但圖片網址失效時，使用 onerror="this.src='https://i.ibb.co/5WGrGkK/404.jpg'" 替代
+      // if (JSON.stringify(item.Picture) === '{}') {
+      //   return;
+      // }
+      str += "<li class=\"col-md-6 col-lg-4 d-flex flex-column\">\n      <div class=\"card my-2 my-md-4 my-lg-6 card-shadow-hover h-100\">\n        <a href=\"\" class=\"stretched-link\" data-bs-toggle=\"modal\" data-bs-target=\"#roomScenicSpotModal\"\n          data-bs-whatever=\"".concat(item.HotelID, "\">\n          <img src=\"").concat(item.Picture.PictureUrl1, "\"\n            onerror=\"this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null\"\n            class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n        </a>\n        <div class=\"card-body\">\n          <h4 class=\"text-sm-m text-lg text-warning\">").concat(item.HotelName, "</h4>\n          <p class=\"text-s text-success mt-2\">\u6240\u5728\u5730\u5740\uFF1A").concat(item.Address, "</p>\n          <p class=\"text-s text-success mt-2\">\u9023\u7D61\u96FB\u8A71\uFF1A").concat(item.Phone, "</p>\n        </div>\n      </div>\n    </li>");
+    });
+    roomList.innerHTML = str;
+  }
+} // 取得預設景點資料
+
+
+function getAllRoomsList() {
+  var url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/Hotel?%24filter=contains%28Class%2C%27%E5%9C%8B%E9%9A%9B%E8%A7%80%E5%85%89%E6%97%85%E9%A4%A8%27%29&%24orderby=HotelID&%24top=6&%24format=JSON';
+  axios.get(url, {
+    headers: GetAuthorizationHeader()
+  }).then(function (res) {
+    roomData = res.data;
+    renderRoomsList(roomData); // console.log(roomData);
+  })["catch"](function (error) {
+    console.log(error);
+  });
+} // 監聽
+
+
+RoomSpotModal.addEventListener('show.bs.modal', function (e) {
+  // console.log(e.relatedTarget);
+  var modalBtn = e.relatedTarget; // 被點擊的元素可作為事件的 relatedTarget 屬性
+
+  var id = modalBtn.getAttribute('data-bs-whatever');
+  var img = RoomSpotModal.querySelector('.card-img-top');
+  var title = RoomSpotModal.querySelector('.card-title');
+  var description = RoomSpotModal.querySelector('.card-text');
+  var grade = RoomSpotModal.querySelector('.grade');
+  var phone = RoomSpotModal.querySelector('.phone');
+  roomData.forEach(function (item) {
+    // console.log(item.HotelID);
+    if (item.HotelID === id) {
+      img.setAttribute('src', "".concat(item.Picture.PictureUrl1));
+      title.textContent = "".concat(item.HotelName);
+      description.textContent = "".concat(item.Description);
+
+      if (item.Grade === undefined) {
+        // eslint-disable-next-line no-param-reassign
+        item.Grade = '未提供星級資料';
+      }
+
+      grade.innerHTML = "\n        <span class=\"material-icons-outlined me-2\">\n          star\n        </span>\n        ".concat(item.Grade, "\n      ");
+      phone.innerHTML = "\n        <span class=\"material-icons me-2\">\n          call\n        </span>\n        <a href=\"tel:+".concat(item.Phone, "\">").concat(item.Phone, "</a>\n      ");
+    }
+  });
 }); // ------ 初始化
 
 function init() {
@@ -172,7 +238,9 @@ function init() {
   // 呼叫取得預設觀光景點資料
   getAllAttractionsList(); // 呼叫取得預設觀光美食資料
 
-  getAllFoodList();
+  getAllFoodList(); // 呼叫取得預設觀光旅宿資料
+
+  getAllRoomsList();
 }
 
 init();
