@@ -14783,11 +14783,14 @@ a {
 }
 
 .card-shadow-hover:hover {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
-  -webkit-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-          box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  -webkit-transition: 0.5s;
+  -o-transition: 0.5s;
+  transition: 0.5s;
+  -webkit-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+          box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  -webkit-transform: scale(1.02);
+      -ms-transform: scale(1.02);
+          transform: scale(1.02);
 }
 
 .container {
@@ -14830,7 +14833,8 @@ a {
   background-color: rgba(255, 255, 255, 0.75);
 }
 
-.attractions-list li img {
+.attractions-list li img,
+.food-list li img {
   height: 250px;
   background-size: cover;
   background-position: center center;

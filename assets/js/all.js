@@ -27,11 +27,15 @@ subscriptionBtn.addEventListener('click', function () {
 // $filter=Picture/PictureUrl1 ne null
 // 宣告列表
 
-var attractionsList = document.querySelector('.attractions-list'); // 存放觀光景點資料
+var attractionsList = document.querySelector('.attractions-list');
+var foodList = document.querySelector('.food-list'); // 存放觀光景點資料
 
-var attractionsData = []; // Modal
+var attractionsData = []; // 存放美食景點資料
 
-var ScenicSpotModal = document.querySelector('#attractionsScenicSpotModal'); //  渲染列表
+var foodData = []; // Modal
+
+var ScenicSpotModal = document.querySelector('#attractionsScenicSpotModal');
+var FoodSpotModal = document.querySelector('#foodScenicSpotModal'); // 渲染預設景點列表
 
 function renderAttractionsList(data) {
   var str = ''; // console.log(data.length);
@@ -96,13 +100,79 @@ ScenicSpotModal.addEventListener('show.bs.modal', function (e) {
       phone.innerHTML = "\n        <span class=\"material-icons me-2\">\n          call\n        </span>\n        <a href=\"tel:+".concat(item.Phone, "\">").concat(item.Phone, "</a>\n      ");
     }
   });
+}); // 渲染預設美食列表
+
+function renderFoodList(data) {
+  var str = ''; // console.log(data.length);
+
+  if (data.length === 0) {
+    str = "<li class=\"d-flex justify-content-center align-items-center\">\n    <span class=\"material-icons text-sm-m text-md-lg text-2xl me-4\">\n      error_outline\n    </span>\n    <p class=\"text-sm-m text-md-lg text-2xl text-center\">\u76EE\u524D\u6C92\u6709\u8CC7\u6599\n    </p>\n  </li>";
+    foodList.innerHTML = str;
+  } else {
+    data.forEach(function (item) {
+      // console.log(item);
+      // 若API有提供圖片網址，但圖片網址失效時，使用 onerror="this.src='https://i.ibb.co/5WGrGkK/404.jpg'" 替代
+      // if (JSON.stringify(item.Picture) === '{}') {
+      //   return;
+      // }
+      if (item.OpenTime === undefined) {
+        str += "<li class=\"col-md-6 col-lg-4 d-flex flex-column\">\n        <div class=\"card my-2 my-md-4 my-lg-6 card-shadow-hover h-100\">\n          <a href=\"\" class=\"stretched-link\" data-bs-toggle=\"modal\" data-bs-target=\"#foodScenicSpotModal\"\n            data-bs-whatever=\"".concat(item.RestaurantID, "\">\n            <img src=\"").concat(item.Picture.PictureUrl1, "\"\n              onerror=\"this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null\"\n              class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n          </a>\n          <div class=\"card-body\">\n            <h4 class=\"text-sm-m text-lg text-warning\">").concat(item.RestaurantName, "</h4>\n            <div class=\"d-flex\">\n              <p class=\"text-s text-success mt-2\">\u958B\u653E\u6642\u9593\uFF1A\u672A\u63D0\u4F9B\u76F8\u95DC\u6642\u9593</p>\n            </div>\n            <p class=\"text-s text-success mt-2\">\u6240\u5728\u5730\u5740\uFF1A").concat(item.Address, "</p>\n            <p class=\"text-s text-success mt-2\">\u9023\u7D61\u96FB\u8A71\uFF1A").concat(item.Phone, "</p>\n          </div>\n        </div>\n      </li>");
+      } else {
+        str += "<li class=\"col-md-6 col-lg-4 d-flex flex-column\">\n        <div class=\"card my-2 my-md-4 my-lg-6 card-shadow-hover h-100\">\n          <a href=\"\" class=\"stretched-link\" data-bs-toggle=\"modal\" data-bs-target=\"#foodScenicSpotModal\"\n            data-bs-whatever=\"".concat(item.RestaurantID, "\">\n            <img src=\"").concat(item.Picture.PictureUrl1, "\"\n              onerror=\"this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null\"\n              class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n          </a>\n          <div class=\"card-body\">\n            <h4 class=\"text-sm-m text-lg text-warning\">").concat(item.RestaurantName, "</h4>\n            <p class=\"text-s text-success mt-2\">\u958B\u653E\u6642\u9593\uFF1A").concat(item.OpenTime, "</p>\n            <p class=\"text-s text-success mt-2\">\u6240\u5728\u5730\u5740\uFF1A").concat(item.Address, "</p>\n            <p class=\"text-s text-success mt-2\">\u9023\u7D61\u96FB\u8A71\uFF1A").concat(item.Phone, "</p>\n          </div>\n        </div>\n      </li>");
+      }
+    });
+    foodList.innerHTML = str;
+  }
+} // 取得預設美食資料
+
+
+function getAllFoodList() {
+  var url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant?%24filter=Picture%2FPictureUrl1%20ne%20null&%24orderby=Description&%24top=6&%24skip=200&%24format=JSON';
+  axios.get(url, {
+    headers: GetAuthorizationHeader()
+  }).then(function (res) {
+    foodData = res.data;
+    renderFoodList(foodData); // console.log(foodData);
+  })["catch"](function (error) {
+    console.log(error);
+  });
+}
+
+FoodSpotModal.addEventListener('show.bs.modal', function (e) {
+  console.log(e.relatedTarget);
+  var modalBtn = e.relatedTarget; // 被點擊的元素可作為事件的 relatedTarget 屬性
+
+  var id = modalBtn.getAttribute('data-bs-whatever');
+  var img = ScenicSpotModal.querySelector('.card-img-top');
+  var title = ScenicSpotModal.querySelector('.card-title');
+  var description = ScenicSpotModal.querySelector('.card-text');
+  var openTime = ScenicSpotModal.querySelector('.openTime');
+  var phone = ScenicSpotModal.querySelector('.phone');
+  foodData.forEach(function (item) {
+    // console.log(item.RestaurantID);
+    if (item.RestaurantID === id) {
+      img.setAttribute('src', "".concat(item.Picture.PictureUrl1));
+      title.textContent = "".concat(item.RestaurantName);
+      description.textContent = "".concat(item.Description);
+
+      if (item.OpenTime === undefined) {
+        // eslint-disable-next-line no-param-reassign
+        item.OpenTime = '未提供';
+      }
+
+      openTime.innerHTML = "\n        <span class=\"material-icons-outlined me-2\">\n          schedule\n        </span>\n        ".concat(item.OpenTime, "\n      ");
+      phone.innerHTML = "\n        <span class=\"material-icons me-2\">\n          call\n        </span>\n        <a href=\"tel:+".concat(item.Phone, "\">").concat(item.Phone, "</a>\n      ");
+    }
+  });
 }); // ------ 初始化
 
 function init() {
   // 呼叫取得token函式
   // GetAuthorizationHeader();
   // 呼叫取得預設觀光景點資料
-  getAllAttractionsList();
+  getAllAttractionsList(); // 呼叫取得預設觀光美食資料
+
+  getAllFoodList();
 }
 
 init();
