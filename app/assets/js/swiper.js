@@ -10,16 +10,20 @@ const swiper = new Swiper('#comment-swiper', {
 
     /*  預設要顯示幾個卡片 */
     slidesPerView: 1,
-
     /* 卡片元素的間隔 */
     spaceBetween: 16,
     navigation: {
       nextEl: '.swiper-button-next',
       prevEl: '.swiper-button-prev',
     },
+    /* 分頁設定 */
     pagination: {
       el: '.swiper-pagination',
       clickable: true,
+    },
+    /* 自動播放 */
+    autoplay: {
+      delay: 5000,
     },
   });
 }
