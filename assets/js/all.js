@@ -283,9 +283,16 @@ function initSwiper() {
       nextEl: '.swiper-button-next',
       prevEl: '.swiper-button-prev'
     },
+
+    /* 分頁設定 */
     pagination: {
       el: '.swiper-pagination',
       clickable: true
+    },
+
+    /* 自動播放 */
+    autoplay: {
+      delay: 5000
     }
   });
 }
