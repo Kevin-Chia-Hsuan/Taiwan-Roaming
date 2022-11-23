@@ -1,7 +1,7 @@
 .card-shadow-hover {
   &:hover {
     transition: 0.5s;
-    box-shadow: 0 0.5rem 1rem rgba($black, 0.2);
+    box-shadow: 0 0.5rem 1rem rgba($black, 0.15);
     transform: scale(1.02);
   }
 }
