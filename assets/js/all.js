@@ -237,18 +237,32 @@ RoomSpotModal.addEventListener('show.bs.modal', function (e) {
 
 function renderActivityList(data) {
   // console.log(data);
-  var str = '';
-  var selectTime = +new Date();
+  var str = ''; // 取得目前日期時間
+
+  var selectTime = +new Date(); // 存放篩選後活動資料
+
   var eventData = [];
   data.forEach(function (item) {
-    var endTime = Date.parse(item.EndTime);
+    // 宣告 存放結束日期時間 變數，轉換成時間戳格式
+    var endTime = Date.parse(item.EndTime); // 如果活動日期時間時間 大於等於 目前日期時間
 
     if (endTime >= selectTime) {
+      // 將篩選後資料塞入 eventData 陣列中
       eventData.push(item);
     }
   }); // console.log(eventData);
+  // 取得前 9 筆資料並渲染
 
-  var eventDataSlice = eventData.slice(0, 9); // console.log(eventDataSlice);
+  var eventDataSlice = []; // 如果 eventData 資料 大於等於 9 筆，則抓出前 9 筆資料
+
+  if (eventData.length >= 9) {
+    // slice() 方法會回傳一個新陣列物件，為原陣列選擇之 begin 至 end（不含 end）部分的淺拷貝（shallow copy）。而原本的陣列將不會被修改。
+    eventDataSlice = eventData.slice(0, 9);
+  } else {
+    // 如果 eventData 資料 小於等於 9 筆，則抓出該些資料
+    eventDataSlice = eventData;
+  } // console.log(eventDataSlice);
+
 
   eventDataSlice.forEach(function (item) {
     str += "<li class=\"swiper-slide\">\n    <div class=\"container\">\n      <div class=\"card flex-lg-row-reverse border-0\">\n        <img src=\"".concat(item.Picture.PictureUrl1, "\"\n        onerror=\"this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null\"\n        class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n        <div class=\"card-body bg-tertiary text-start\">\n          <h4 class=\"card-title text-sm-m text-xl text-primary mb-6\">").concat(item.ActivityName, "</h4>\n          <div class=\"card-text\">\n            <div class=\"d-flex align-items-center mb-4\">\n              <span class=\"material-icons text-secondary me-4\">\n                calendar_month\n              </span>\n              <p class=\"text-sm-s text-m text-secondary\">\n              ").concat(new Date(item.StartTime).toLocaleDateString(), " - ").concat(new Date(item.EndTime).toLocaleDateString(), "\n              </p>\n            </div>\n            <div class=\"d-flex align-items-center mb-4\">\n              <span class=\"material-icons text-secondary me-4\">\n                place\n              </span>\n              <p class=\"text-sm-s text-m text-secondary\">\n              ").concat(item.Address, "\n              </p>\n            </div>\n          </div>\n          <a href=\"#\" class=\"btn btn-primary text-sm-s text-m text-light w-100 w-md-50\" data-bs-toggle=\"modal\" data-bs-target=\"#activityScenicSpotModal\"\n          data-bs-whatever=\"").concat(item.ActivityID, "\">\u4E86\u89E3\u66F4\u591A</a>\n        </div>\n      </div>\n    </div>\n  </li>");
