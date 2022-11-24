@@ -10,8 +10,7 @@ const swiper = new Swiper('#comment-swiper', {
 
     /*  預設要顯示幾個卡片 */
     slidesPerView: 1,
-    /* 卡片元素的間隔 */
-    spaceBetween: 16,
+    /* 切換按鈕 */
     navigation: {
       nextEl: '.swiper-button-next',
       prevEl: '.swiper-button-prev',
