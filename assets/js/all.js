@@ -360,12 +360,12 @@ function initSwiper() {
     pagination: {
       el: '.swiper-pagination',
       clickable: true
-    },
-
-    /* 自動播放 */
-    autoplay: {
-      delay: 5000
     }
+    /* 自動播放 */
+    // autoplay: {
+    //   delay: 5000,
+    // },
+
   });
 }
 /* 觸發自己定義的函式 */
