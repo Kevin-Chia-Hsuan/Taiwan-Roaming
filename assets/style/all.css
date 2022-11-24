@@ -14910,7 +14910,7 @@ a {
 .swiper-slide img {
   display: block;
   width: 660px;
-  height: 100%;
+  height: 400px;
   -o-object-fit: cover;
      object-fit: cover;
 }
@@ -14918,6 +14918,13 @@ a {
 @media screen and (max-width: 991px) {
   .swiper-slide img {
     width: 100%;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .swiper-slide img {
+    width: 100%;
+    height: 260px;
   }
 }
 

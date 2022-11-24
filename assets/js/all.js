@@ -29,13 +29,16 @@ subscriptionBtn.addEventListener('click', function () {
 
 var attractionsList = document.querySelector('.attractions-list');
 var foodList = document.querySelector('.food-list');
-var roomList = document.querySelector('.room-list'); // 存放觀光景點資料
+var roomList = document.querySelector('.room-list');
+var activityList = document.querySelector('.activity-list'); // 存放觀光景點資料
 
 var attractionsData = []; // 存放觀光美食資料
 
 var foodData = []; // 存放觀光旅宿資料
 
-var roomData = []; // Modal
+var roomData = []; // 存放觀光活動資料
+
+var activityData = []; // Modal
 
 var ScenicSpotModal = document.querySelector('#attractionsScenicSpotModal');
 var FoodSpotModal = document.querySelector('#foodScenicSpotModal');
@@ -230,7 +233,42 @@ RoomSpotModal.addEventListener('show.bs.modal', function (e) {
       phone.innerHTML = "\n        <span class=\"material-icons me-2\">\n          call\n        </span>\n        <a href=\"tel:+".concat(item.Phone, "\">").concat(item.Phone, "</a>\n      ");
     }
   });
-}); // ------ 初始化
+}); // 渲染預設活動列表
+
+function renderActivityList(data) {
+  // console.log(data);
+  var str = '';
+  var selectTime = +new Date();
+  var eventData = [];
+  data.forEach(function (item) {
+    var endTime = Date.parse(item.EndTime);
+
+    if (endTime >= selectTime) {
+      eventData.push(item);
+    }
+  }); // console.log(eventData);
+
+  var eventDataSlice = eventData.slice(0, 9); // console.log(eventDataSlice);
+
+  eventDataSlice.forEach(function (item) {
+    str += "<li class=\"swiper-slide\">\n    <div class=\"container\">\n      <div class=\"card flex-lg-row-reverse border-0\">\n        <img src=\"".concat(item.Picture.PictureUrl1, "\"\n        onerror=\"this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null\"\n        class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n        <div class=\"card-body bg-tertiary text-start\">\n          <h4 class=\"card-title text-sm-m text-xl text-primary mb-6\">").concat(item.ActivityName, "</h4>\n          <div class=\"card-text\">\n            <div class=\"d-flex align-items-center mb-4\">\n              <span class=\"material-icons text-secondary me-4\">\n                calendar_month\n              </span>\n              <p class=\"text-sm-s text-m text-secondary\">\n              ").concat(new Date(item.StartTime).toLocaleDateString(), " - ").concat(new Date(item.EndTime).toLocaleDateString(), "\n              </p>\n            </div>\n            <div class=\"d-flex align-items-center mb-4\">\n              <span class=\"material-icons text-secondary me-4\">\n                place\n              </span>\n              <p class=\"text-sm-s text-m text-secondary\">\n              ").concat(item.Address, "\n              </p>\n            </div>\n          </div>\n          <a href=\"#\" class=\"btn btn-primary text-sm-s text-m text-light w-100 w-md-50\" data-bs-toggle=\"modal\" data-bs-target=\"#activityScenicSpotModal\"\n          data-bs-whatever=\"").concat(item.ActivityID, "\">\u4E86\u89E3\u66F4\u591A</a>\n        </div>\n      </div>\n    </div>\n  </li>");
+  });
+  activityList.innerHTML = str;
+} // 取得預設活動資料
+
+
+function getAllActivityList() {
+  var url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/Activity?%24filter=Picture%2FPictureUrl1%20ne%20null&%24format=JSON';
+  axios.get(url, {
+    headers: GetAuthorizationHeader()
+  }).then(function (res) {
+    activityData = res.data;
+    renderActivityList(activityData); // console.log(activityData);
+  })["catch"](function (error) {
+    console.log(error);
+  });
+} // ------ 初始化
+
 
 function init() {
   // 呼叫取得token函式
@@ -240,7 +278,9 @@ function init() {
 
   getAllFoodList(); // 呼叫取得預設觀光旅宿資料
 
-  getAllRoomsList();
+  getAllRoomsList(); // 呼叫取得預設觀光活動資料
+
+  getAllActivityList();
 }
 
 init();
@@ -288,12 +328,12 @@ function initSwiper() {
     pagination: {
       el: '.swiper-pagination',
       clickable: true
-    },
-
-    /* 自動播放 */
-    autoplay: {
-      delay: 5000
     }
+    /* 自動播放 */
+    // autoplay: {
+    //   delay: 5000,
+    // },
+
   });
 }
 /* 觸發自己定義的函式 */
