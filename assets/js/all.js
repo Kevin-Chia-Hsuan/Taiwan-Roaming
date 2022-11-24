@@ -38,11 +38,14 @@ var foodData = []; // 存放觀光旅宿資料
 
 var roomData = []; // 存放觀光活動資料
 
-var activityData = []; // Modal
+var activityData = []; // 存放篩選後活動資料
+
+var eventData = []; // Modal
 
 var ScenicSpotModal = document.querySelector('#attractionsScenicSpotModal');
 var FoodSpotModal = document.querySelector('#foodScenicSpotModal');
-var RoomSpotModal = document.querySelector('#roomScenicSpotModal'); // 渲染預設景點列表
+var RoomSpotModal = document.querySelector('#roomScenicSpotModal');
+var ActivitySpotModal = document.querySelector('#activityScenicSpotModal'); // 渲染預設景點列表
 
 function renderAttractionsList(data) {
   var str = ''; // console.log(data.length);
@@ -239,9 +242,7 @@ function renderActivityList(data) {
   // console.log(data);
   var str = ''; // 取得目前日期時間
 
-  var selectTime = +new Date(); // 存放篩選後活動資料
-
-  var eventData = [];
+  var selectTime = +new Date();
   data.forEach(function (item) {
     // 宣告 存放結束日期時間 變數，轉換成時間戳格式
     var endTime = Date.parse(item.EndTime); // 如果活動日期時間時間 大於等於 目前日期時間
@@ -281,8 +282,26 @@ function getAllActivityList() {
   })["catch"](function (error) {
     console.log(error);
   });
-} // ------ 初始化
+} // 監聽
 
+
+ActivitySpotModal.addEventListener('show.bs.modal', function (e) {
+  // console.log(e.relatedTarget);
+  var modalBtn = e.relatedTarget; // 被點擊的元素可作為事件的 relatedTarget 屬性
+
+  var id = modalBtn.getAttribute('data-bs-whatever');
+  var img = ActivitySpotModal.querySelector('.card-img-top');
+  var title = ActivitySpotModal.querySelector('.card-title');
+  var description = ActivitySpotModal.querySelector('.card-text');
+  eventData.forEach(function (item) {
+    // console.log(item.HotelID);
+    if (item.ActivityID === id) {
+      img.setAttribute('src', "".concat(item.Picture.PictureUrl1));
+      title.textContent = "".concat(item.ActivityName);
+      description.textContent = "".concat(item.Description);
+    }
+  });
+}); // ------ 初始化
 
 function init() {
   // 呼叫取得token函式
