@@ -31,6 +31,7 @@ subscriptionBtn.addEventListener('click', () => {
 const attractionsList = document.querySelector('.attractions-list');
 const foodList = document.querySelector('.food-list');
 const roomList = document.querySelector('.room-list');
+const activityList = document.querySelector('.activity-list');
 
 // 存放觀光景點資料
 let attractionsData = [];
@@ -38,6 +39,8 @@ let attractionsData = [];
 let foodData = [];
 // 存放觀光旅宿資料
 let roomData = [];
+// 存放觀光活動資料
+let activityData = [];
 
 // Modal
 const ScenicSpotModal = document.querySelector('#attractionsScenicSpotModal');
@@ -367,6 +370,76 @@ RoomSpotModal.addEventListener('show.bs.modal', (e) => {
   });
 });
 
+// 渲染預設活動列表
+function renderActivityList(data) {
+  // console.log(data);
+  let str = '';
+  const selectTime = +new Date();
+  const eventData = [];
+  data.forEach((item) => {
+    const endTime = Date.parse(item.EndTime);
+    if (endTime >= selectTime) {
+      eventData.push(item);
+    }
+  });
+  // console.log(eventData);
+  const eventDataSlice = eventData.slice(0, 9);
+  // console.log(eventDataSlice);
+  eventDataSlice.forEach((item) => {
+    str += `<li class="swiper-slide">
+    <div class="container">
+      <div class="card flex-lg-row-reverse border-0">
+        <img src="${item.Picture.PictureUrl1}"
+        onerror="this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null"
+        class="card-img-top img-fluid" alt=".${item.Picture.PictureDescription1}">
+        <div class="card-body bg-tertiary text-start">
+          <h4 class="card-title text-sm-m text-xl text-primary mb-6">${item.ActivityName}</h4>
+          <div class="card-text">
+            <div class="d-flex align-items-center mb-4">
+              <span class="material-icons text-secondary me-4">
+                calendar_month
+              </span>
+              <p class="text-sm-s text-m text-secondary">
+              ${new Date(item.StartTime).toLocaleDateString()} - ${new Date(item.EndTime).toLocaleDateString()}
+              </p>
+            </div>
+            <div class="d-flex align-items-center mb-4">
+              <span class="material-icons text-secondary me-4">
+                place
+              </span>
+              <p class="text-sm-s text-m text-secondary">
+              ${item.Address}
+              </p>
+            </div>
+          </div>
+          <a href="#" class="btn btn-primary text-sm-s text-m text-light w-100 w-md-50" data-bs-toggle="modal" data-bs-target="#activityScenicSpotModal"
+          data-bs-whatever="${item.ActivityID}">了解更多</a>
+        </div>
+      </div>
+    </div>
+  </li>`;
+  });
+  activityList.innerHTML = str;
+}
+
+// 取得預設活動資料
+function getAllActivityList() {
+  const url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/Activity?%24filter=Picture%2FPictureUrl1%20ne%20null&%24format=JSON';
+  axios.get(
+    url,
+    {
+      headers: GetAuthorizationHeader(),
+    },
+    ).then((res) => {
+      activityData = res.data;
+      renderActivityList(activityData);
+      // console.log(activityData);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
 // ------ 初始化
 function init() {
   // 呼叫取得token函式
@@ -378,6 +451,8 @@ function init() {
   getAllFoodList();
   // 呼叫取得預設觀光旅宿資料
   getAllRoomsList();
+  // 呼叫取得預設觀光活動資料
+  getAllActivityList();
 }
 
 init();

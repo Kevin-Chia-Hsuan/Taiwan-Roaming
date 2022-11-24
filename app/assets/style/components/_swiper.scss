@@ -21,10 +21,14 @@
 .swiper-slide img {
   display: block;
   width: 660px;
-  height: 100%;
+  height: 400px;
   // 圖片不變形
   object-fit: cover;
   @include pc-pad {
     width: 100%;
+  }
+  @include mobile {
+    width: 100%;
+    height: 260px;
   }
 }
