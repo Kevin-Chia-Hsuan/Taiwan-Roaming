@@ -374,16 +374,31 @@ RoomSpotModal.addEventListener('show.bs.modal', (e) => {
 function renderActivityList(data) {
   // console.log(data);
   let str = '';
+  // 取得目前日期時間
   const selectTime = +new Date();
+  // 存放篩選後活動資料
   const eventData = [];
   data.forEach((item) => {
+    // 宣告 存放結束日期時間 變數，轉換成時間戳格式
     const endTime = Date.parse(item.EndTime);
+    // 如果活動日期時間時間 大於等於 目前日期時間
     if (endTime >= selectTime) {
+      // 將篩選後資料塞入 eventData 陣列中
       eventData.push(item);
     }
   });
   // console.log(eventData);
-  const eventDataSlice = eventData.slice(0, 9);
+
+  // 取得前 9 筆資料並渲染
+  let eventDataSlice = [];
+  // 如果 eventData 資料 大於等於 9 筆，則抓出前 9 筆資料
+  if (eventData.length >= 9) {
+    // slice() 方法會回傳一個新陣列物件，為原陣列選擇之 begin 至 end（不含 end）部分的淺拷貝（shallow copy）。而原本的陣列將不會被修改。
+    eventDataSlice = eventData.slice(0, 9);
+  } else {
+    // 如果 eventData 資料 小於等於 9 筆，則抓出該些資料
+    eventDataSlice = eventData;
+  }
   // console.log(eventDataSlice);
   eventDataSlice.forEach((item) => {
     str += `<li class="swiper-slide">
