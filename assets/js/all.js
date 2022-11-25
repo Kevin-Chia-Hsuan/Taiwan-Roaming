@@ -26,10 +26,14 @@ subscriptionBtn.addEventListener('click', function () {
 }); // API 的 filter 用法：例如: 沒有圖片時
 // $filter=Picture/PictureUrl1 ne null
 // 宣告List列表
+// 景點列表
 
-var attractionsList = document.querySelector('.attractions-list');
-var foodList = document.querySelector('.food-list');
-var roomList = document.querySelector('.room-list');
+var attractionsList = document.querySelector('.attractions-list'); // 美食列表
+
+var foodList = document.querySelector('.food-list'); // 旅宿列表
+
+var roomList = document.querySelector('.room-list'); // 活動列表
+
 var activityList = document.querySelector('.activity-list'); // 存放觀光景點資料
 
 var attractionsData = []; // 存放觀光美食資料
@@ -38,13 +42,17 @@ var foodData = []; // 存放觀光旅宿資料
 
 var roomData = []; // 存放觀光活動資料
 
-var activityData = []; // 存放篩選後活動資料
+var activityData = []; // 存放篩選後觀光活動資料
 
 var eventData = []; // Modal
+// 景點 Modal
 
-var ScenicSpotModal = document.querySelector('#attractionsScenicSpotModal');
-var FoodSpotModal = document.querySelector('#foodScenicSpotModal');
-var RoomSpotModal = document.querySelector('#roomScenicSpotModal');
+var ScenicSpotModal = document.querySelector('#attractionsScenicSpotModal'); // 美食 Modal
+
+var FoodSpotModal = document.querySelector('#foodScenicSpotModal'); // 旅宿 Modal
+
+var RoomSpotModal = document.querySelector('#roomScenicSpotModal'); // 活動 Modal
+
 var ActivitySpotModal = document.querySelector('#activityScenicSpotModal'); // 渲染預設景點列表
 
 function renderAttractionsList(data) {
@@ -60,12 +68,13 @@ function renderAttractionsList(data) {
       // if (JSON.stringify(item.Picture) === '{}') {
       //   return;
       // }
+      // 如果資料中沒有 OpenTime，則開放時間顯示未提供相關時間
       if (item.OpenTime === undefined) {
         str += "<li class=\"col-md-6 col-lg-4 d-flex flex-column\">\n        <div class=\"card my-2 my-md-4 my-lg-6 card-shadow-hover h-100\">\n          <a href=\"\" class=\"stretched-link\" data-bs-toggle=\"modal\" data-bs-target=\"#attractionsScenicSpotModal\"\n            data-bs-whatever=\"".concat(item.ScenicSpotID, "\">\n            <img src=\"").concat(item.Picture.PictureUrl1, "\"\n              onerror=\"this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null\"\n              class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n          </a>\n          <div class=\"card-body\">\n            <h4 class=\"text-sm-m text-lg text-warning\">").concat(item.ScenicSpotName, "</h4>\n            <div class=\"d-flex\">\n              <p class=\"text-s text-primary mt-2\">\u958B\u653E\u6642\u9593\uFF1A\u672A\u63D0\u4F9B\u76F8\u95DC\u6642\u9593</p>\n            </div>\n            <p class=\"text-s text-primary mt-2\">\u9023\u7D61\u96FB\u8A71\uFF1A").concat(item.Phone, "</p>\n          </div>\n        </div>\n      </li>");
       } else {
         str += "<li class=\"col-md-6 col-lg-4 d-flex flex-column\">\n        <div class=\"card my-2 my-md-4 my-lg-6 card-shadow-hover h-100\">\n          <a href=\"\" class=\"stretched-link\" data-bs-toggle=\"modal\" data-bs-target=\"#attractionsScenicSpotModal\"\n            data-bs-whatever=\"".concat(item.ScenicSpotID, "\">\n            <img src=\"").concat(item.Picture.PictureUrl1, "\"\n              onerror=\"this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null\"\n              class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n          </a>\n          <div class=\"card-body\">\n            <h4 class=\"text-sm-m text-lg text-warning\">").concat(item.ScenicSpotName, "</h4>\n            <p class=\"text-s text-primary mt-2\">\u958B\u653E\u6642\u9593\uFF1A").concat(item.OpenTime, "</p>\n            <p class=\"text-s text-primary mt-2\">\u9023\u7D61\u96FB\u8A71\uFF1A").concat(item.Phone, "</p>\n          </div>\n        </div>\n      </li>");
       }
-    });
+    }); // 如果頁面中有 attractionsList 這個DOM時，則執行渲染頁面
 
     if (attractionsList) {
       attractionsList.innerHTML = str;
@@ -84,7 +93,7 @@ function getAllAttractionsList() {
   })["catch"](function (error) {
     console.log(error);
   });
-} // 監聽
+} // 監聽點擊景點Modal
 
 
 ScenicSpotModal.addEventListener('show.bs.modal', function (e) {
@@ -128,12 +137,13 @@ function renderFoodList(data) {
       // if (JSON.stringify(item.Picture) === '{}') {
       //   return;
       // }
+      // 如果資料中沒有 OpenTime，則開放時間顯示未提供相關時間
       if (item.OpenTime === undefined) {
         str += "<li class=\"col-md-6 col-lg-4 d-flex flex-column\">\n        <div class=\"card my-2 my-md-4 my-lg-6 card-shadow-hover h-100\">\n          <a href=\"\" class=\"stretched-link\" data-bs-toggle=\"modal\" data-bs-target=\"#foodScenicSpotModal\"\n            data-bs-whatever=\"".concat(item.RestaurantID, "\">\n            <img src=\"").concat(item.Picture.PictureUrl1, "\"\n              onerror=\"this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null\"\n              class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n          </a>\n          <div class=\"card-body\">\n            <h4 class=\"text-sm-m text-lg text-warning\">").concat(item.RestaurantName, "</h4>\n            <div class=\"d-flex\">\n              <p class=\"text-s text-primary mt-2\">\u958B\u653E\u6642\u9593\uFF1A\u672A\u63D0\u4F9B\u76F8\u95DC\u6642\u9593</p>\n            </div>\n            <p class=\"text-s text-primary mt-2\">\u6240\u5728\u5730\u5740\uFF1A").concat(item.Address, "</p>\n            <p class=\"text-s text-primary mt-2\">\u9023\u7D61\u96FB\u8A71\uFF1A").concat(item.Phone, "</p>\n          </div>\n        </div>\n      </li>");
       } else {
         str += "<li class=\"col-md-6 col-lg-4 d-flex flex-column\">\n        <div class=\"card my-2 my-md-4 my-lg-6 card-shadow-hover h-100\">\n          <a href=\"\" class=\"stretched-link\" data-bs-toggle=\"modal\" data-bs-target=\"#foodScenicSpotModal\"\n            data-bs-whatever=\"".concat(item.RestaurantID, "\">\n            <img src=\"").concat(item.Picture.PictureUrl1, "\"\n              onerror=\"this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null\"\n              class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n          </a>\n          <div class=\"card-body\">\n            <h4 class=\"text-sm-m text-lg text-warning\">").concat(item.RestaurantName, "</h4>\n            <p class=\"text-s text-primary mt-2\">\u958B\u653E\u6642\u9593\uFF1A").concat(item.OpenTime, "</p>\n            <p class=\"text-s text-primary mt-2\">\u6240\u5728\u5730\u5740\uFF1A").concat(item.Address, "</p>\n            <p class=\"text-s text-primary mt-2\">\u9023\u7D61\u96FB\u8A71\uFF1A").concat(item.Phone, "</p>\n          </div>\n        </div>\n      </li>");
       }
-    });
+    }); // 如果頁面中有 foodList 這個DOM時，則執行渲染頁面
 
     if (foodList) {
       foodList.innerHTML = str;
@@ -152,7 +162,7 @@ function getAllFoodList() {
   })["catch"](function (error) {
     console.log(error);
   });
-} // 監聽
+} // 監聽點擊美食Modal
 
 
 FoodSpotModal.addEventListener('show.bs.modal', function (e) {
@@ -170,7 +180,7 @@ FoodSpotModal.addEventListener('show.bs.modal', function (e) {
     if (item.RestaurantID === id) {
       img.setAttribute('src', "".concat(item.Picture.PictureUrl1));
       title.textContent = "".concat(item.RestaurantName);
-      description.textContent = "".concat(item.Description);
+      description.textContent = "".concat(item.Description); // 如果資料中沒有 OpenTime，則開放時間顯示未提供相關時間
 
       if (item.OpenTime === undefined) {
         // eslint-disable-next-line no-param-reassign
@@ -197,7 +207,7 @@ function renderRoomsList(data) {
       //   return;
       // }
       str += "<li class=\"col-md-6 col-lg-4 d-flex flex-column\">\n      <div class=\"card my-2 my-md-4 my-lg-6 card-shadow-hover h-100\">\n        <a href=\"\" class=\"stretched-link\" data-bs-toggle=\"modal\" data-bs-target=\"#roomScenicSpotModal\"\n          data-bs-whatever=\"".concat(item.HotelID, "\">\n          <img src=\"").concat(item.Picture.PictureUrl1, "\"\n            onerror=\"this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null\"\n            class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n        </a>\n        <div class=\"card-body\">\n          <h4 class=\"text-sm-m text-lg text-warning\">").concat(item.HotelName, "</h4>\n          <p class=\"text-s text-primary mt-2\">\u6240\u5728\u5730\u5740\uFF1A").concat(item.Address, "</p>\n          <p class=\"text-s text-primary mt-2\">\u9023\u7D61\u96FB\u8A71\uFF1A").concat(item.Phone, "</p>\n        </div>\n      </div>\n    </li>");
-    });
+    }); // 如果頁面中有 roomList 這個DOM時，則執行渲染頁面
 
     if (roomList) {
       roomList.innerHTML = str;
@@ -216,7 +226,7 @@ function getAllRoomsList() {
   })["catch"](function (error) {
     console.log(error);
   });
-} // 監聽
+} // 監聽點擊旅宿Modal
 
 
 RoomSpotModal.addEventListener('show.bs.modal', function (e) {
@@ -234,7 +244,7 @@ RoomSpotModal.addEventListener('show.bs.modal', function (e) {
     if (item.HotelID === id) {
       img.setAttribute('src', "".concat(item.Picture.PictureUrl1));
       title.textContent = "".concat(item.HotelName);
-      description.textContent = "".concat(item.Description);
+      description.textContent = "".concat(item.Description); // 如果資料中沒有 Grade，則顯示未提供星級資料
 
       if (item.Grade === undefined) {
         // eslint-disable-next-line no-param-reassign
@@ -276,7 +286,7 @@ function renderActivityList(data) {
 
   eventDataSlice.forEach(function (item) {
     str += "<li class=\"swiper-slide\">\n    <div class=\"container\">\n      <div class=\"card flex-lg-row-reverse border-0\">\n        <img src=\"".concat(item.Picture.PictureUrl1, "\"\n        onerror=\"this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null\"\n        class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n        <div class=\"card-body bg-tertiary text-start\">\n          <h4 class=\"card-title text-sm-m text-xl text-primary mb-6\">").concat(item.ActivityName, "</h4>\n          <div class=\"card-text\">\n            <div class=\"d-flex align-items-center mb-4\">\n              <span class=\"material-icons text-secondary me-4\">\n                calendar_month\n              </span>\n              <p class=\"text-sm-s text-m text-secondary\">\n              ").concat(new Date(item.StartTime).toLocaleDateString(), " - ").concat(new Date(item.EndTime).toLocaleDateString(), "\n              </p>\n            </div>\n            <div class=\"d-flex align-items-center mb-4\">\n              <span class=\"material-icons text-secondary me-4\">\n                place\n              </span>\n              <p class=\"text-sm-s text-m text-secondary\">\n              ").concat(item.Address, "\n              </p>\n            </div>\n          </div>\n          <a href=\"#\" class=\"btn btn-primary text-sm-s text-m text-light w-100 w-md-50\" data-bs-toggle=\"modal\" data-bs-target=\"#activityScenicSpotModal\"\n          data-bs-whatever=\"").concat(item.ActivityID, "\">\u4E86\u89E3\u66F4\u591A</a>\n        </div>\n      </div>\n    </div>\n  </li>");
-  });
+  }); // 如果頁面中有 activityList 這個DOM時，則執行渲染頁面
 
   if (activityList) {
     activityList.innerHTML = str;
@@ -294,7 +304,7 @@ function getAllActivityList() {
   })["catch"](function (error) {
     console.log(error);
   });
-} // 監聽
+} // 監聽點擊活動Modal
 
 
 ActivitySpotModal.addEventListener('show.bs.modal', function (e) {
