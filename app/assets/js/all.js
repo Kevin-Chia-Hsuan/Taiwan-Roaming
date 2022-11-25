@@ -107,7 +107,9 @@ function renderAttractionsList(data) {
       </li>`;
       }
     });
-    attractionsList.innerHTML = str;
+    if (attractionsList) {
+      attractionsList.innerHTML = str;
+    }
   }
 }
 // 取得預設景點資料
@@ -223,7 +225,9 @@ function renderFoodList(data) {
       </li>`;
       }
     });
-    foodList.innerHTML = str;
+    if (foodList) {
+      foodList.innerHTML = str;
+    }
   }
 }
 // 取得預設美食資料
@@ -316,7 +320,9 @@ function renderRoomsList(data) {
       </div>
     </li>`;
     });
-    roomList.innerHTML = str;
+    if (roomList) {
+      roomList.innerHTML = str;
+    }
   }
 }
 // 取得預設景點資料
@@ -435,7 +441,9 @@ function renderActivityList(data) {
     </div>
   </li>`;
   });
-  activityList.innerHTML = str;
+  if (activityList) {
+    activityList.innerHTML = str;
+  }
 }
 
 // 取得預設活動資料
