@@ -28,9 +28,13 @@ subscriptionBtn.addEventListener('click', () => {
 // $filter=Picture/PictureUrl1 ne null
 
 // 宣告List列表
+// 景點列表
 const attractionsList = document.querySelector('.attractions-list');
+// 美食列表
 const foodList = document.querySelector('.food-list');
+// 旅宿列表
 const roomList = document.querySelector('.room-list');
+// 活動列表
 const activityList = document.querySelector('.activity-list');
 
 // 存放觀光景點資料
@@ -41,13 +45,17 @@ let foodData = [];
 let roomData = [];
 // 存放觀光活動資料
 let activityData = [];
-// 存放篩選後活動資料
+// 存放篩選後觀光活動資料
 const eventData = [];
 
 // Modal
+// 景點 Modal
 const ScenicSpotModal = document.querySelector('#attractionsScenicSpotModal');
+// 美食 Modal
 const FoodSpotModal = document.querySelector('#foodScenicSpotModal');
+// 旅宿 Modal
 const RoomSpotModal = document.querySelector('#roomScenicSpotModal');
+// 活動 Modal
 const ActivitySpotModal = document.querySelector('#activityScenicSpotModal');
 
 // 渲染預設景點列表
@@ -71,6 +79,7 @@ function renderAttractionsList(data) {
       // if (JSON.stringify(item.Picture) === '{}') {
       //   return;
       // }
+      // 如果資料中沒有 OpenTime，則開放時間顯示未提供相關時間
       if (item.OpenTime === undefined) {
         str += `<li class="col-md-6 col-lg-4 d-flex flex-column">
         <div class="card my-2 my-md-4 my-lg-6 card-shadow-hover h-100">
@@ -107,6 +116,7 @@ function renderAttractionsList(data) {
       </li>`;
       }
     });
+    // 如果頁面中有 attractionsList 這個DOM時，則執行渲染頁面
     if (attractionsList) {
       attractionsList.innerHTML = str;
     }
@@ -129,7 +139,7 @@ function getAllAttractionsList() {
       console.log(error);
     });
 }
-// 監聽
+// 監聽點擊景點Modal
 ScenicSpotModal.addEventListener('show.bs.modal', (e) => {
   // console.log(e.relatedTarget);
   const modalBtn = e.relatedTarget; // 被點擊的元素可作為事件的 relatedTarget 屬性
@@ -187,6 +197,7 @@ function renderFoodList(data) {
       // if (JSON.stringify(item.Picture) === '{}') {
       //   return;
       // }
+      // 如果資料中沒有 OpenTime，則開放時間顯示未提供相關時間
       if (item.OpenTime === undefined) {
         str += `<li class="col-md-6 col-lg-4 d-flex flex-column">
         <div class="card my-2 my-md-4 my-lg-6 card-shadow-hover h-100">
@@ -225,6 +236,7 @@ function renderFoodList(data) {
       </li>`;
       }
     });
+    // 如果頁面中有 foodList 這個DOM時，則執行渲染頁面
     if (foodList) {
       foodList.innerHTML = str;
     }
@@ -247,7 +259,7 @@ function getAllFoodList() {
       console.log(error);
     });
 }
-// 監聽
+// 監聽點擊美食Modal
 FoodSpotModal.addEventListener('show.bs.modal', (e) => {
   // console.log(e.relatedTarget);
   const modalBtn = e.relatedTarget; // 被點擊的元素可作為事件的 relatedTarget 屬性
@@ -264,6 +276,7 @@ FoodSpotModal.addEventListener('show.bs.modal', (e) => {
       img.setAttribute('src', `${item.Picture.PictureUrl1}`);
       title.textContent = `${item.RestaurantName}`;
       description.textContent = `${item.Description}`;
+      // 如果資料中沒有 OpenTime，則開放時間顯示未提供相關時間
       if (item.OpenTime === undefined) {
         // eslint-disable-next-line no-param-reassign
         item.OpenTime = '未提供';
@@ -320,11 +333,13 @@ function renderRoomsList(data) {
       </div>
     </li>`;
     });
+    // 如果頁面中有 roomList 這個DOM時，則執行渲染頁面
     if (roomList) {
       roomList.innerHTML = str;
     }
   }
 }
+
 // 取得預設景點資料
 function getAllRoomsList() {
   const url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/Hotel?%24filter=contains%28Class%2C%27%E5%9C%8B%E9%9A%9B%E8%A7%80%E5%85%89%E6%97%85%E9%A4%A8%27%29&%24orderby=HotelID&%24top=6&%24format=JSON';
@@ -342,7 +357,7 @@ function getAllRoomsList() {
       console.log(error);
     });
 }
-// 監聽
+// 監聽點擊旅宿Modal
 RoomSpotModal.addEventListener('show.bs.modal', (e) => {
   // console.log(e.relatedTarget);
   const modalBtn = e.relatedTarget; // 被點擊的元素可作為事件的 relatedTarget 屬性
@@ -359,6 +374,7 @@ RoomSpotModal.addEventListener('show.bs.modal', (e) => {
       img.setAttribute('src', `${item.Picture.PictureUrl1}`);
       title.textContent = `${item.HotelName}`;
       description.textContent = `${item.Description}`;
+      // 如果資料中沒有 Grade，則顯示未提供星級資料
       if (item.Grade === undefined) {
         // eslint-disable-next-line no-param-reassign
         item.Grade = '未提供星級資料';
@@ -441,6 +457,7 @@ function renderActivityList(data) {
     </div>
   </li>`;
   });
+  // 如果頁面中有 activityList 這個DOM時，則執行渲染頁面
   if (activityList) {
     activityList.innerHTML = str;
   }
@@ -464,7 +481,7 @@ function getAllActivityList() {
     });
 }
 
-// 監聽
+// 監聽點擊活動Modal
 ActivitySpotModal.addEventListener('show.bs.modal', (e) => {
   // console.log(e.relatedTarget);
   const modalBtn = e.relatedTarget; // 被點擊的元素可作為事件的 relatedTarget 屬性
