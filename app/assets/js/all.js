@@ -155,22 +155,25 @@ ScenicSpotModal.addEventListener('show.bs.modal', (e) => {
     if (item.ScenicSpotID === id) {
       img.setAttribute('src', `${item.Picture.PictureUrl1}`);
       title.textContent = `${item.ScenicSpotName}`;
-      description.textContent = `${item.DescriptionDetail}`;
+      description.textContent = `景點介紹：${item.DescriptionDetail}`;
       if (item.OpenTime === undefined) {
         // eslint-disable-next-line no-param-reassign
         item.OpenTime = '未提供';
       }
       openTime.innerHTML = `
-        <span class="material-icons-outlined me-2">
+        <span class="material-icons-outlined text-sm-s text-m me-2">
           schedule
         </span>
-        ${item.OpenTime}
+        開放時間：${item.OpenTime}
       `;
       phone.innerHTML = `
-        <span class="material-icons me-2">
+        <span class="material-icons text-sm-s text-m me-2">
           call
         </span>
-        <a href="tel:+${item.Phone}">${item.Phone}</a>
+        <div class="d-flex">
+          連絡電話：
+          <a class="text-sm-s text-m" href="tel:+${item.Phone}">${item.Phone}</a>
+        </div>
       `;
     }
   });
@@ -275,23 +278,26 @@ FoodSpotModal.addEventListener('show.bs.modal', (e) => {
     if (item.RestaurantID === id) {
       img.setAttribute('src', `${item.Picture.PictureUrl1}`);
       title.textContent = `${item.RestaurantName}`;
-      description.textContent = `${item.Description}`;
+      description.textContent = `美食介紹：${item.Description}`;
       // 如果資料中沒有 OpenTime，則開放時間顯示未提供相關時間
       if (item.OpenTime === undefined) {
         // eslint-disable-next-line no-param-reassign
         item.OpenTime = '未提供';
       }
       openTime.innerHTML = `
-        <span class="material-icons-outlined me-2">
+        <span class="material-icons-outlined text-sm-s text-m me-2">
           schedule
         </span>
-        ${item.OpenTime}
+        開放時間：${item.OpenTime}
       `;
       phone.innerHTML = `
-        <span class="material-icons me-2">
+        <span class="material-icons text-sm-s text-m me-2">
           call
         </span>
-        <a href="tel:+${item.Phone}">${item.Phone}</a>
+        <div class="d-flex">
+          連絡電話：
+          <a class="text-sm-s text-m" href="tel:+${item.Phone}">${item.Phone}</a>
+        </div>
       `;
     }
   });
@@ -373,23 +379,26 @@ RoomSpotModal.addEventListener('show.bs.modal', (e) => {
     if (item.HotelID === id) {
       img.setAttribute('src', `${item.Picture.PictureUrl1}`);
       title.textContent = `${item.HotelName}`;
-      description.textContent = `${item.Description}`;
+      description.textContent = `旅宿介紹：${item.Description}`;
       // 如果資料中沒有 Grade，則顯示未提供星級資料
       if (item.Grade === undefined) {
         // eslint-disable-next-line no-param-reassign
         item.Grade = '未提供星級資料';
       }
       grade.innerHTML = `
-        <span class="material-icons-outlined me-2">
+        <span class="material-icons-outlined text-sm-s text-m me-2">
           star
         </span>
-        ${item.Grade}
+        星級：${item.Grade}
       `;
       phone.innerHTML = `
-        <span class="material-icons me-2">
+        <span class="material-icons text-sm-s text-m me-2">
           call
         </span>
-        <a href="tel:+${item.Phone}">${item.Phone}</a>
+        <div class="d-flex">
+          連絡電話：
+          <a class="text-sm-s text-m" href="tel:+${item.Phone}">${item.Phone}</a>
+        </div>
       `;
     }
   });
@@ -495,7 +504,7 @@ ActivitySpotModal.addEventListener('show.bs.modal', (e) => {
     if (item.ActivityID === id) {
       img.setAttribute('src', `${item.Picture.PictureUrl1}`);
       title.textContent = `${item.ActivityName}`;
-      description.textContent = `${item.Description}`;
+      description.textContent = `活動介紹：${item.Description}`;
     }
   });
 });
