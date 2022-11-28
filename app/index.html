@@ -32,8 +32,8 @@ current: index
       <div class="row">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
           <li class="col-4 nav-item" role="presentation">
-            <button class="nav-link w-100 active" id="attractions-tab" data-bs-toggle="tab"
-              data-bs-target="#attractions" type="button" role="tab" aria-controls="attractions" aria-selected="true">
+            <button class="nav-link w-100 active" id="tour-tab" data-bs-toggle="tab" data-bs-target="#tour"
+              type="button" role="tab" aria-controls="tour" aria-selected="true">
               <div class="d-flex justify-content-center align-items-center">
                 <span class="material-icons text-sm-m text-md-lg text-xl me-md-2">
                   terrain
@@ -66,8 +66,8 @@ current: index
           </li>
         </ul>
         <div class="tab-content" id="myTabContent">
-          <div class="tab-pane fade show active" id="attractions" role="tabpanel" aria-labelledby="attractions-tab">
-            <ul class="row attractions-list list-unstyled m-0 py-8">
+          <div class="tab-pane fade show active" id="tour" role="tabpanel" aria-labelledby="tour-tab">
+            <ul class="row tour-list list-unstyled m-0 py-8">
               <!-- JS 動態產生景點資料 -->
               <li class="d-flex justify-content-center align-items-center">
                 <span class="material-icons text-sm-m text-md-lg text-2xl me-4">
@@ -78,7 +78,7 @@ current: index
               </li>
               <li class="col-md-6 col-lg-4 d-flex flex-column">
                 <div class="card my-2 my-md-4 my-lg-6 card-shadow-hover h-100">
-                  <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#attractionsScenicSpotModal"
+                  <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#tourScenicSpotModal"
                     data-bs-whatever="${item.ScenicSpotID}">
                     <img src="${item.Picture.PictureUrl1}"
                       onerror="this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null"
@@ -93,7 +93,7 @@ current: index
               </li>
             </ul>
             <div class="d-flex justify-content-center">
-              <a href="attractions.html" class="btn btn-primary text-sm-s text-md-lg text-xl text-light w-50">
+              <a href="tours.html" class="btn btn-primary text-sm-s text-md-lg text-xl text-light w-50">
                 更多景點資料
               </a>
             </div>
@@ -110,7 +110,7 @@ current: index
               </li>
               <!-- <li class="col-md-6 col-lg-4 d-flex flex-column">
                 <div class="card my-2 my-md-4 my-lg-6 card-shadow-hover h-100">
-                  <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#attractionsScenicSpotModal"
+                  <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#tourScenicSpotModal"
                     data-bs-whatever="${item.RestaurantID}">
                     <img src="${item.Picture.PictureUrl1}"
                       onerror="this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null"

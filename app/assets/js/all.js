@@ -29,7 +29,7 @@ subscriptionBtn.addEventListener('click', () => {
 
 // 宣告List列表
 // 景點列表
-const attractionsList = document.querySelector('.attractions-list');
+const tourList = document.querySelector('.tour-list');
 // 美食列表
 const foodList = document.querySelector('.food-list');
 // 旅宿列表
@@ -38,7 +38,7 @@ const roomList = document.querySelector('.room-list');
 const activityList = document.querySelector('.activity-list');
 
 // 存放觀光景點資料
-let attractionsData = [];
+let tourData = [];
 // 存放觀光美食資料
 let foodData = [];
 // 存放觀光旅宿資料
@@ -50,7 +50,7 @@ const eventData = [];
 
 // Modal
 // 景點 Modal
-const ScenicSpotModal = document.querySelector('#attractionsScenicSpotModal');
+const ScenicSpotModal = document.querySelector('#tourScenicSpotModal');
 // 美食 Modal
 const FoodSpotModal = document.querySelector('#foodScenicSpotModal');
 // 旅宿 Modal
@@ -59,7 +59,7 @@ const RoomSpotModal = document.querySelector('#roomScenicSpotModal');
 const ActivitySpotModal = document.querySelector('#activityScenicSpotModal');
 
 // 渲染預設景點列表
-function renderAttractionsList(data) {
+function rendertourList(data) {
   let str = '';
   // console.log(data.length);
   if (data.length === 0) {
@@ -70,7 +70,7 @@ function renderAttractionsList(data) {
     <p class="text-sm-m text-md-lg text-2xl text-center">目前沒有資料
     </p>
   </li>`;
-    attractionsList.innerHTML = str;
+    tourList.innerHTML = str;
   } else {
     data.forEach((item) => {
       // console.log(item);
@@ -83,7 +83,7 @@ function renderAttractionsList(data) {
       if (item.OpenTime === undefined) {
         str += `<li class="col-md-6 col-lg-4 d-flex flex-column">
         <div class="card my-2 my-md-4 my-lg-6 card-shadow-hover h-100">
-          <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#attractionsScenicSpotModal"
+          <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#tourScenicSpotModal"
             data-bs-whatever="${item.ScenicSpotID}">
             <img src="${item.Picture.PictureUrl1}"
               onerror="this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null"
@@ -101,7 +101,7 @@ function renderAttractionsList(data) {
       } else {
         str += `<li class="col-md-6 col-lg-4 d-flex flex-column">
         <div class="card my-2 my-md-4 my-lg-6 card-shadow-hover h-100">
-          <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#attractionsScenicSpotModal"
+          <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#tourScenicSpotModal"
             data-bs-whatever="${item.ScenicSpotID}">
             <img src="${item.Picture.PictureUrl1}"
               onerror="this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null"
@@ -116,14 +116,14 @@ function renderAttractionsList(data) {
       </li>`;
       }
     });
-    // 如果頁面中有 attractionsList 這個DOM時，則執行渲染頁面
-    if (attractionsList) {
-      attractionsList.innerHTML = str;
+    // 如果頁面中有 tourList 這個DOM時，則執行渲染頁面
+    if (tourList) {
+      tourList.innerHTML = str;
     }
   }
 }
 // 取得預設景點資料
-function getAllAttractionsList() {
+function getAlltourList() {
   const url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot/Taipei?$filter=contains(Class1,%27%E9%81%8A%E6%86%A9%E9%A1%9E%27)&$top=6&$skip=9&$format=JSON';
   axios.get(
     url,
@@ -131,9 +131,9 @@ function getAllAttractionsList() {
       headers: GetAuthorizationHeader(),
     },
     ).then((res) => {
-      attractionsData = res.data;
-      renderAttractionsList(attractionsData);
-      // console.log(attractionsData);
+      tourData = res.data;
+      rendertourList(tourData);
+      // console.log(tourData);
     })
     .catch((error) => {
       console.log(error);
@@ -150,7 +150,7 @@ ScenicSpotModal.addEventListener('show.bs.modal', (e) => {
   const openTime = ScenicSpotModal.querySelector('.openTime');
   const phone = ScenicSpotModal.querySelector('.phone');
 
-  attractionsData.forEach((item) => {
+  tourData.forEach((item) => {
     // console.log(item);
     if (item.ScenicSpotID === id) {
       img.setAttribute('src', `${item.Picture.PictureUrl1}`);
@@ -555,7 +555,7 @@ function init() {
   // GetAuthorizationHeader();
 
   // 呼叫取得預設觀光景點資料
-  getAllAttractionsList();
+  getAlltourList();
   // 呼叫取得預設觀光美食資料
   getAllFoodList();
   // 呼叫取得預設觀光旅宿資料
