@@ -111,15 +111,15 @@ ScenicSpotModal.addEventListener('show.bs.modal', function (e) {
     if (item.ScenicSpotID === id) {
       img.setAttribute('src', "".concat(item.Picture.PictureUrl1));
       title.textContent = "".concat(item.ScenicSpotName);
-      description.textContent = "".concat(item.DescriptionDetail);
+      description.textContent = "\u666F\u9EDE\u4ECB\u7D39\uFF1A".concat(item.DescriptionDetail);
 
       if (item.OpenTime === undefined) {
         // eslint-disable-next-line no-param-reassign
         item.OpenTime = '未提供';
       }
 
-      openTime.innerHTML = "\n        <span class=\"material-icons-outlined me-2\">\n          schedule\n        </span>\n        ".concat(item.OpenTime, "\n      ");
-      phone.innerHTML = "\n        <span class=\"material-icons me-2\">\n          call\n        </span>\n        <a href=\"tel:+".concat(item.Phone, "\">").concat(item.Phone, "</a>\n      ");
+      openTime.innerHTML = "\n        <span class=\"material-icons-outlined text-sm-s text-m me-2\">\n          schedule\n        </span>\n        \u958B\u653E\u6642\u9593\uFF1A".concat(item.OpenTime, "\n      ");
+      phone.innerHTML = "\n        <span class=\"material-icons text-sm-s text-m me-2\">\n          call\n        </span>\n        <div class=\"d-flex\">\n          \u9023\u7D61\u96FB\u8A71\uFF1A\n          <a class=\"text-sm-s text-m\" href=\"tel:+".concat(item.Phone, "\">").concat(item.Phone, "</a>\n        </div>\n      ");
     }
   });
 }); // 渲染預設美食列表
@@ -180,15 +180,15 @@ FoodSpotModal.addEventListener('show.bs.modal', function (e) {
     if (item.RestaurantID === id) {
       img.setAttribute('src', "".concat(item.Picture.PictureUrl1));
       title.textContent = "".concat(item.RestaurantName);
-      description.textContent = "".concat(item.Description); // 如果資料中沒有 OpenTime，則開放時間顯示未提供相關時間
+      description.textContent = "\u7F8E\u98DF\u4ECB\u7D39\uFF1A".concat(item.Description); // 如果資料中沒有 OpenTime，則開放時間顯示未提供相關時間
 
       if (item.OpenTime === undefined) {
         // eslint-disable-next-line no-param-reassign
         item.OpenTime = '未提供';
       }
 
-      openTime.innerHTML = "\n        <span class=\"material-icons-outlined me-2\">\n          schedule\n        </span>\n        ".concat(item.OpenTime, "\n      ");
-      phone.innerHTML = "\n        <span class=\"material-icons me-2\">\n          call\n        </span>\n        <a href=\"tel:+".concat(item.Phone, "\">").concat(item.Phone, "</a>\n      ");
+      openTime.innerHTML = "\n        <span class=\"material-icons-outlined text-sm-s text-m me-2\">\n          schedule\n        </span>\n        \u958B\u653E\u6642\u9593\uFF1A".concat(item.OpenTime, "\n      ");
+      phone.innerHTML = "\n        <span class=\"material-icons text-sm-s text-m me-2\">\n          call\n        </span>\n        <div class=\"d-flex\">\n          \u9023\u7D61\u96FB\u8A71\uFF1A\n          <a class=\"text-sm-s text-m\" href=\"tel:+".concat(item.Phone, "\">").concat(item.Phone, "</a>\n        </div>\n      ");
     }
   });
 }); // 渲染預設旅宿列表
@@ -244,15 +244,15 @@ RoomSpotModal.addEventListener('show.bs.modal', function (e) {
     if (item.HotelID === id) {
       img.setAttribute('src', "".concat(item.Picture.PictureUrl1));
       title.textContent = "".concat(item.HotelName);
-      description.textContent = "".concat(item.Description); // 如果資料中沒有 Grade，則顯示未提供星級資料
+      description.textContent = "\u65C5\u5BBF\u4ECB\u7D39\uFF1A".concat(item.Description); // 如果資料中沒有 Grade，則顯示未提供星級資料
 
       if (item.Grade === undefined) {
         // eslint-disable-next-line no-param-reassign
         item.Grade = '未提供星級資料';
       }
 
-      grade.innerHTML = "\n        <span class=\"material-icons-outlined me-2\">\n          star\n        </span>\n        ".concat(item.Grade, "\n      ");
-      phone.innerHTML = "\n        <span class=\"material-icons me-2\">\n          call\n        </span>\n        <a href=\"tel:+".concat(item.Phone, "\">").concat(item.Phone, "</a>\n      ");
+      grade.innerHTML = "\n        <span class=\"material-icons-outlined text-sm-s text-m me-2\">\n          star\n        </span>\n        \u661F\u7D1A\uFF1A".concat(item.Grade, "\n      ");
+      phone.innerHTML = "\n        <span class=\"material-icons text-sm-s text-m me-2\">\n          call\n        </span>\n        <div class=\"d-flex\">\n          \u9023\u7D61\u96FB\u8A71\uFF1A\n          <a class=\"text-sm-s text-m\" href=\"tel:+".concat(item.Phone, "\">").concat(item.Phone, "</a>\n        </div>\n      ");
     }
   });
 }); // 渲染預設活動列表
@@ -320,7 +320,7 @@ ActivitySpotModal.addEventListener('show.bs.modal', function (e) {
     if (item.ActivityID === id) {
       img.setAttribute('src', "".concat(item.Picture.PictureUrl1));
       title.textContent = "".concat(item.ActivityName);
-      description.textContent = "".concat(item.Description);
+      description.textContent = "\u6D3B\u52D5\u4ECB\u7D39\uFF1A".concat(item.Description);
     }
   });
 }); // ------ 初始化
