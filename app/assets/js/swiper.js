@@ -21,9 +21,9 @@ const swiper = new Swiper('#comment-swiper', {
       clickable: true,
     },
     /* 自動播放 */
-    // autoplay: {
-    //   delay: 5000,
-    // },
+    autoplay: {
+      delay: 5000,
+    },
   });
 }
 

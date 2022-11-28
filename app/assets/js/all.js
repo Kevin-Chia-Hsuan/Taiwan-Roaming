@@ -271,6 +271,7 @@ FoodSpotModal.addEventListener('show.bs.modal', (e) => {
   const title = FoodSpotModal.querySelector('.card-title');
   const description = FoodSpotModal.querySelector('.card-text');
   const openTime = FoodSpotModal.querySelector('.openTime');
+  const address = FoodSpotModal.querySelector('.address');
   const phone = FoodSpotModal.querySelector('.phone');
 
   foodData.forEach((item) => {
@@ -289,6 +290,16 @@ FoodSpotModal.addEventListener('show.bs.modal', (e) => {
           schedule
         </span>
         開放時間：${item.OpenTime}
+      `;
+      if (item.Address === undefined) {
+        // eslint-disable-next-line no-param-reassign
+        item.Address = '未提供';
+      }
+      address.innerHTML = `
+        <span class="material-icons-outlined text-sm-s text-m me-2">
+          place
+        </span>
+        所在地址：${item.Address}
       `;
       phone.innerHTML = `
         <span class="material-icons text-sm-s text-m me-2">
@@ -372,6 +383,7 @@ RoomSpotModal.addEventListener('show.bs.modal', (e) => {
   const title = RoomSpotModal.querySelector('.card-title');
   const description = RoomSpotModal.querySelector('.card-text');
   const grade = RoomSpotModal.querySelector('.grade');
+  const address = RoomSpotModal.querySelector('.address');
   const phone = RoomSpotModal.querySelector('.phone');
 
   roomData.forEach((item) => {
@@ -385,6 +397,16 @@ RoomSpotModal.addEventListener('show.bs.modal', (e) => {
         // eslint-disable-next-line no-param-reassign
         item.Grade = '未提供星級資料';
       }
+      if (item.Address === undefined) {
+        // eslint-disable-next-line no-param-reassign
+        item.Address = '未提供';
+      }
+      address.innerHTML = `
+        <span class="material-icons-outlined text-sm-s text-m me-2">
+          place
+        </span>
+        所在地址：${item.Address}
+      `;
       grade.innerHTML = `
         <span class="material-icons-outlined text-sm-s text-m me-2">
           star
@@ -498,6 +520,8 @@ ActivitySpotModal.addEventListener('show.bs.modal', (e) => {
   const img = ActivitySpotModal.querySelector('.card-img-top');
   const title = ActivitySpotModal.querySelector('.card-title');
   const description = ActivitySpotModal.querySelector('.card-text');
+  const activityTime = ActivitySpotModal.querySelector('.activityTime');
+  const address = ActivitySpotModal.querySelector('.address');
 
   eventData.forEach((item) => {
     // console.log(item.HotelID);
@@ -505,6 +529,22 @@ ActivitySpotModal.addEventListener('show.bs.modal', (e) => {
       img.setAttribute('src', `${item.Picture.PictureUrl1}`);
       title.textContent = `${item.ActivityName}`;
       description.textContent = `活動介紹：${item.Description}`;
+      activityTime.innerHTML = `
+      <span class="material-icons-outlined text-sm-s text-m me-2">
+        schedule
+      </span>
+      活動時間：${new Date(item.StartTime).toLocaleDateString()} - ${new Date(item.EndTime).toLocaleDateString()}
+      `;
+      if (item.Address === undefined) {
+        // eslint-disable-next-line no-param-reassign
+        item.Address = '未提供';
+      }
+      address.innerHTML = `
+        <span class="material-icons-outlined text-sm-s text-m me-2">
+          place
+        </span>
+        活動地址：${item.Address}
+      `;
     }
   });
 });
