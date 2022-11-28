@@ -174,6 +174,7 @@ FoodSpotModal.addEventListener('show.bs.modal', function (e) {
   var title = FoodSpotModal.querySelector('.card-title');
   var description = FoodSpotModal.querySelector('.card-text');
   var openTime = FoodSpotModal.querySelector('.openTime');
+  var address = FoodSpotModal.querySelector('.address');
   var phone = FoodSpotModal.querySelector('.phone');
   foodData.forEach(function (item) {
     // console.log(item.RestaurantID);
@@ -188,6 +189,13 @@ FoodSpotModal.addEventListener('show.bs.modal', function (e) {
       }
 
       openTime.innerHTML = "\n        <span class=\"material-icons-outlined text-sm-s text-m me-2\">\n          schedule\n        </span>\n        \u958B\u653E\u6642\u9593\uFF1A".concat(item.OpenTime, "\n      ");
+
+      if (item.Address === undefined) {
+        // eslint-disable-next-line no-param-reassign
+        item.Address = '未提供';
+      }
+
+      address.innerHTML = "\n        <span class=\"material-icons-outlined text-sm-s text-m me-2\">\n          place\n        </span>\n        \u6240\u5728\u5730\u5740\uFF1A".concat(item.Address, "\n      ");
       phone.innerHTML = "\n        <span class=\"material-icons text-sm-s text-m me-2\">\n          call\n        </span>\n        <div class=\"d-flex\">\n          \u9023\u7D61\u96FB\u8A71\uFF1A\n          <a class=\"text-sm-s text-m\" href=\"tel:+".concat(item.Phone, "\">").concat(item.Phone, "</a>\n        </div>\n      ");
     }
   });
@@ -238,6 +246,7 @@ RoomSpotModal.addEventListener('show.bs.modal', function (e) {
   var title = RoomSpotModal.querySelector('.card-title');
   var description = RoomSpotModal.querySelector('.card-text');
   var grade = RoomSpotModal.querySelector('.grade');
+  var address = RoomSpotModal.querySelector('.address');
   var phone = RoomSpotModal.querySelector('.phone');
   roomData.forEach(function (item) {
     // console.log(item.HotelID);
@@ -251,6 +260,12 @@ RoomSpotModal.addEventListener('show.bs.modal', function (e) {
         item.Grade = '未提供星級資料';
       }
 
+      if (item.Address === undefined) {
+        // eslint-disable-next-line no-param-reassign
+        item.Address = '未提供';
+      }
+
+      address.innerHTML = "\n        <span class=\"material-icons-outlined text-sm-s text-m me-2\">\n          place\n        </span>\n        \u6240\u5728\u5730\u5740\uFF1A".concat(item.Address, "\n      ");
       grade.innerHTML = "\n        <span class=\"material-icons-outlined text-sm-s text-m me-2\">\n          star\n        </span>\n        \u661F\u7D1A\uFF1A".concat(item.Grade, "\n      ");
       phone.innerHTML = "\n        <span class=\"material-icons text-sm-s text-m me-2\">\n          call\n        </span>\n        <div class=\"d-flex\">\n          \u9023\u7D61\u96FB\u8A71\uFF1A\n          <a class=\"text-sm-s text-m\" href=\"tel:+".concat(item.Phone, "\">").concat(item.Phone, "</a>\n        </div>\n      ");
     }
@@ -315,12 +330,22 @@ ActivitySpotModal.addEventListener('show.bs.modal', function (e) {
   var img = ActivitySpotModal.querySelector('.card-img-top');
   var title = ActivitySpotModal.querySelector('.card-title');
   var description = ActivitySpotModal.querySelector('.card-text');
+  var activityTime = ActivitySpotModal.querySelector('.activityTime');
+  var address = ActivitySpotModal.querySelector('.address');
   eventData.forEach(function (item) {
     // console.log(item.HotelID);
     if (item.ActivityID === id) {
       img.setAttribute('src', "".concat(item.Picture.PictureUrl1));
       title.textContent = "".concat(item.ActivityName);
       description.textContent = "\u6D3B\u52D5\u4ECB\u7D39\uFF1A".concat(item.Description);
+      activityTime.innerHTML = "\n      <span class=\"material-icons-outlined text-sm-s text-m me-2\">\n        schedule\n      </span>\n      \u6D3B\u52D5\u6642\u9593\uFF1A".concat(new Date(item.StartTime).toLocaleDateString(), " - ").concat(new Date(item.EndTime).toLocaleDateString(), "\n      ");
+
+      if (item.Address === undefined) {
+        // eslint-disable-next-line no-param-reassign
+        item.Address = '未提供';
+      }
+
+      address.innerHTML = "\n        <span class=\"material-icons-outlined text-sm-s text-m me-2\">\n          place\n        </span>\n        \u6D3B\u52D5\u5730\u5740\uFF1A".concat(item.Address, "\n      ");
     }
   });
 }); // ------ 初始化
@@ -382,12 +407,12 @@ function initSwiper() {
     pagination: {
       el: '.swiper-pagination',
       clickable: true
-    }
-    /* 自動播放 */
-    // autoplay: {
-    //   delay: 5000,
-    // },
+    },
 
+    /* 自動播放 */
+    autoplay: {
+      delay: 5000
+    }
   });
 }
 /* 觸發自己定義的函式 */
