@@ -42,7 +42,7 @@
           <a class="nav-link text-m text-secondary hover-success px-3" href="index.html">首頁</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-m text-secondary hover-success px-3" href="attractions.html">探索景點</a>
+          <a class="nav-link text-m text-secondary hover-success px-3" href="tours.html">探索景點</a>
         </li>
         <li class="nav-item">
           <a class="nav-link text-m text-secondary hover-success px-3" href="foods.html">品嘗美食</a>
@@ -71,7 +71,7 @@
               <a class="nav-link text-m text-light py-2" href="index.html">首頁</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-m text-light py-2" href="attractions.html">探索景點</a>
+              <a class="nav-link text-m text-light py-2" href="tours.html">探索景點</a>
             </li>
             <li class="nav-item">
               <a class="nav-link text-m text-light py-2" href="foods.html">品嘗美食</a>
@@ -116,8 +116,8 @@
       <div class="row">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
           <li class="col-4 nav-item" role="presentation">
-            <button class="nav-link w-100 active" id="attractions-tab" data-bs-toggle="tab"
-              data-bs-target="#attractions" type="button" role="tab" aria-controls="attractions" aria-selected="true">
+            <button class="nav-link w-100 active" id="tour-tab" data-bs-toggle="tab" data-bs-target="#tour"
+              type="button" role="tab" aria-controls="tour" aria-selected="true">
               <div class="d-flex justify-content-center align-items-center">
                 <span class="material-icons text-sm-m text-md-lg text-xl me-md-2">
                   terrain
@@ -150,8 +150,8 @@
           </li>
         </ul>
         <div class="tab-content" id="myTabContent">
-          <div class="tab-pane fade show active" id="attractions" role="tabpanel" aria-labelledby="attractions-tab">
-            <ul class="row attractions-list list-unstyled m-0 py-8">
+          <div class="tab-pane fade show active" id="tour" role="tabpanel" aria-labelledby="tour-tab">
+            <ul class="row tour-list list-unstyled m-0 py-8">
               <!-- JS 動態產生景點資料 -->
               <li class="d-flex justify-content-center align-items-center">
                 <span class="material-icons text-sm-m text-md-lg text-2xl me-4">
@@ -162,7 +162,7 @@
               </li>
               <li class="col-md-6 col-lg-4 d-flex flex-column">
                 <div class="card my-2 my-md-4 my-lg-6 card-shadow-hover h-100">
-                  <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#attractionsScenicSpotModal"
+                  <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#tourScenicSpotModal"
                     data-bs-whatever="${item.ScenicSpotID}">
                     <img src="${item.Picture.PictureUrl1}"
                       onerror="this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null"
@@ -177,7 +177,7 @@
               </li>
             </ul>
             <div class="d-flex justify-content-center">
-              <a href="attractions.html" class="btn btn-primary text-sm-s text-md-lg text-xl text-light w-50">
+              <a href="tours.html" class="btn btn-primary text-sm-s text-md-lg text-xl text-light w-50">
                 更多景點資料
               </a>
             </div>
@@ -194,7 +194,7 @@
               </li>
               <!-- <li class="col-md-6 col-lg-4 d-flex flex-column">
                 <div class="card my-2 my-md-4 my-lg-6 card-shadow-hover h-100">
-                  <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#attractionsScenicSpotModal"
+                  <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#tourScenicSpotModal"
                     data-bs-whatever="${item.RestaurantID}">
                     <img src="${item.Picture.PictureUrl1}"
                       onerror="this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null"
@@ -584,8 +584,8 @@
     </footer>
 
     <!-- 預設景點 Modal -->
-    <div class="modal fade" id="attractionsScenicSpotModal" tabindex="-1"
-      aria-labelledby="attractionsScenicSpotModalLabel" aria-hidden="true">
+    <div class="modal fade" id="tourScenicSpotModal" tabindex="-1" aria-labelledby="tourScenicSpotModalLabel"
+      aria-hidden="true">
       <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">

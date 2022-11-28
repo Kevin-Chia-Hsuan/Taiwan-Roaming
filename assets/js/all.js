@@ -28,7 +28,7 @@ subscriptionBtn.addEventListener('click', function () {
 // 宣告List列表
 // 景點列表
 
-var attractionsList = document.querySelector('.attractions-list'); // 美食列表
+var tourList = document.querySelector('.tour-list'); // 美食列表
 
 var foodList = document.querySelector('.food-list'); // 旅宿列表
 
@@ -36,7 +36,7 @@ var roomList = document.querySelector('.room-list'); // 活動列表
 
 var activityList = document.querySelector('.activity-list'); // 存放觀光景點資料
 
-var attractionsData = []; // 存放觀光美食資料
+var tourData = []; // 存放觀光美食資料
 
 var foodData = []; // 存放觀光旅宿資料
 
@@ -47,7 +47,7 @@ var activityData = []; // 存放篩選後觀光活動資料
 var eventData = []; // Modal
 // 景點 Modal
 
-var ScenicSpotModal = document.querySelector('#attractionsScenicSpotModal'); // 美食 Modal
+var ScenicSpotModal = document.querySelector('#tourScenicSpotModal'); // 美食 Modal
 
 var FoodSpotModal = document.querySelector('#foodScenicSpotModal'); // 旅宿 Modal
 
@@ -55,12 +55,12 @@ var RoomSpotModal = document.querySelector('#roomScenicSpotModal'); // 活動 Mo
 
 var ActivitySpotModal = document.querySelector('#activityScenicSpotModal'); // 渲染預設景點列表
 
-function renderAttractionsList(data) {
+function rendertourList(data) {
   var str = ''; // console.log(data.length);
 
   if (data.length === 0) {
     str = "<li class=\"d-flex justify-content-center align-items-center\">\n    <span class=\"material-icons text-sm-m text-md-lg text-2xl me-4\">\n      error_outline\n    </span>\n    <p class=\"text-sm-m text-md-lg text-2xl text-center\">\u76EE\u524D\u6C92\u6709\u8CC7\u6599\n    </p>\n  </li>";
-    attractionsList.innerHTML = str;
+    tourList.innerHTML = str;
   } else {
     data.forEach(function (item) {
       // console.log(item);
@@ -70,26 +70,26 @@ function renderAttractionsList(data) {
       // }
       // 如果資料中沒有 OpenTime，則開放時間顯示未提供相關時間
       if (item.OpenTime === undefined) {
-        str += "<li class=\"col-md-6 col-lg-4 d-flex flex-column\">\n        <div class=\"card my-2 my-md-4 my-lg-6 card-shadow-hover h-100\">\n          <a href=\"\" class=\"stretched-link\" data-bs-toggle=\"modal\" data-bs-target=\"#attractionsScenicSpotModal\"\n            data-bs-whatever=\"".concat(item.ScenicSpotID, "\">\n            <img src=\"").concat(item.Picture.PictureUrl1, "\"\n              onerror=\"this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null\"\n              class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n          </a>\n          <div class=\"card-body\">\n            <h4 class=\"text-sm-m text-lg text-warning\">").concat(item.ScenicSpotName, "</h4>\n            <div class=\"d-flex\">\n              <p class=\"text-s text-primary mt-2\">\u958B\u653E\u6642\u9593\uFF1A\u672A\u63D0\u4F9B\u76F8\u95DC\u6642\u9593</p>\n            </div>\n            <p class=\"text-s text-primary mt-2\">\u9023\u7D61\u96FB\u8A71\uFF1A").concat(item.Phone, "</p>\n          </div>\n        </div>\n      </li>");
+        str += "<li class=\"col-md-6 col-lg-4 d-flex flex-column\">\n        <div class=\"card my-2 my-md-4 my-lg-6 card-shadow-hover h-100\">\n          <a href=\"\" class=\"stretched-link\" data-bs-toggle=\"modal\" data-bs-target=\"#tourScenicSpotModal\"\n            data-bs-whatever=\"".concat(item.ScenicSpotID, "\">\n            <img src=\"").concat(item.Picture.PictureUrl1, "\"\n              onerror=\"this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null\"\n              class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n          </a>\n          <div class=\"card-body\">\n            <h4 class=\"text-sm-m text-lg text-warning\">").concat(item.ScenicSpotName, "</h4>\n            <div class=\"d-flex\">\n              <p class=\"text-s text-primary mt-2\">\u958B\u653E\u6642\u9593\uFF1A\u672A\u63D0\u4F9B\u76F8\u95DC\u6642\u9593</p>\n            </div>\n            <p class=\"text-s text-primary mt-2\">\u9023\u7D61\u96FB\u8A71\uFF1A").concat(item.Phone, "</p>\n          </div>\n        </div>\n      </li>");
       } else {
-        str += "<li class=\"col-md-6 col-lg-4 d-flex flex-column\">\n        <div class=\"card my-2 my-md-4 my-lg-6 card-shadow-hover h-100\">\n          <a href=\"\" class=\"stretched-link\" data-bs-toggle=\"modal\" data-bs-target=\"#attractionsScenicSpotModal\"\n            data-bs-whatever=\"".concat(item.ScenicSpotID, "\">\n            <img src=\"").concat(item.Picture.PictureUrl1, "\"\n              onerror=\"this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null\"\n              class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n          </a>\n          <div class=\"card-body\">\n            <h4 class=\"text-sm-m text-lg text-warning\">").concat(item.ScenicSpotName, "</h4>\n            <p class=\"text-s text-primary mt-2\">\u958B\u653E\u6642\u9593\uFF1A").concat(item.OpenTime, "</p>\n            <p class=\"text-s text-primary mt-2\">\u9023\u7D61\u96FB\u8A71\uFF1A").concat(item.Phone, "</p>\n          </div>\n        </div>\n      </li>");
+        str += "<li class=\"col-md-6 col-lg-4 d-flex flex-column\">\n        <div class=\"card my-2 my-md-4 my-lg-6 card-shadow-hover h-100\">\n          <a href=\"\" class=\"stretched-link\" data-bs-toggle=\"modal\" data-bs-target=\"#tourScenicSpotModal\"\n            data-bs-whatever=\"".concat(item.ScenicSpotID, "\">\n            <img src=\"").concat(item.Picture.PictureUrl1, "\"\n              onerror=\"this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null\"\n              class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n          </a>\n          <div class=\"card-body\">\n            <h4 class=\"text-sm-m text-lg text-warning\">").concat(item.ScenicSpotName, "</h4>\n            <p class=\"text-s text-primary mt-2\">\u958B\u653E\u6642\u9593\uFF1A").concat(item.OpenTime, "</p>\n            <p class=\"text-s text-primary mt-2\">\u9023\u7D61\u96FB\u8A71\uFF1A").concat(item.Phone, "</p>\n          </div>\n        </div>\n      </li>");
       }
-    }); // 如果頁面中有 attractionsList 這個DOM時，則執行渲染頁面
+    }); // 如果頁面中有 tourList 這個DOM時，則執行渲染頁面
 
-    if (attractionsList) {
-      attractionsList.innerHTML = str;
+    if (tourList) {
+      tourList.innerHTML = str;
     }
   }
 } // 取得預設景點資料
 
 
-function getAllAttractionsList() {
+function getAlltourList() {
   var url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot/Taipei?$filter=contains(Class1,%27%E9%81%8A%E6%86%A9%E9%A1%9E%27)&$top=6&$skip=9&$format=JSON';
   axios.get(url, {
     headers: GetAuthorizationHeader()
   }).then(function (res) {
-    attractionsData = res.data;
-    renderAttractionsList(attractionsData); // console.log(attractionsData);
+    tourData = res.data;
+    rendertourList(tourData); // console.log(tourData);
   })["catch"](function (error) {
     console.log(error);
   });
@@ -106,7 +106,7 @@ ScenicSpotModal.addEventListener('show.bs.modal', function (e) {
   var description = ScenicSpotModal.querySelector('.card-text');
   var openTime = ScenicSpotModal.querySelector('.openTime');
   var phone = ScenicSpotModal.querySelector('.phone');
-  attractionsData.forEach(function (item) {
+  tourData.forEach(function (item) {
     // console.log(item);
     if (item.ScenicSpotID === id) {
       img.setAttribute('src', "".concat(item.Picture.PictureUrl1));
@@ -354,7 +354,7 @@ function init() {
   // 呼叫取得token函式
   // GetAuthorizationHeader();
   // 呼叫取得預設觀光景點資料
-  getAllAttractionsList(); // 呼叫取得預設觀光美食資料
+  getAlltourList(); // 呼叫取得預設觀光美食資料
 
   getAllFoodList(); // 呼叫取得預設觀光旅宿資料
 
