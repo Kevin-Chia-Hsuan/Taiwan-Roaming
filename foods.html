@@ -89,7 +89,96 @@
   </nav>
 
   
-<h2>美食資料</h2>
+<div class="container">
+    <div class="row">
+
+        <section>
+            <div class="my-4 my-md-7">
+                <div class="col-md-8 Small shadow">
+                    <div class="input-group">
+                        <input type="text" class="form-control foods-search" placeholder="請輸入關鍵字"
+                            aria-label="Recipient's username" aria-describedby="button-addon">
+                        <button class="btn btn-primary foods-search-btn text-light" type="button"
+                            id="button-addon">搜尋</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4 mb-md-7">
+                <form class="d-flex align-items-center">
+                    <div class="col-md-4 Small shadow">
+                        <!-- 顯示篩選 -->
+                        <select class="form-select foods-city-select" aria-label="Default select example">
+                            <option value="All" selected>請選擇縣市</option>
+                            <option value="Taipei">台北市</option>
+                            <option value="NewTaipei">新北市</option>
+                            <option value="Taoyuan">桃園市</option>
+                            <option value="Taichung">台中市</option>
+                            <option value="Tainan">台南市</option>
+                            <option value="Kaohsiung">高雄市</option>
+                            <option value="Keelung">基隆市</option>
+                            <option value="Hsinchu">新竹市</option>
+                            <option value="HsinchuCounty">新竹縣</option>
+                            <option value="MiaoliCounty">苗栗縣</option>
+                            <option value="ChanghuaCounty">彰化縣</option>
+                            <option value="NantouCounty">南投縣</option>
+                            <option value="YunlinCounty">雲林縣</option>
+                            <option value="ChiayiCounty">嘉義縣</option>
+                            <option value="Chiayi">嘉義市</option>
+                            <option value="PingtungCounty">屏東縣</option>
+                            <option value="YilanCounty">宜蘭縣</option>
+                            <option value="HualienCounty">花蓮縣</option>
+                            <option value="TaitungCounty">台東縣</option>
+                            <option value="KinmenCounty">金門縣</option>
+                            <option value="PenghuCounty">澎湖縣</option>
+                            <option value="LienchiangCounty">馬祖列島</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 ms-3 Small shadow">
+                        <!-- 顯示篩選 -->
+                        <select class="form-select foods-classification-select" aria-label="Default select example">
+                            <option value="All" selected>所有分類</option>
+                            <option value="中式美食">中式美食</option>
+                            <option value="伴手禮">伴手禮</option>
+                            <option value="地方特產">地方特產</option>
+                            <option value="夜市小吃">夜市小吃</option>
+                            <option value="火烤料理">火烤料理</option>
+                            <option value="甜點冰品">甜點冰品</option>
+                            <option value="異國料理">異國料理</option>
+                            <option value="素食">素食</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </div>
+                    <button type="button" class="foods-send-select btn btn-primary ms-3 text-light Small shadow"
+                        value="搜尋">搜尋</button>
+                </form>
+            </div>
+        </section>
+
+        <section>
+            <div class="my-4 my-md-7">
+                <ul class="row foods-list list-unstyled m-0">
+                    <!-- JS 動態產生美食資料 -->
+                    <div class="d-flex justify-content-center align-items-center">
+                        <span class="material-icons text-sm-m text-md-lg text-2xl me-2">
+                            error_outline
+                        </span>
+                        <h2 class="text-sm-m text-md-lg text-2xl m-0">
+                            目前沒有美食資料
+                        </h2>
+                    </div>
+                </ul>
+            </div>
+
+            <nav aria-label="Page navigation example">
+                <!--   分頁按鈕   -->
+                <ul class="pagination justify-content-center foods-pages flex-wrap list-unstyled mb-4 mb-md-7">
+                </ul>
+            </nav>
+        </section>
+
+    </div>
+</div>
 
     <section>
       <div class="subscription">
