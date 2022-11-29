@@ -1,22 +1,26 @@
 /* global axios */
+/* global Swal */
 
 // 宣告景點頁面景點列表
-const toursList = document.querySelector('.tours-list');
+const foodsList = document.querySelector('.foods-list');
 
 // 縣市篩選下拉選單
-const toursCitySelect = document.querySelector('.tours-city-select');
+const foodsCitySelect = document.querySelector('.foods-city-select');
 // 分類篩選下拉選單
-const toursClassificationSelect = document.querySelector('.tours-classification-select');
+const foodsClassificationSelect = document.querySelector('.foods-classification-select');
 // 縣市搜尋按鈕
-const toursSendSelect = document.querySelector('.tours-send-select');
+const foodsSendSelect = document.querySelector('.foods-send-select');
 
 // 關鍵字input輸入
-const toursSearch = document.querySelector('.tours-search');
+const foodsSearch = document.querySelector('.foods-search');
 // 關鍵字搜尋按鈕
-const toursSearchBtn = document.querySelector('.tours-search-btn');
+const foodsSearchBtn = document.querySelector('.foods-search-btn');
+
+// 頁碼
+const foodsPages = document.querySelector('.foods-pages');
 
 // toursSendSelect.addEventListener('click', (e) => {
-//     console.log(toursCitySelect.value, toursClassificationSelect.value);
+//     console.log(foodsCitySelect.value, foodsClassificationselect.value);
 // });
 
 // toursSearchBtn.addEventListener('click', (e) => {
@@ -24,7 +28,7 @@ const toursSearchBtn = document.querySelector('.tours-search-btn');
 // });
 
 //  渲染列表
-function renderToursList(data) {
+function renderFoodsList(data) {
   let str = '';
   // console.log(data.length);
   if (data.length === 0) {
@@ -35,7 +39,7 @@ function renderToursList(data) {
     <p class="text-sm-m text-md-lg text-2xl text-center">目前沒有資料
     </p>
   </li>`;
-    toursList.innerHTML = str;
+    foodsList.innerHTML = str;
   } else {
     data.forEach((item) => {
       // console.log(item);
@@ -48,17 +52,18 @@ function renderToursList(data) {
       if (item.OpenTime === undefined) {
         str += `<li class="col-md-6 col-lg-4 d-flex flex-column">
         <div class="card my-2 my-md-4 my-lg-6 card-shadow-hover h-100">
-          <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#tourScenicSpotModal"
-            data-bs-whatever="${item.ScenicSpotID}">
+          <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#foodScenicSpotModal"
+            data-bs-whatever="${item.RestaurantID}">
             <img src="${item.Picture.PictureUrl1}"
               onerror="this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null"
               class="card-img-top img-fluid" alt=".${item.Picture.PictureDescription1}">
           </a>
           <div class="card-body">
-            <h4 class="text-sm-m text-lg text-warning">${item.ScenicSpotName}</h4>
+            <h4 class="text-sm-m text-lg text-warning">${item.RestaurantName}</h4>
             <div class="d-flex">
               <p class="text-s text-primary mt-2">開放時間：未提供相關時間</p>
             </div>
+            <p class="text-s text-primary mt-2">所在地址：${item.Address}</p>
             <p class="text-s text-primary mt-2">連絡電話：${item.Phone}</p>
           </div>
         </div>
@@ -66,15 +71,16 @@ function renderToursList(data) {
       } else {
         str += `<li class="col-md-6 col-lg-4 d-flex flex-column">
         <div class="card my-2 my-md-4 my-lg-6 card-shadow-hover h-100">
-          <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#tourScenicSpotModal"
-            data-bs-whatever="${item.ScenicSpotID}">
+          <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#foodScenicSpotModal"
+            data-bs-whatever="${item.RestaurantID}">
             <img src="${item.Picture.PictureUrl1}"
               onerror="this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null"
               class="card-img-top img-fluid" alt=".${item.Picture.PictureDescription1}">
           </a>
           <div class="card-body">
-            <h4 class="text-sm-m text-lg text-warning">${item.ScenicSpotName}</h4>
+            <h4 class="text-sm-m text-lg text-warning">${item.RestaurantName}</h4>
             <p class="text-s text-primary mt-2">開放時間：${item.OpenTime}</p>
+            <p class="text-s text-primary mt-2">所在地址：${item.Address}</p>
             <p class="text-s text-primary mt-2">連絡電話：${item.Phone}</p>
           </div>
         </div>
@@ -82,18 +88,18 @@ function renderToursList(data) {
       }
     });
     // 如果頁面中有 tourList 這個DOM時，則執行渲染頁面
-    if (toursList) {
-      toursList.innerHTML = str;
+    if (foodsList) {
+      foodsList.innerHTML = str;
       // classification.classList.add('d-none');
     }
   }
 }
 
 // 整體分頁功能
-function renderToursPage(nowPage) {
+function renderFoodsPage(nowPage) {
   // 假設一頁 12 筆
   const dataPerPage = 12; // 一頁 12 筆資料 1~12 13~24 25~
-  const totalPages = Math.ceil(tourData.length / dataPerPage); // 需要的頁數（無條件進位）
+  const totalPages = Math.ceil(foodData.length / dataPerPage); // 需要的頁數（無條件進位）
 
   const minData = dataPerPage * nowPage - dataPerPage + 1;
   const maxData = dataPerPage * nowPage;
@@ -101,7 +107,7 @@ function renderToursPage(nowPage) {
 
   // 取出當前頁數的景點資料
   const currentData = [];
-  tourData.forEach((item, index) => {
+  foodData.forEach((item, index) => {
     if (index + 1 >= minData && index + 1 <= maxData) {
       currentData.push(item);
     }
@@ -176,20 +182,20 @@ function renderPageBtn(pageInfoData) {
     `;
   }
 
-  pages.innerHTML = str;
+  foodsPages.innerHTML = str;
   }
   // 呈現出該頁資料
-  if (toursList) {
-    renderToursList(currentData);
+  if (foodsList) {
+    renderFoodsList(currentData);
   }
 
   // 呈現分頁按鈕
   renderPageBtn(pageInfo);
 }
 
-if (pages) {
+if (foodsPages) {
   // 點選按鈕切換頁面
-  pages.addEventListener('click', (e) => {
+  foodsPages.addEventListener('click', (e) => {
     e.preventDefault();
     // console.log('click!',e.target.nodeName);
     if (e.target.nodeName !== 'A') {
@@ -199,48 +205,48 @@ if (pages) {
     const clickPage = e.target.dataset.page;
     // console.log(clickPage);
 
-    renderToursPage(clickPage);
+    renderFoodsPage(clickPage);
   });
 
   // 縣市篩選功能-監聽
-  toursSendSelect.addEventListener('click', () => {
+  foodsSendSelect.addEventListener('click', () => {
     // console.log('點擊到了');
-    const toursCity = toursCitySelect.value;
-    const toursClassifications = toursClassificationSelect.value;
-    // console.log(city);
-    // console.log(classification);
-    const url = `https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot/${toursCity}?%24format=JSON`;
-    const url2 = `https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot/${toursCity}?$filter=contains(Class1,'${toursClassifications}')&$format=JSON`;
-    const url3 = `https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot?$filter=contains(Class1,'${toursClassifications}')&$format=JSON`;
+    const foodsCity = foodsCitySelect.value;
+    let foodsClassifications = foodsClassificationSelect.value;
+    if (foodsClassifications === '其��') {
+      foodsClassifications = '其他';
+    }
+    const url = `https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant/${foodsCity}?%24format=JSON`;
+    const url2 = `https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant/${foodsCity}?$filter=contains(Class,'${foodsClassifications}')&$format=JSON`;
+    const url3 = `https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant?$filter=contains(Class,'${foodsClassifications}')&$format=JSON`;
 
-    if (toursCity === 'All' && toursClassifications === 'All') {
-      // getAlltourList();
+    if (foodsCity === 'All' && foodsClassifications === 'All') {
       Swal.fire(
         '出錯了',
         '請至少選擇一個下拉選項',
         'error',
       );
-    } else if (toursCity !== 'All' && toursClassifications !== 'All') {
+    } else if (foodsCity !== 'All' && foodsClassifications !== 'All') {
       // 呼叫 API 服務，取得指定縣市、指定分類之觀光景點資料
     axios.get(url2,
       {
         headers: GetAuthorizationHeader(),
       }).then((res) => {
         // console.log(res.data);
-        tourData = res.data;
-        renderToursPage(1);
+        foodData = res.data;
+        renderFoodsPage(1);
       }).catch((error) => {
         console.log(error);
       });
-    } else if (toursCity === 'All' && toursClassifications !== 'All') {
+    } else if (foodsCity === 'All' && foodsClassifications !== 'All') {
       // 呼叫 API 服務，取得全部縣市、指定分類之觀光景點資料
     axios.get(url3,
       {
         headers: GetAuthorizationHeader(),
       }).then((res) => {
         // console.log(res.data);
-        tourData = res.data;
-        renderToursPage(1);
+        foodData = res.data;
+        renderFoodsPage(1);
       }).catch((error) => {
         console.log(error);
       });
@@ -251,8 +257,8 @@ if (pages) {
           headers: GetAuthorizationHeader(),
         }).then((res) => {
           // console.log(res.data);
-          tourData = res.data;
-          renderToursPage(1);
+          foodData = res.data;
+          renderFoodsPage(1);
         }).catch((error) => {
           console.log(error);
       });
@@ -260,8 +266,8 @@ if (pages) {
   });
 
   // 關鍵字搜尋功能-監聽
-  toursSearchBtn.addEventListener('click', () => {
-    const keyword = toursSearch.value.replace(/\s*/g, '');
+  foodsSearchBtn.addEventListener('click', () => {
+    const keyword = foodsSearch.value.replace(/\s*/g, '');
       if (keyword === '') {
         Swal.fire(
           '出錯了',
@@ -269,15 +275,15 @@ if (pages) {
           'error',
         );
       } else {
-        const url = `https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot?$filter=contains(ScenicSpotName,'${keyword}')&$format=JSON`;
+        const url = `https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant?$filter=contains(RestaurantName,'${keyword}')&$format=JSON`;
       // console.log(keyword);
       axios.get(url)
       .then((res) => {
-        tourData = res.data;
+        foodData = res.data;
         // console.log(thisData);
         // renderList(tourData);
         // 初始取得資料渲染第一頁
-        renderToursPage(1);
+        renderFoodsPage(1);
       }).catch((error) => {
         console.log(error);
       });
