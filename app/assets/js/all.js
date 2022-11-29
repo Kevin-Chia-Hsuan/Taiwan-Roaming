@@ -1,4 +1,5 @@
 /* global axios */
+/* global Swal */
 
 /* 訂閱區塊JS */
 const subscriptionInfoForm = document.querySelector('.subscriptionInfo-form');
@@ -15,11 +16,26 @@ subscriptionBtn.addEventListener('click', () => {
     const { value } = subscriptionEmail;
     // console.log(value);
     if (value === '') {
-        swal('出錯了！', '未輸入Email', 'error');
+        // swal('出錯了！', '未輸入Email', 'error');
+        Swal.fire(
+          '出錯了！',
+          '未輸入Email',
+          'error',
+        );
     } else if (!reMail.test(value)) {
-        swal('出錯了！', 'Email格式錯誤', 'error');
+        // swal('出錯了！', 'Email格式錯誤', 'error');
+        Swal.fire(
+          '出錯了！',
+          'Email格式錯誤',
+          'error',
+        );
     } else {
-        swal('訂閱成功！', '將定期發送相關觀光資訊', 'success');
+        // swal('訂閱成功！', '將定期發送相關觀光資訊', 'success');
+        Swal.fire(
+          '訂閱成功！',
+          '將定期發送相關觀光資訊',
+          'success',
+        );
         subscriptionInfoForm.reset();
     }
 });
@@ -36,6 +52,8 @@ const foodList = document.querySelector('.food-list');
 const roomList = document.querySelector('.room-list');
 // 活動列表
 const activityList = document.querySelector('.activity-list');
+// 頁碼
+const pages = document.querySelector('.pages');
 
 // 存放觀光景點資料
 let tourData = [];
