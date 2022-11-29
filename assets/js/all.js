@@ -2,6 +2,8 @@
 
 /* global axios */
 
+/* global Swal */
+
 /* 訂閱區塊JS */
 var subscriptionInfoForm = document.querySelector('.subscriptionInfo-form'); // 訂閱input輸入
 
@@ -16,11 +18,14 @@ subscriptionBtn.addEventListener('click', function () {
   var value = subscriptionEmail.value; // console.log(value);
 
   if (value === '') {
-    swal('出錯了！', '未輸入Email', 'error');
+    // swal('出錯了！', '未輸入Email', 'error');
+    Swal.fire('出錯了！', '未輸入Email', 'error');
   } else if (!reMail.test(value)) {
-    swal('出錯了！', 'Email格式錯誤', 'error');
+    // swal('出錯了！', 'Email格式錯誤', 'error');
+    Swal.fire('出錯了！', 'Email格式錯誤', 'error');
   } else {
-    swal('訂閱成功！', '將定期發送相關觀光資訊', 'success');
+    // swal('訂閱成功！', '將定期發送相關觀光資訊', 'success');
+    Swal.fire('訂閱成功！', '將定期發送相關觀光資訊', 'success');
     subscriptionInfoForm.reset();
   }
 }); // API 的 filter 用法：例如: 沒有圖片時
@@ -34,7 +39,9 @@ var foodList = document.querySelector('.food-list'); // 旅宿列表
 
 var roomList = document.querySelector('.room-list'); // 活動列表
 
-var activityList = document.querySelector('.activity-list'); // 存放觀光景點資料
+var activityList = document.querySelector('.activity-list'); // 頁碼
+
+var pages = document.querySelector('.pages'); // 存放觀光景點資料
 
 var tourData = []; // 存放觀光美食資料
 
@@ -419,4 +426,202 @@ function initSwiper() {
 
 
 initSwiper();
+"use strict";
+
+/* global axios */
+// 宣告景點頁面景點列表
+var toursList = document.querySelector('.tours-list'); // 縣市篩選下拉選單
+
+var toursCitySelect = document.querySelector('.tours-city-select'); // 分類篩選下拉選單
+
+var toursClassificationSelect = document.querySelector('.tours-classification-select'); // 縣市搜尋按鈕
+
+var toursSendSelect = document.querySelector('.tours-send-select'); // 關鍵字input輸入
+
+var toursSearch = document.querySelector('.tours-search'); // 關鍵字搜尋按鈕
+
+var toursSearchBtn = document.querySelector('.tours-search-btn'); // toursSendSelect.addEventListener('click', (e) => {
+//     console.log(toursCitySelect.value, toursClassificationSelect.value);
+// });
+// toursSearchBtn.addEventListener('click', (e) => {
+//     console.log(toursSearch.value);
+// });
+//  渲染列表
+
+function renderToursList(data) {
+  var str = ''; // console.log(data.length);
+
+  if (data.length === 0) {
+    str = "<li class=\"d-flex justify-content-center align-items-center\">\n    <span class=\"material-icons text-sm-m text-md-lg text-2xl me-4\">\n      error_outline\n    </span>\n    <p class=\"text-sm-m text-md-lg text-2xl text-center\">\u76EE\u524D\u6C92\u6709\u8CC7\u6599\n    </p>\n  </li>";
+    toursList.innerHTML = str;
+  } else {
+    data.forEach(function (item) {
+      // console.log(item);
+      // 若API有提供圖片網址，但圖片網址失效時，使用 onerror="this.src='https://i.ibb.co/5WGrGkK/404.jpg'" 替代
+      // if (JSON.stringify(item.Picture) === '{}') {
+      //   return;
+      // }
+      // 如果資料中沒有 OpenTime，則開放時間顯示未提供相關時間
+      if (item.OpenTime === undefined) {
+        str += "<li class=\"col-md-6 col-lg-4 d-flex flex-column\">\n        <div class=\"card my-2 my-md-4 my-lg-6 card-shadow-hover h-100\">\n          <a href=\"\" class=\"stretched-link\" data-bs-toggle=\"modal\" data-bs-target=\"#tourScenicSpotModal\"\n            data-bs-whatever=\"".concat(item.ScenicSpotID, "\">\n            <img src=\"").concat(item.Picture.PictureUrl1, "\"\n              onerror=\"this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null\"\n              class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n          </a>\n          <div class=\"card-body\">\n            <h4 class=\"text-sm-m text-lg text-warning\">").concat(item.ScenicSpotName, "</h4>\n            <div class=\"d-flex\">\n              <p class=\"text-s text-primary mt-2\">\u958B\u653E\u6642\u9593\uFF1A\u672A\u63D0\u4F9B\u76F8\u95DC\u6642\u9593</p>\n            </div>\n            <p class=\"text-s text-primary mt-2\">\u9023\u7D61\u96FB\u8A71\uFF1A").concat(item.Phone, "</p>\n          </div>\n        </div>\n      </li>");
+      } else {
+        str += "<li class=\"col-md-6 col-lg-4 d-flex flex-column\">\n        <div class=\"card my-2 my-md-4 my-lg-6 card-shadow-hover h-100\">\n          <a href=\"\" class=\"stretched-link\" data-bs-toggle=\"modal\" data-bs-target=\"#tourScenicSpotModal\"\n            data-bs-whatever=\"".concat(item.ScenicSpotID, "\">\n            <img src=\"").concat(item.Picture.PictureUrl1, "\"\n              onerror=\"this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null\"\n              class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n          </a>\n          <div class=\"card-body\">\n            <h4 class=\"text-sm-m text-lg text-warning\">").concat(item.ScenicSpotName, "</h4>\n            <p class=\"text-s text-primary mt-2\">\u958B\u653E\u6642\u9593\uFF1A").concat(item.OpenTime, "</p>\n            <p class=\"text-s text-primary mt-2\">\u9023\u7D61\u96FB\u8A71\uFF1A").concat(item.Phone, "</p>\n          </div>\n        </div>\n      </li>");
+      }
+    }); // 如果頁面中有 tourList 這個DOM時，則執行渲染頁面
+
+    if (toursList) {
+      toursList.innerHTML = str; // classification.classList.add('d-none');
+    }
+  }
+} // 整體分頁功能
+
+
+function renderToursPage(nowPage) {
+  // 假設一頁 12 筆
+  var dataPerPage = 12; // 一頁 12 筆資料 1~12 13~24 25~
+
+  var totalPages = Math.ceil(tourData.length / dataPerPage); // 需要的頁數（無條件進位）
+
+  var minData = dataPerPage * nowPage - dataPerPage + 1;
+  var maxData = dataPerPage * nowPage; // console.log('minData', minData, 'maxData', maxData);
+  // 取出當前頁數的景點資料
+
+  var currentData = [];
+  tourData.forEach(function (item, index) {
+    if (index + 1 >= minData && index + 1 <= maxData) {
+      currentData.push(item);
+    }
+  }); // console.log(data);
+  // 頁數資訊
+
+  var pageInfo = {
+    totalPages: totalPages,
+    // 總頁數
+    nowPage: nowPage,
+    // 當前頁數
+    isFirst: nowPage === 1,
+    // 是否為第一頁
+    isLast: nowPage === totalPages // 是否為最後一頁
+
+  }; // 渲染分頁按鈕
+
+  function renderPageBtn(pageInfoData) {
+    var str = '';
+    var allTotalPages = pageInfo.totalPages; // 是不是第一頁
+
+    if (pageInfoData.isFirst) {
+      str += "\n      <li class=\"page-item disabled\">\n        <a class=\"page-link\" href=\"#\">\n          &laquo;\n        </a>\n      </li>\n    ";
+    } else {
+      str += "\n      <li class=\"page-item\">\n        <a class=\"page-link\" href=\"#\" aria-label=\"Previous\" data-page=\"".concat(Number(pageInfoData.nowPage) - 1, "\">\n          &laquo;\n        </a>\n      </li>\n    ");
+    } // 第 2 ~
+
+
+    for (var i = 1; i <= allTotalPages; i++) {
+      if (Number(pageInfoData.nowPage) === i) {
+        str += "\n        <li class=\"page-item active\" aria-current=\"page\">\n          <a class=\"page-link\" href=\"#\" data-page=\"".concat(i, "\">").concat(i, "</a>\n        </li>\n      ");
+      } else {
+        str += "\n        <li class=\"page-item\" aria-current=\"page\">\n          <a class=\"page-link\" href=\"#\" data-page=\"".concat(i, "\">").concat(i, "</a>\n        </li>\n      ");
+      }
+    } // 是不是最後一頁
+
+
+    if (pageInfoData.isLast) {
+      str += "\n      <li class=\"page-item disabled\">\n        <a class=\"page-link\" href=\"#\">\n          &raquo;\n        </a>\n      </li>\n    ";
+    } else {
+      str += "\n      <li class=\"page-item\">\n        <a class=\"page-link\" href=\"#\" aria-label=\"Next\" data-page=\"".concat(Number(pageInfoData.nowPage) + 1, "\">\n          &raquo;\n        </a>\n      </li>\n    ");
+    }
+
+    pages.innerHTML = str;
+  } // 呈現出該頁資料
+
+
+  if (toursList) {
+    renderToursList(currentData);
+  } // 呈現分頁按鈕
+
+
+  renderPageBtn(pageInfo);
+} // 點選按鈕切換頁面
+
+
+pages.addEventListener('click', function (e) {
+  e.preventDefault(); // console.log('click!',e.target.nodeName);
+
+  if (e.target.nodeName !== 'A') {
+    return;
+  }
+
+  var clickPage = e.target.dataset.page; // console.log(clickPage);
+
+  renderToursPage(clickPage);
+}); // 縣市篩選功能-監聽
+
+toursSendSelect.addEventListener('click', function () {
+  // console.log('點擊到了');
+  var toursCity = toursCitySelect.value;
+  var toursClassifications = toursClassificationSelect.value; // console.log(city);
+  // console.log(classification);
+
+  var url = "https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot/".concat(toursCity, "?$filter=Picture/PictureUrl1%20ne%20null&$format=JSON");
+  var url2 = "https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot/".concat(toursCity, "?$filter=contains(Class1,'").concat(toursClassifications, "')&$format=JSON");
+  var url3 = "https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot?$filter=contains(Class1,'".concat(toursClassifications, "')&$format=JSON");
+
+  if (toursCity === 'All' && toursClassifications === 'All') {
+    // getAlltourList();
+    Swal.fire('出錯了', '請至少選擇一個下拉選項', 'error');
+  } else if (toursCity !== 'All' && toursClassifications !== 'All') {
+    // 呼叫 API 服務，取得指定縣市、指定分類之觀光景點資料
+    axios.get(url2, {
+      headers: GetAuthorizationHeader()
+    }).then(function (res) {
+      // console.log(res.data);
+      tourData = res.data;
+      renderToursPage(1);
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  } else if (toursCity === 'All' && toursClassifications !== 'All') {
+    // 呼叫 API 服務，取得全部縣市、指定分類之觀光景點資料
+    axios.get(url3, {
+      headers: GetAuthorizationHeader()
+    }).then(function (res) {
+      // console.log(res.data);
+      tourData = res.data;
+      renderToursPage(1);
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  } else {
+    // 呼叫 API 服務，取得指定縣市、未指定分類之觀光景點資料
+    axios.get(url, {
+      headers: GetAuthorizationHeader()
+    }).then(function (res) {
+      // console.log(res.data);
+      tourData = res.data;
+      renderToursPage(1);
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  }
+}); // 關鍵字搜尋功能-監聽
+
+toursSearchBtn.addEventListener('click', function () {
+  var keyword = toursSearch.value.replace(/\s*/g, '');
+
+  if (keyword === '') {
+    Swal.fire('出錯了', '請至少輸入 1 字 以上', 'error');
+  } else {
+    var url = "https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot?$filter=contains(ScenicSpotName,'".concat(keyword, "')&$format=JSON"); // console.log(keyword);
+
+    axios.get(url).then(function (res) {
+      tourData = res.data; // console.log(thisData);
+      // renderList(tourData);
+      // 初始取得資料渲染第一頁
+
+      renderToursPage(1);
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  }
+});
 //# sourceMappingURL=all.js.map
