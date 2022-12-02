@@ -1,7 +1,7 @@
 /* global axios */
 /* global Swal */
 
-// 宣告景點頁面景點列表
+// 宣告景點美食景點列表
 const foodsList = document.querySelector('.foods-list');
 
 // 縣市篩選下拉選單
@@ -19,12 +19,12 @@ const foodsSearchBtn = document.querySelector('.foods-search-btn');
 // 頁碼
 const foodsPages = document.querySelector('.foods-pages');
 
-// toursSendSelect.addEventListener('click', (e) => {
-//     console.log(foodsCitySelect.value, foodsClassificationselect.value);
+// foodsSendSelect.addEventListener('click', (e) => {
+//     console.log(foodsCitySelect.value, foodsClassificationSelect.value);
 // });
 
-// toursSearchBtn.addEventListener('click', (e) => {
-//     console.log(toursSearch.value);
+// foodsSearchBtn.addEventListener('click', (e) => {
+//     console.log(foodsSearch.value);
 // });
 
 //  渲染列表
@@ -36,7 +36,7 @@ function renderFoodsList(data) {
     <span class="material-icons text-sm-m text-md-lg text-2xl me-4">
       error_outline
     </span>
-    <p class="text-sm-m text-md-lg text-2xl text-center">目前沒有資料
+    <p class="text-sm-m text-md-lg text-2xl text-center">無相關美食資料，請重新搜尋！
     </p>
   </li>`;
     foodsList.innerHTML = str;
@@ -87,7 +87,7 @@ function renderFoodsList(data) {
       </li>`;
       }
     });
-    // 如果頁面中有 tourList 這個DOM時，則執行渲染頁面
+    // 如果美食中有 tourList 這個DOM時，則執行渲染美食
     if (foodsList) {
       foodsList.innerHTML = str;
       // classification.classList.add('d-none');
@@ -194,7 +194,7 @@ function renderPageBtn(pageInfoData) {
 }
 
 if (foodsPages) {
-  // 點選按鈕切換頁面
+  // 點選按鈕切換美食
   foodsPages.addEventListener('click', (e) => {
     e.preventDefault();
     // console.log('click!',e.target.nodeName);
@@ -213,6 +213,8 @@ if (foodsPages) {
     // console.log('點擊到了');
     const foodsCity = foodsCitySelect.value;
     let foodsClassifications = foodsClassificationSelect.value;
+    // console.log(foodsClassifications);
+    // google瀏覽器，"其他"兩個字有時候會變成"其��"，故增加此判斷
     if (foodsClassifications === '其��') {
       foodsClassifications = '其他';
     }
@@ -227,7 +229,7 @@ if (foodsPages) {
         'error',
       );
     } else if (foodsCity !== 'All' && foodsClassifications !== 'All') {
-      // 呼叫 API 服務，取得指定縣市、指定分類之觀光景點資料
+      // 呼叫 API 服務，取得指定縣市、指定分類之觀光美食資料
     axios.get(url2,
       {
         headers: GetAuthorizationHeader(),
@@ -239,7 +241,7 @@ if (foodsPages) {
         console.log(error);
       });
     } else if (foodsCity === 'All' && foodsClassifications !== 'All') {
-      // 呼叫 API 服務，取得全部縣市、指定分類之觀光景點資料
+      // 呼叫 API 服務，取得全部縣市、指定分類之觀光美食資料
     axios.get(url3,
       {
         headers: GetAuthorizationHeader(),
@@ -251,7 +253,7 @@ if (foodsPages) {
         console.log(error);
       });
     } else {
-      // 呼叫 API 服務，取得指定縣市、未指定分類之觀光景點資料
+      // 呼叫 API 服務，取得指定縣市、未指定分類之觀光美食資料
       axios.get(url,
         {
           headers: GetAuthorizationHeader(),
@@ -281,7 +283,7 @@ if (foodsPages) {
       .then((res) => {
         foodData = res.data;
         // console.log(thisData);
-        // renderList(tourData);
+        // renderList(foodData);
         // 初始取得資料渲染第一頁
         renderFoodsPage(1);
       }).catch((error) => {

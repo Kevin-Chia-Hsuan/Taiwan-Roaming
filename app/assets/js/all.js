@@ -52,8 +52,6 @@ const foodList = document.querySelector('.food-list');
 const roomList = document.querySelector('.room-list');
 // 活動列表
 const activityList = document.querySelector('.activity-list');
-// 頁碼
-const pages = document.querySelector('.pages');
 
 // 存放觀光景點資料
 let tourData = [];
@@ -572,14 +570,14 @@ function init() {
   // 呼叫取得token函式
   // GetAuthorizationHeader();
 
-  // 呼叫取得預設觀光景點資料
-  getAlltourList();
-  // 呼叫取得預設觀光美食資料
-  getAllFoodList();
-  // 呼叫取得預設觀光旅宿資料
-  getAllRoomsList();
-  // 呼叫取得預設觀光活動資料
-  getAllActivityList();
+  // // 呼叫取得預設觀光景點資料
+  // getAlltourList();
+  // // 呼叫取得預設觀光美食資料
+  // getAllFoodList();
+  // // 呼叫取得預設觀光旅宿資料
+  // getAllRoomsList();
+  // // 呼叫取得預設觀光活動資料
+  // getAllActivityList();
 }
 
 init();
