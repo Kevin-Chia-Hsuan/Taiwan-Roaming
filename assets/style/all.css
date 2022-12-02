@@ -14847,15 +14847,6 @@ a {
      object-fit: cover;
 }
 
-.modal img {
-  height: 500px;
-  background-size: cover;
-  background-position: center center;
-  /* 防止圖片變形 */
-  -o-object-fit: cover;
-     object-fit: cover;
-}
-
 .nav-logo {
   background-image: url(../images/logo.png);
   text-indent: -99999px;

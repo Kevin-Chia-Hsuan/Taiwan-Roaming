@@ -206,7 +206,7 @@ FoodSpotModal.addEventListener('show.bs.modal', function (e) {
   });
 }); // 渲染預設旅宿列表
 
-function renderRoomsList(data) {
+function renderRoomList(data) {
   var str = ''; // console.log(data.length);
 
   if (data.length === 0) {
@@ -229,13 +229,13 @@ function renderRoomsList(data) {
 } // 取得預設景點資料
 
 
-function getAllRoomsList() {
+function getAllRoomList() {
   var url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/Hotel?%24filter=contains%28Class%2C%27%E5%9C%8B%E9%9A%9B%E8%A7%80%E5%85%89%E6%97%85%E9%A4%A8%27%29&%24orderby=HotelID&%24top=6&%24format=JSON';
   axios.get(url, {
     headers: GetAuthorizationHeader()
   }).then(function (res) {
     roomData = res.data;
-    renderRoomsList(roomData); // console.log(roomData);
+    renderRoomList(roomData); // console.log(roomData);
   })["catch"](function (error) {
     console.log(error);
   });
@@ -363,7 +363,7 @@ function init() {
 
   getAllFoodList(); // 呼叫取得預設觀光旅宿資料
 
-  getAllRoomsList(); // 呼叫取得預設觀光活動資料
+  getAllRoomList(); // 呼叫取得預設觀光活動資料
 
   getAllActivityList();
 }
