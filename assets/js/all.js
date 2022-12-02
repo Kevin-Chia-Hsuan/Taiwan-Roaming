@@ -355,16 +355,17 @@ ActivitySpotModal.addEventListener('show.bs.modal', function (e) {
   });
 }); // ------ 初始化
 
-function init() {// 呼叫取得token函式
+function init() {
+  // 呼叫取得token函式
   // GetAuthorizationHeader();
-  // // 呼叫取得預設觀光景點資料
-  // getAlltourList();
-  // // 呼叫取得預設觀光美食資料
-  // getAllFoodList();
-  // // 呼叫取得預設觀光旅宿資料
-  // getAllRoomsList();
-  // // 呼叫取得預設觀光活動資料
-  // getAllActivityList();
+  // 呼叫取得預設觀光景點資料
+  getAlltourList(); // 呼叫取得預設觀光美食資料
+
+  getAllFoodList(); // 呼叫取得預設觀光旅宿資料
+
+  getAllRoomsList(); // 呼叫取得預設觀光活動資料
+
+  getAllActivityList();
 }
 
 init();
