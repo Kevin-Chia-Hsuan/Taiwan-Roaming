@@ -14837,8 +14837,18 @@ a {
 .food-list li img,
 .room-list li img,
 .tours-list li img,
-.foods-list li img {
+.foods-list li img,
+.rooms-list li img {
   height: 250px;
+  background-size: cover;
+  background-position: center center;
+  /* 防止圖片變形 */
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.modal img {
+  height: 500px;
   background-size: cover;
   background-position: center center;
   /* 防止圖片變形 */
