@@ -91,6 +91,7 @@
   </nav>
 
   
+
 <div class="container">
     <div class="row">
 
@@ -98,9 +99,9 @@
             <div class="my-4 my-md-7">
                 <div class="col-md-8 Small shadow">
                     <div class="input-group">
-                        <input type="text" class="form-control rooms-search" placeholder="請輸入關鍵字"
+                        <input type="text" class="form-control activities-search" placeholder="請輸入關鍵字"
                             aria-label="Recipient's username" aria-describedby="button-addon">
-                        <button class="btn btn-primary rooms-search-btn text-light" type="button"
+                        <button class="btn btn-primary activities-search-btn text-light" type="button"
                             id="button-addon">搜尋</button>
                     </div>
                 </div>
@@ -110,7 +111,7 @@
                 <form class="d-flex align-items-center">
                     <div class="col-md-4 Small shadow">
                         <!-- 顯示篩選 -->
-                        <select class="form-select rooms-city-select" aria-label="Default select example">
+                        <select class="form-select activities-city-select" aria-label="Default select example">
                             <option value="All" selected>全部縣市</option>
                             <option value="Taipei">台北市</option>
                             <option value="NewTaipei">新北市</option>
@@ -136,17 +137,11 @@
                             <option value="LienchiangCounty">馬祖列島</option>
                         </select>
                     </div>
-                    <div class="col-md-4 ms-3 Small shadow">
-                        <!-- 顯示篩選 -->
-                        <select class="form-select rooms-classification-select" aria-label="Default select example">
-                            <option value="All" selected>所有類型</option>
-                            <option value="一般旅館">一般旅館</option>
-                            <option value="一般觀光旅館">一般觀光旅館</option>
-                            <option value="國際觀光旅館">國際觀光旅館</option>
-                            <option value="民宿">民宿</option>
-                        </select>
+                    <div class="col-4 ms-3">
+                        <!-- <input type="date" class="eventTime w-100"> -->
+                        <input type="text" placeholder="請選擇日期" name="datepicker" class="form-control eventTime">
                     </div>
-                    <button type="button" class="rooms-send-select btn btn-primary ms-3 text-light Small shadow"
+                    <button type="button" class="activities-send-select btn btn-primary ms-3 text-light Small shadow"
                         value="搜尋">搜尋</button>
                 </form>
             </div>
@@ -154,14 +149,14 @@
 
         <section>
             <div class="my-4 my-md-7">
-                <ul class="row rooms-list list-unstyled m-0">
-                    <!-- JS 動態產生旅宿資料 -->
+                <ul class="row activities-list list-unstyled m-0">
+                    <!-- JS 動態產生活動資料 -->
                     <div class="d-flex justify-content-center align-items-center">
                         <span class="material-icons text-sm-m text-md-lg text-2xl me-2">
                             error_outline
                         </span>
                         <h2 class="text-sm-m text-md-lg text-2xl m-0">
-                            目前沒有旅宿資料，請搜尋！
+                            目前沒有活動資料，請搜尋！
                         </h2>
                     </div>
                 </ul>
@@ -169,7 +164,7 @@
 
             <nav aria-label="Page navigation example">
                 <!--   分頁按鈕   -->
-                <ul class="pagination justify-content-center rooms-pages flex-wrap list-unstyled mb-4 mb-md-7">
+                <ul class="pagination justify-content-center activities-pages flex-wrap list-unstyled mb-4 mb-md-7">
                 </ul>
             </nav>
         </section>

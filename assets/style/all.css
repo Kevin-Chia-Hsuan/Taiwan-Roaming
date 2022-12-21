@@ -14846,7 +14846,8 @@ a {
 
 .tours-list li img,
 .foods-list li img,
-.rooms-list li img {
+.rooms-list li img,
+.activities-list li img {
   height: 250px;
   background-size: cover;
   background-position: center center;
@@ -14937,6 +14938,27 @@ a {
     width: 100%;
     height: 260px;
   }
+}
+
+.view-switch,
+.next-btn,
+.prev-btn,
+.datepicker-main {
+  background-color: #6fb9a5;
+  color: #ffff;
+  border: none;
+}
+
+.datepicker-cell.disabled {
+  color: #dadada;
+}
+
+.datepicker-header .datepicker-controls {
+  padding: 0;
+}
+
+.datepicker-cell:not(.disabled):hover {
+  background-color: #dadada;
 }
 
 /*# sourceMappingURL=all.css.map */

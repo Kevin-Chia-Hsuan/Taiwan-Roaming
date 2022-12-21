@@ -3,6 +3,239 @@
 /* global axios */
 
 /* global Swal */
+// 存放活動頁篩選後觀光活動資料
+var activityFilterData = []; // 宣告觀光活動景點列表
+
+var activitiesList = document.querySelector('.activities-list'); // 宣告觀光活動關鍵字input輸入
+
+var activitiesSearch = document.querySelector('.activities-search'); // 宣告觀光活動關鍵字搜尋按鈕
+
+var activitiesSearchBtn = document.querySelector('.activities-search-btn'); // 宣告觀光活動縣市篩選下拉選單
+
+var activitiesCitySelect = document.querySelector('.activities-city-select'); // 宣告觀光活動日期input按鈕
+
+var eventTime = document.querySelector('.eventTime'); // 宣告觀光活動縣市搜尋按鈕
+
+var activitiesSendSelect = document.querySelector('.activities-send-select'); // 宣告觀光活動頁碼
+
+var activitiesPages = document.querySelector('.activities-pages'); // 如果觀光活動日期input按鈕DOM存在頁面中時
+
+if (eventTime) {
+  // 日期套件宣告
+  var elem = document.querySelector('input[name="datepicker"]');
+  var datepicker = new Datepicker(elem, {
+    autohide: true,
+    language: 'zh-CN',
+    format: 'yyyy-mm-dd',
+    minDate: 'today'
+  });
+} //  渲染觀光活動頁面列表
+
+
+function renderActivitiesList(data) {
+  var str = ''; // console.log(data.length);
+
+  if (data.length === 0) {
+    str = "<li class=\"d-flex justify-content-center align-items-center\">\n    <span class=\"material-icons text-sm-m text-md-lg text-2xl me-4\">\n      error_outline\n    </span>\n    <p class=\"text-sm-m text-md-lg text-2xl text-center\">\u7121\u76F8\u95DC\u6D3B\u52D5\u8CC7\u6599\uFF0C\u8ACB\u91CD\u65B0\u641C\u5C0B\uFF01\n    </p>\n  </li>";
+    activitiesList.innerHTML = str;
+  } else {
+    data.forEach(function (item) {
+      // console.log(item);
+      // 若API有提供圖片網址，但圖片網址失效時，使用 onerror="this.src='https://i.ibb.co/5WGrGkK/404.jpg'" 替代
+      // if (JSON.stringify(item.Picture) === '{}') {
+      //   return;
+      // }
+      // 如果資料中沒有 OpenTime，則開放時間顯示未提供相關時間
+      if (item.Address === undefined) {
+        str += "<li class=\"col-md-6 col-lg-4 d-flex flex-column\">\n        <div class=\"card my-2 my-md-4 my-lg-6 card-shadow-hover h-100\">\n          <a href=\"\" class=\"stretched-link\" data-bs-toggle=\"modal\" data-bs-target=\"#activitiesScenicSpotModal\"\n            data-bs-whatever=\"".concat(item.ActivityID, "\">\n            <img src=\"").concat(item.Picture.PictureUrl1, "\"\n              onerror=\"this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null\"\n              class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n          </a>\n          <div class=\"card-body\">\n            <h4 class=\"text-sm-m text-lg text-warning\">").concat(item.ActivityName, "</h4>\n            <div class=\"d-flex\">\n              <p class=\"text-s text-primary mt-2\">\u6D3B\u52D5\u671F\u9593\uFF1A").concat(new Date(item.StartTime).toLocaleDateString(), " - ").concat(new Date(item.EndTime).toLocaleDateString(), "</p>\n            </div>\n            <p class=\"text-s text-primary mt-2\">\u6D3B\u52D5\u5730\u5740\uFF1A\u672A\u63D0\u4F9B\u76F8\u95DC\u5730\u5740\u8CC7\u8A0A</p>\n          </div>\n        </div>\n      </li>");
+      } else {
+        str += "<li class=\"col-md-6 col-lg-4 d-flex flex-column\">\n        <div class=\"card my-2 my-md-4 my-lg-6 card-shadow-hover h-100\">\n          <a href=\"\" class=\"stretched-link\" data-bs-toggle=\"modal\" data-bs-target=\"#activitiesScenicSpotModal\"\n            data-bs-whatever=\"".concat(item.ActivityID, "\">\n            <img src=\"").concat(item.Picture.PictureUrl1, "\"\n              onerror=\"this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null\"\n              class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n          </a>\n          <div class=\"card-body\">\n            <h4 class=\"text-sm-m text-lg text-warning\">").concat(item.ActivityName, "</h4>\n            <div class=\"d-flex\">\n              <p class=\"text-s text-primary mt-2\">\u6D3B\u52D5\u671F\u9593\uFF1A").concat(new Date(item.StartTime).toLocaleDateString(), " - ").concat(new Date(item.EndTime).toLocaleDateString(), "</p>\n            </div>\n            <p class=\"text-s text-primary mt-2\">\u6D3B\u52D5\u5730\u5740\uFF1A").concat(item.Address, "</p>\n          </div>\n        </div>\n      </li>");
+      }
+    }); // 如果活動中有 activitiesList 這個DOM時，則執行渲染活動
+
+    if (activitiesList) {
+      activitiesList.innerHTML = str; // classification.classList.add('d-none');
+    }
+  }
+} // 整體觀光美食分頁功能
+
+
+function renderActivitiesPage(nowPage) {
+  // 假設一頁 12 筆
+  var dataPerPage = 12; // 一頁 12 筆資料 1~12 13~24 25~
+
+  var totalPages = 0;
+
+  if (activityFilterData.length == 0) {
+    totalPages = Math.ceil(activityData.length / dataPerPage); // 需要的頁數（無條件進位）
+  }
+
+  totalPages = Math.ceil(activityFilterData.length / dataPerPage); // 需要的頁數（無條件進位）
+
+  var minData = dataPerPage * nowPage - dataPerPage + 1;
+  var maxData = dataPerPage * nowPage; // console.log('minData', minData, 'maxData', maxData);
+  // 取出當前頁數的景點資料
+
+  var currentData = [];
+
+  if (activityFilterData.length == 0) {
+    activityData.forEach(function (item, index) {
+      if (index + 1 >= minData && index + 1 <= maxData) {
+        currentData.push(item);
+      }
+    });
+  } else {
+    activityFilterData.forEach(function (item, index) {
+      if (index + 1 >= minData && index + 1 <= maxData) {
+        currentData.push(item);
+      }
+    });
+  } // console.log(data);
+  // 頁數資訊
+
+
+  var pageInfo = {
+    totalPages: totalPages,
+    // 總頁數
+    nowPage: nowPage,
+    // 當前頁數
+    isFirst: nowPage == 1,
+    // 是否為第一頁
+    isLast: nowPage == totalPages // 是否為最後一頁
+
+  }; // 渲染觀光活動分頁按鈕
+
+  function renderPageBtn(pageInfoData) {
+    var str = '';
+    var allTotalPages = pageInfo.totalPages; // 是不是第一頁
+
+    if (pageInfoData.isFirst) {
+      str += "\n      <li class=\"page-item disabled\">\n        <a class=\"page-link\" href=\"#\">\n          &laquo;\n        </a>\n      </li>\n    ";
+    } else {
+      str += "\n      <li class=\"page-item\">\n        <a class=\"page-link\" href=\"#\" aria-label=\"Previous\" data-page=\"".concat(Number(pageInfoData.nowPage) - 1, "\">\n          &laquo;\n        </a>\n      </li>\n    ");
+    } // 第 2 ~
+
+
+    for (var i = 1; i <= allTotalPages; i++) {
+      if (Number(pageInfoData.nowPage) === i) {
+        str += "\n        <li class=\"page-item active\" aria-current=\"page\">\n          <a class=\"page-link\" href=\"#\" data-page=\"".concat(i, "\">").concat(i, "</a>\n        </li>\n      ");
+      } else {
+        str += "\n        <li class=\"page-item\" aria-current=\"page\">\n          <a class=\"page-link\" href=\"#\" data-page=\"".concat(i, "\">").concat(i, "</a>\n        </li>\n      ");
+      }
+    } // 是不是最後一頁
+
+
+    if (pageInfoData.isLast) {
+      str += "\n      <li class=\"page-item disabled\">\n        <a class=\"page-link\" href=\"#\">\n          &raquo;\n        </a>\n      </li>\n    ";
+    } else {
+      str += "\n      <li class=\"page-item\">\n        <a class=\"page-link\" href=\"#\" aria-label=\"Next\" data-page=\"".concat(Number(pageInfoData.nowPage) + 1, "\">\n          &raquo;\n        </a>\n      </li>\n    ");
+    }
+
+    activitiesPages.innerHTML = str;
+  } // 呈現出該頁資料
+
+
+  if (activitiesList) {
+    renderActivitiesList(currentData);
+  } // 呈現分頁按鈕
+
+
+  renderPageBtn(pageInfo);
+}
+
+function renderActivitiesFilter(data) {
+  // 存放篩選後觀光活動資料
+  var filterData = [];
+  var selectTime = Date.parse(eventTime.value); // console.log(selectTime);
+
+  data.forEach(function (item) {
+    var startTime = Date.parse(item.StartTime);
+    var endTime = Date.parse(item.EndTime);
+
+    if (Number.isNaN(selectTime)) {
+      filterData.push(item); // console.log(eventData);
+    } else if (selectTime > startTime && selectTime < endTime) {
+      filterData.push(item);
+    }
+  });
+  activityFilterData = filterData; // 初始取得資料渲染第一頁
+
+  renderActivitiesPage(1);
+} // 如果觀光活動頁碼DOM存在頁面中時
+
+
+if (activitiesPages) {
+  // 點選按鈕切換觀光活動
+  activitiesPages.addEventListener('click', function (e) {
+    e.preventDefault(); // console.log('click!',e.target.nodeName);
+
+    if (e.target.nodeName !== 'A') {
+      return;
+    }
+
+    var clickPage = e.target.dataset.page; // console.log(clickPage);
+
+    renderActivitiesPage(clickPage);
+  }); // 活動關鍵字搜尋功能-監聽
+
+  activitiesSearchBtn.addEventListener('click', function () {
+    var keyword = activitiesSearch.value.replace(/\s*/g, '');
+
+    if (keyword === '') {
+      Swal.fire('出錯了', '請至少輸入 1 字 以上', 'error');
+    } else {
+      var url = "https://tdx.transportdata.tw/api/basic/v2/Tourism/Activity?$filter=contains(ActivityName,'".concat(keyword, "')&$format=JSON"); // console.log(keyword);
+
+      axios.get(url).then(function (res) {
+        activityData = res.data; // console.log(thisData);
+        // renderList(activityData);
+        // 初始取得資料渲染第一頁
+
+        renderActivitiesPage(1);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
+  }); // 活動縣市篩選&日期功能-監聽
+
+  activitiesSendSelect.addEventListener('click', function () {
+    // const selectTime = Date.parse(eventTime.value);
+    // console.log(selectTime);
+    var city = activitiesCitySelect.value; // console.log(city);
+
+    var allUrl = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/Activity?%24format=JSON';
+    var cityUrl = "https://tdx.transportdata.tw/api/basic/v2/Tourism/Activity/".concat(city, "?%24format=JSON");
+
+    if (city === 'All') {
+      axios.get(allUrl, {
+        headers: GetAuthorizationHeader()
+      }).then(function (res) {
+        // console.log(res.data);
+        activityData = res.data; // console.log(activityData);
+
+        renderActivitiesFilter(activityData);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    } else {
+      axios.get(cityUrl, {
+        headers: GetAuthorizationHeader()
+      }).then(function (res) {
+        // console.log(res.data);
+        activityData = res.data; // console.log(activityData);
+
+        renderActivitiesFilter(activityData);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
+  });
+}
+"use strict";
+
+/* global axios */
+
+/* global Swal */
 
 /* 訂閱區塊JS */
 var subscriptionInfoForm = document.querySelector('.subscriptionInfo-form'); // 訂閱input輸入
@@ -47,7 +280,7 @@ var foodData = []; // 存放觀光旅宿資料
 
 var roomData = []; // 存放觀光活動資料
 
-var activityData = []; // 存放篩選後觀光活動資料
+var activityData = []; // 存放首頁篩選後觀光活動資料
 
 var eventData = []; // Modal
 // 景點 Modal
@@ -56,9 +289,11 @@ var ScenicSpotModal = document.querySelector('#tourScenicSpotModal'); // 美食 
 
 var FoodSpotModal = document.querySelector('#foodScenicSpotModal'); // 旅宿 Modal
 
-var RoomSpotModal = document.querySelector('#roomScenicSpotModal'); // 活動 Modal
+var RoomSpotModal = document.querySelector('#roomScenicSpotModal'); // 首頁活動 Modal
 
-var ActivitySpotModal = document.querySelector('#activityScenicSpotModal'); // 渲染預設景點列表
+var ActivitySpotModal = document.querySelector('#activityScenicSpotModal'); // 活動頁 Modal
+
+var ActivitiesSpotModal = document.querySelector('#activitiesScenicSpotModal'); // 渲染預設景點列表
 
 function rendertourList(data) {
   var str = ''; // console.log(data.length);
@@ -324,7 +559,7 @@ function getAllActivityList() {
   })["catch"](function (error) {
     console.log(error);
   });
-} // 監聽點擊活動Modal
+} // 監聽首頁點擊活動Modal(使用篩選後的活動資料)
 
 
 ActivitySpotModal.addEventListener('show.bs.modal', function (e) {
@@ -338,7 +573,35 @@ ActivitySpotModal.addEventListener('show.bs.modal', function (e) {
   var activityTime = ActivitySpotModal.querySelector('.activityTime');
   var address = ActivitySpotModal.querySelector('.address');
   eventData.forEach(function (item) {
-    // console.log(item.HotelID);
+    // console.log(item.ActivityID);
+    if (item.ActivityID === id) {
+      img.setAttribute('src', "".concat(item.Picture.PictureUrl1));
+      title.textContent = "".concat(item.ActivityName);
+      description.textContent = "\u6D3B\u52D5\u4ECB\u7D39\uFF1A".concat(item.Description);
+      activityTime.innerHTML = "\n      <span class=\"material-icons-outlined text-sm-s text-m me-2\">\n        schedule\n      </span>\n      \u6D3B\u52D5\u6642\u9593\uFF1A".concat(new Date(item.StartTime).toLocaleDateString(), " - ").concat(new Date(item.EndTime).toLocaleDateString(), "\n      ");
+
+      if (item.Address === undefined) {
+        // eslint-disable-next-line no-param-reassign
+        item.Address = '未提供';
+      }
+
+      address.innerHTML = "\n        <span class=\"material-icons-outlined text-sm-s text-m me-2\">\n          place\n        </span>\n        \u6D3B\u52D5\u5730\u5740\uFF1A".concat(item.Address, "\n      ");
+    }
+  });
+}); // 監聽活動頁點擊活動Modal
+
+ActivitiesSpotModal.addEventListener('show.bs.modal', function (e) {
+  // console.log(e.relatedTarget);
+  var modalBtn = e.relatedTarget; // 被點擊的元素可作為事件的 relatedTarget 屬性
+
+  var id = modalBtn.getAttribute('data-bs-whatever');
+  var img = ActivitiesSpotModal.querySelector('.card-img-top');
+  var title = ActivitiesSpotModal.querySelector('.card-title');
+  var description = ActivitiesSpotModal.querySelector('.card-text');
+  var activityTime = ActivitiesSpotModal.querySelector('.activityTime');
+  var address = ActivitiesSpotModal.querySelector('.address');
+  activityData.forEach(function (item) {
+    // console.log(item.ActivityID);
     if (item.ActivityID === id) {
       img.setAttribute('src', "".concat(item.Picture.PictureUrl1));
       title.textContent = "".concat(item.ActivityName);
@@ -395,17 +658,17 @@ function GetAuthorizationHeader() {
 
 /* global Swal */
 // 宣告景點美食景點列表
-var foodsList = document.querySelector('.foods-list'); // 縣市篩選下拉選單
+var foodsList = document.querySelector('.foods-list'); // 宣告觀光美食縣市篩選下拉選單
 
-var foodsCitySelect = document.querySelector('.foods-city-select'); // 分類篩選下拉選單
+var foodsCitySelect = document.querySelector('.foods-city-select'); // 宣告觀光美食分類篩選下拉選單
 
-var foodsClassificationSelect = document.querySelector('.foods-classification-select'); // 縣市搜尋按鈕
+var foodsClassificationSelect = document.querySelector('.foods-classification-select'); // 宣告觀光美食縣市搜尋按鈕
 
-var foodsSendSelect = document.querySelector('.foods-send-select'); // 關鍵字input輸入
+var foodsSendSelect = document.querySelector('.foods-send-select'); // 宣告觀光美食關鍵字input輸入
 
-var foodsSearch = document.querySelector('.foods-search'); // 關鍵字搜尋按鈕
+var foodsSearch = document.querySelector('.foods-search'); // 宣告觀光美食關鍵字搜尋按鈕
 
-var foodsSearchBtn = document.querySelector('.foods-search-btn'); // 頁碼
+var foodsSearchBtn = document.querySelector('.foods-search-btn'); // 宣告觀光美食頁碼
 
 var foodsPages = document.querySelector('.foods-pages'); // foodsSendSelect.addEventListener('click', (e) => {
 //     console.log(foodsCitySelect.value, foodsClassificationSelect.value);
@@ -413,7 +676,7 @@ var foodsPages = document.querySelector('.foods-pages'); // foodsSendSelect.addE
 // foodsSearchBtn.addEventListener('click', (e) => {
 //     console.log(foodsSearch.value);
 // });
-//  渲染列表
+//  渲染觀光美食頁面列表
 
 function renderFoodsList(data) {
   var str = ''; // console.log(data.length);
@@ -440,7 +703,7 @@ function renderFoodsList(data) {
       foodsList.innerHTML = str; // classification.classList.add('d-none');
     }
   }
-} // 整體分頁功能
+} // 整體觀光美食分頁功能
 
 
 function renderFoodsPage(nowPage) {
@@ -470,7 +733,7 @@ function renderFoodsPage(nowPage) {
     // 是否為第一頁
     isLast: nowPage == totalPages // 是否為最後一頁
 
-  }; // 渲染分頁按鈕
+  }; // 渲染觀光美食分頁按鈕
 
   function renderPageBtn(pageInfoData) {
     var str = '';
@@ -511,7 +774,7 @@ function renderFoodsPage(nowPage) {
 }
 
 if (foodsPages) {
-  // 點選按鈕切換美食
+  // 點選按鈕切換觀光美食
   foodsPages.addEventListener('click', function (e) {
     e.preventDefault(); // console.log('click!',e.target.nodeName);
 
@@ -522,7 +785,7 @@ if (foodsPages) {
     var clickPage = e.target.dataset.page; // console.log(clickPage);
 
     renderFoodsPage(clickPage);
-  }); // 縣市篩選功能-監聽
+  }); // 觀光美食縣市篩選功能-監聽
 
   foodsSendSelect.addEventListener('click', function () {
     // console.log('點擊到了');
@@ -574,7 +837,7 @@ if (foodsPages) {
         console.log(error);
       });
     }
-  }); // 關鍵字搜尋功能-監聽
+  }); // 觀光美食關鍵字搜尋功能-監聽
 
   foodsSearchBtn.addEventListener('click', function () {
     var keyword = foodsSearch.value.replace(/\s*/g, '');
