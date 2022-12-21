@@ -61,7 +61,7 @@ let foodData = [];
 let roomData = [];
 // 存放觀光活動資料
 let activityData = [];
-// 存放篩選後觀光活動資料
+// 存放首頁篩選後觀光活動資料
 const eventData = [];
 
 // Modal
@@ -71,8 +71,10 @@ const ScenicSpotModal = document.querySelector('#tourScenicSpotModal');
 const FoodSpotModal = document.querySelector('#foodScenicSpotModal');
 // 旅宿 Modal
 const RoomSpotModal = document.querySelector('#roomScenicSpotModal');
-// 活動 Modal
+// 首頁活動 Modal
 const ActivitySpotModal = document.querySelector('#activityScenicSpotModal');
+// 活動頁 Modal
+const ActivitiesSpotModal = document.querySelector('#activitiesScenicSpotModal');
 
 // 渲染預設景點列表
 function rendertourList(data) {
@@ -528,7 +530,7 @@ function getAllActivityList() {
     });
 }
 
-// 監聽點擊活動Modal
+// 監聽首頁點擊活動Modal(使用篩選後的活動資料)
 ActivitySpotModal.addEventListener('show.bs.modal', (e) => {
   // console.log(e.relatedTarget);
   const modalBtn = e.relatedTarget; // 被點擊的元素可作為事件的 relatedTarget 屬性
@@ -540,7 +542,44 @@ ActivitySpotModal.addEventListener('show.bs.modal', (e) => {
   const address = ActivitySpotModal.querySelector('.address');
 
   eventData.forEach((item) => {
-    // console.log(item.HotelID);
+    // console.log(item.ActivityID);
+    if (item.ActivityID === id) {
+      img.setAttribute('src', `${item.Picture.PictureUrl1}`);
+      title.textContent = `${item.ActivityName}`;
+      description.textContent = `活動介紹：${item.Description}`;
+      activityTime.innerHTML = `
+      <span class="material-icons-outlined text-sm-s text-m me-2">
+        schedule
+      </span>
+      活動時間：${new Date(item.StartTime).toLocaleDateString()} - ${new Date(item.EndTime).toLocaleDateString()}
+      `;
+      if (item.Address === undefined) {
+        // eslint-disable-next-line no-param-reassign
+        item.Address = '未提供';
+      }
+      address.innerHTML = `
+        <span class="material-icons-outlined text-sm-s text-m me-2">
+          place
+        </span>
+        活動地址：${item.Address}
+      `;
+    }
+  });
+});
+
+// 監聽活動頁點擊活動Modal
+ActivitiesSpotModal.addEventListener('show.bs.modal', (e) => {
+  // console.log(e.relatedTarget);
+  const modalBtn = e.relatedTarget; // 被點擊的元素可作為事件的 relatedTarget 屬性
+  const id = modalBtn.getAttribute('data-bs-whatever');
+  const img = ActivitiesSpotModal.querySelector('.card-img-top');
+  const title = ActivitiesSpotModal.querySelector('.card-title');
+  const description = ActivitiesSpotModal.querySelector('.card-text');
+  const activityTime = ActivitiesSpotModal.querySelector('.activityTime');
+  const address = ActivitiesSpotModal.querySelector('.address');
+
+  activityData.forEach((item) => {
+    // console.log(item.ActivityID);
     if (item.ActivityID === id) {
       img.setAttribute('src', `${item.Picture.PictureUrl1}`);
       title.textContent = `${item.ActivityName}`;

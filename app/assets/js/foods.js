@@ -4,19 +4,19 @@
 // 宣告景點美食景點列表
 const foodsList = document.querySelector('.foods-list');
 
-// 縣市篩選下拉選單
+// 宣告觀光美食縣市篩選下拉選單
 const foodsCitySelect = document.querySelector('.foods-city-select');
-// 分類篩選下拉選單
+// 宣告觀光美食分類篩選下拉選單
 const foodsClassificationSelect = document.querySelector('.foods-classification-select');
-// 縣市搜尋按鈕
+// 宣告觀光美食縣市搜尋按鈕
 const foodsSendSelect = document.querySelector('.foods-send-select');
 
-// 關鍵字input輸入
+// 宣告觀光美食關鍵字input輸入
 const foodsSearch = document.querySelector('.foods-search');
-// 關鍵字搜尋按鈕
+// 宣告觀光美食關鍵字搜尋按鈕
 const foodsSearchBtn = document.querySelector('.foods-search-btn');
 
-// 頁碼
+// 宣告觀光美食頁碼
 const foodsPages = document.querySelector('.foods-pages');
 
 // foodsSendSelect.addEventListener('click', (e) => {
@@ -27,7 +27,7 @@ const foodsPages = document.querySelector('.foods-pages');
 //     console.log(foodsSearch.value);
 // });
 
-//  渲染列表
+//  渲染觀光美食頁面列表
 function renderFoodsList(data) {
   let str = '';
   // console.log(data.length);
@@ -95,7 +95,7 @@ function renderFoodsList(data) {
   }
 }
 
-// 整體分頁功能
+// 整體觀光美食分頁功能
 function renderFoodsPage(nowPage) {
   // 假設一頁 12 筆
   const dataPerPage = 12; // 一頁 12 筆資料 1~12 13~24 25~
@@ -122,7 +122,7 @@ function renderFoodsPage(nowPage) {
     isLast: nowPage == totalPages, // 是否為最後一頁
   };
 
-// 渲染分頁按鈕
+// 渲染觀光美食分頁按鈕
 function renderPageBtn(pageInfoData) {
   let str = '';
   const allTotalPages = pageInfo.totalPages;
@@ -194,7 +194,7 @@ function renderPageBtn(pageInfoData) {
 }
 
 if (foodsPages) {
-  // 點選按鈕切換美食
+  // 點選按鈕切換觀光美食
   foodsPages.addEventListener('click', (e) => {
     e.preventDefault();
     // console.log('click!',e.target.nodeName);
@@ -208,7 +208,7 @@ if (foodsPages) {
     renderFoodsPage(clickPage);
   });
 
-  // 縣市篩選功能-監聽
+  // 觀光美食縣市篩選功能-監聽
   foodsSendSelect.addEventListener('click', () => {
     // console.log('點擊到了');
     const foodsCity = foodsCitySelect.value;
@@ -267,7 +267,7 @@ if (foodsPages) {
     }
   });
 
-  // 關鍵字搜尋功能-監聽
+  // 觀光美食關鍵字搜尋功能-監聽
   foodsSearchBtn.addEventListener('click', () => {
     const keyword = foodsSearch.value.replace(/\s*/g, '');
       if (keyword === '') {

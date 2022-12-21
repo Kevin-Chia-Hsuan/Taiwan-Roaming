@@ -1,0 +1,17 @@
+.view-switch,
+.next-btn,
+.prev-btn,
+.datepicker-main {
+  background-color: $success;
+  color: #ffff;
+  border: none;
+}
+.datepicker-cell.disabled {
+  color: rgb(218, 218, 218);
+}
+.datepicker-header .datepicker-controls {
+  padding: 0;
+}
+.datepicker-cell:not(.disabled):hover {
+  background-color: rgb(218, 218, 218);
+}
