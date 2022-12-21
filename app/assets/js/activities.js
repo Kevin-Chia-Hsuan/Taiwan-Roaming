@@ -268,6 +268,7 @@ if (activitiesPages) {
       .then((res) => {
         activityData = res.data;
         // console.log(thisData);
+        activityFilterData = [];
         // renderList(activityData);
         // 初始取得資料渲染第一頁
         renderActivitiesPage(1);
