@@ -14961,4 +14961,8 @@ a {
   background-color: #dadada;
 }
 
+.pagination li {
+  padding: 4px;
+}
+
 /*# sourceMappingURL=all.css.map */
