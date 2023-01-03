@@ -40,11 +40,12 @@ function renderFoodsList(data) {
     </p>
   </li>`;
     foodsList.innerHTML = str;
+    record.innerHTML = '本次搜尋共 0 筆資料';
   } else {
     data.forEach((item) => {
       // console.log(item);
 
-      // 若API有提供圖片網址，但圖片網址失效時，使用 onerror="this.src='https://i.ibb.co/5WGrGkK/404.jpg'" 替代
+      // 若API有提供圖片網址，但圖片網址失效時，使用 onerror="this.src='https://live.staticflickr.com/65535/52604011765_6050fc5f05_o.jpg'" 替代
       // if (JSON.stringify(item.Picture) === '{}') {
       //   return;
       // }
@@ -55,7 +56,7 @@ function renderFoodsList(data) {
           <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#foodScenicSpotModal"
             data-bs-whatever="${item.RestaurantID}">
             <img src="${item.Picture.PictureUrl1}"
-              onerror="this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null"
+              onerror="this.src='https://live.staticflickr.com/65535/52604011765_6050fc5f05_o.jpg';this.onerror = null"
               class="card-img-top img-fluid" alt=".${item.Picture.PictureDescription1}">
           </a>
           <div class="card-body">
@@ -74,7 +75,7 @@ function renderFoodsList(data) {
           <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#foodScenicSpotModal"
             data-bs-whatever="${item.RestaurantID}">
             <img src="${item.Picture.PictureUrl1}"
-              onerror="this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null"
+              onerror="this.src='https://live.staticflickr.com/65535/52604011765_6050fc5f05_o.jpg';this.onerror = null"
               class="card-img-top img-fluid" alt=".${item.Picture.PictureDescription1}">
           </a>
           <div class="card-body">
@@ -90,6 +91,7 @@ function renderFoodsList(data) {
     // 如果美食中有 tourList 這個DOM時，則執行渲染美食
     if (foodsList) {
       foodsList.innerHTML = str;
+      record.innerHTML = `本次搜尋共 ${foodData.length} 筆資料`;
       // classification.classList.add('d-none');
     }
   }

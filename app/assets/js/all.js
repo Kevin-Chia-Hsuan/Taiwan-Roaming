@@ -52,6 +52,8 @@ const foodList = document.querySelector('.food-list');
 const roomList = document.querySelector('.room-list');
 // 活動列表
 const activityList = document.querySelector('.activity-list');
+// 搜尋筆數
+const record = document.querySelector('.searchResult-text');
 
 // 存放觀光景點資料
 let tourData = [];
@@ -93,7 +95,7 @@ function rendertourList(data) {
     data.forEach((item) => {
       // console.log(item);
 
-      // 若API有提供圖片網址，但圖片網址失效時，使用 onerror="this.src='https://i.ibb.co/5WGrGkK/404.jpg'" 替代
+      // 若API有提供圖片網址，但圖片網址失效時，使用 onerror="this.src='https://live.staticflickr.com/65535/52604011765_6050fc5f05_o.jpg'" 替代
       // if (JSON.stringify(item.Picture) === '{}') {
       //   return;
       // }
@@ -104,7 +106,7 @@ function rendertourList(data) {
           <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#tourScenicSpotModal"
             data-bs-whatever="${item.ScenicSpotID}">
             <img src="${item.Picture.PictureUrl1}"
-              onerror="this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null"
+              onerror="this.src='https://live.staticflickr.com/65535/52604011765_6050fc5f05_o.jpg';this.onerror = null"
               class="card-img-top img-fluid" alt=".${item.Picture.PictureDescription1}">
           </a>
           <div class="card-body">
@@ -122,7 +124,7 @@ function rendertourList(data) {
           <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#tourScenicSpotModal"
             data-bs-whatever="${item.ScenicSpotID}">
             <img src="${item.Picture.PictureUrl1}"
-              onerror="this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null"
+              onerror="this.src='https://live.staticflickr.com/65535/52604011765_6050fc5f05_o.jpg';this.onerror = null"
               class="card-img-top img-fluid" alt=".${item.Picture.PictureDescription1}">
           </a>
           <div class="card-body">
@@ -214,7 +216,7 @@ function renderFoodList(data) {
     data.forEach((item) => {
       // console.log(item);
 
-      // 若API有提供圖片網址，但圖片網址失效時，使用 onerror="this.src='https://i.ibb.co/5WGrGkK/404.jpg'" 替代
+      // 若API有提供圖片網址，但圖片網址失效時，使用 onerror="this.src='https://live.staticflickr.com/65535/52604011765_6050fc5f05_o.jpg'" 替代
       // if (JSON.stringify(item.Picture) === '{}') {
       //   return;
       // }
@@ -225,7 +227,7 @@ function renderFoodList(data) {
           <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#foodScenicSpotModal"
             data-bs-whatever="${item.RestaurantID}">
             <img src="${item.Picture.PictureUrl1}"
-              onerror="this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null"
+              onerror="this.src='https://live.staticflickr.com/65535/52604011765_6050fc5f05_o.jpg';this.onerror = null"
               class="card-img-top img-fluid" alt=".${item.Picture.PictureDescription1}">
           </a>
           <div class="card-body">
@@ -244,7 +246,7 @@ function renderFoodList(data) {
           <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#foodScenicSpotModal"
             data-bs-whatever="${item.RestaurantID}">
             <img src="${item.Picture.PictureUrl1}"
-              onerror="this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null"
+              onerror="this.src='https://live.staticflickr.com/65535/52604011765_6050fc5f05_o.jpg';this.onerror = null"
               class="card-img-top img-fluid" alt=".${item.Picture.PictureDescription1}">
           </a>
           <div class="card-body">
@@ -348,7 +350,7 @@ function renderRoomList(data) {
   } else {
     data.forEach((item) => {
       // console.log(item);
-      // 若API有提供圖片網址，但圖片網址失效時，使用 onerror="this.src='https://i.ibb.co/5WGrGkK/404.jpg'" 替代
+      // 若API有提供圖片網址，但圖片網址失效時，使用 onerror="this.src='https://live.staticflickr.com/65535/52604011765_6050fc5f05_o.jpg'" 替代
       // if (JSON.stringify(item.Picture) === '{}') {
       //   return;
       // }
@@ -357,7 +359,7 @@ function renderRoomList(data) {
         <a href="" class="stretched-link" data-bs-toggle="modal" data-bs-target="#roomScenicSpotModal"
           data-bs-whatever="${item.HotelID}">
           <img src="${item.Picture.PictureUrl1}"
-            onerror="this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null"
+            onerror="this.src='https://live.staticflickr.com/65535/52604011765_6050fc5f05_o.jpg';this.onerror = null"
             class="card-img-top img-fluid" alt=".${item.Picture.PictureDescription1}">
         </a>
         <div class="card-body">
@@ -477,7 +479,7 @@ function renderActivityList(data) {
     <div class="container">
       <div class="card flex-lg-row-reverse border-0">
         <img src="${item.Picture.PictureUrl1}"
-        onerror="this.src='https://i.ibb.co/hR0Sb7y/404.jpg';this.onerror = null"
+        onerror="this.src='https://live.staticflickr.com/65535/52604011765_6050fc5f05_o.jpg';this.onerror = null"
         class="card-img-top img-fluid" alt=".${item.Picture.PictureDescription1}">
         <div class="card-body bg-tertiary text-start">
           <h4 class="card-title text-sm-m text-xl text-primary mb-6">${item.ActivityName}</h4>
