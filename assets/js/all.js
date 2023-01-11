@@ -300,7 +300,7 @@ var ActivitySpotModal = document.querySelector('#activityScenicSpotModal'); // �
 
 var ActivitiesSpotModal = document.querySelector('#activitiesScenicSpotModal'); // 渲染預設景點列表
 
-function rendertourList(data) {
+function renderTourList(data) {
   var str = ''; // console.log(data.length);
 
   if (data.length === 0) {
@@ -328,13 +328,13 @@ function rendertourList(data) {
 } // 取得預設景點資料
 
 
-function getAlltourList() {
+function getIndexTourList() {
   var url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot/Taipei?$filter=contains(Class1,%27%E9%81%8A%E6%86%A9%E9%A1%9E%27)&$top=6&$skip=9&$format=JSON';
   axios.get(url, {
     headers: GetAuthorizationHeader()
   }).then(function (res) {
     tourData = res.data;
-    rendertourList(tourData); // console.log(tourData);
+    renderTourList(tourData); // console.log(tourData);
   })["catch"](function (error) {
     console.log(error);
   });
@@ -350,6 +350,7 @@ ScenicSpotModal.addEventListener('show.bs.modal', function (e) {
   var title = ScenicSpotModal.querySelector('.card-title');
   var description = ScenicSpotModal.querySelector('.card-text');
   var openTime = ScenicSpotModal.querySelector('.openTime');
+  var address = ScenicSpotModal.querySelector('.address');
   var phone = ScenicSpotModal.querySelector('.phone');
   tourData.forEach(function (item) {
     // console.log(item);
@@ -364,6 +365,13 @@ ScenicSpotModal.addEventListener('show.bs.modal', function (e) {
       }
 
       openTime.innerHTML = "\n        <span class=\"material-icons-outlined text-sm-s text-m me-2\">\n          schedule\n        </span>\n        \u958B\u653E\u6642\u9593\uFF1A".concat(item.OpenTime, "\n      ");
+
+      if (item.Address === undefined) {
+        // eslint-disable-next-line no-param-reassign
+        item.Address = '未提供';
+      }
+
+      address.innerHTML = "\n        <span class=\"material-icons-outlined text-sm-s text-m me-2\">\n          place\n        </span>\n        \u6240\u5728\u5730\u5740\uFF1A".concat(item.Address, "\n      ");
       phone.innerHTML = "\n        <span class=\"material-icons text-sm-s text-m me-2\">\n          call\n        </span>\n        <div class=\"d-flex\">\n          \u9023\u7D61\u96FB\u8A71\uFF1A\n          <a class=\"text-sm-s text-m\" href=\"tel:+".concat(item.Phone, "\">").concat(item.Phone, "</a>\n        </div>\n      ");
     }
   });
@@ -397,8 +405,8 @@ function renderFoodList(data) {
 } // 取得預設美食資料
 
 
-function getAllFoodList() {
-  var url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant?%24filter=Picture%2FPictureUrl1%20ne%20null&%24orderby=Description&%24top=6&%24skip=200&%24format=JSON';
+function getIndexFoodList() {
+  var url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant?%24filter=Picture%2FPictureUrl1%20ne%20null&%24orderby=Description&%24top=6&%24skip=205&%24format=JSON';
   axios.get(url, {
     headers: GetAuthorizationHeader()
   }).then(function (res) {
@@ -469,7 +477,7 @@ function renderRoomList(data) {
 } // 取得預設景點資料
 
 
-function getAllRoomList() {
+function getIndexRoomList() {
   var url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/Hotel?%24filter=contains%28Class%2C%27%E5%9C%8B%E9%9A%9B%E8%A7%80%E5%85%89%E6%97%85%E9%A4%A8%27%29&%24orderby=HotelID&%24top=6&%24format=JSON';
   axios.get(url, {
     headers: GetAuthorizationHeader()
@@ -554,7 +562,7 @@ function renderActivityList(data) {
 } // 取得預設活動資料
 
 
-function getAllActivityList() {
+function getIndexActivityList() {
   var url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/Activity?%24filter=Picture%2FPictureUrl1%20ne%20null&%24format=JSON';
   axios.get(url, {
     headers: GetAuthorizationHeader()
@@ -627,13 +635,13 @@ function init() {
   // 呼叫取得token函式
   // GetAuthorizationHeader();
   // 呼叫取得預設觀光景點資料
-  getAlltourList(); // 呼叫取得預設觀光美食資料
+  getIndexTourList(); // 呼叫取得預設觀光美食資料
 
-  getAllFoodList(); // 呼叫取得預設觀光旅宿資料
+  getIndexFoodList(); // 呼叫取得預設觀光旅宿資料
 
-  getAllRoomList(); // 呼叫取得預設觀光活動資料
+  getIndexRoomList(); // 呼叫取得預設觀光活動資料
 
-  getAllActivityList();
+  getIndexActivityList();
 }
 
 init();
@@ -865,7 +873,28 @@ if (foodsPages) {
       });
     }
   });
+} // 取得分頁預設美食資料
+
+
+function getDefaultFoodsList() {
+  var url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant?%24filter=Picture%2FPictureUrl1%20ne%20null&%24top=120&%24format=JSON';
+  axios.get(url, {
+    headers: GetAuthorizationHeader()
+  }).then(function (res) {
+    foodData = res.data;
+    renderFoodsPage(1);
+  })["catch"](function (error) {
+    console.log(error);
+  });
 }
+
+function initFoods() {
+  if (foodsList) {
+    getDefaultFoodsList();
+  }
+}
+
+initFoods();
 "use strict";
 
 /* global axios */
@@ -1067,7 +1096,28 @@ if (roomsPages) {
       });
     }
   });
+} // 取得分頁預設旅宿資料
+
+
+function getDefaultRoomsList() {
+  var url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/Hotel?%24filter=Picture%2FPictureUrl1%20ne%20null&%24top=120&%24format=JSON';
+  axios.get(url, {
+    headers: GetAuthorizationHeader()
+  }).then(function (res) {
+    roomData = res.data;
+    renderRoomsPage(1);
+  })["catch"](function (error) {
+    console.log(error);
+  });
 }
+
+function initRooms() {
+  if (roomsList) {
+    getDefaultRoomsList();
+  }
+}
+
+initRooms();
 "use strict";
 
 /* 自訂初始化的 Swiper 套件的函式 */
@@ -1135,7 +1185,7 @@ function renderToursList(data) {
   if (data.length === 0) {
     str = "<li class=\"d-flex justify-content-center align-items-center\">\n    <span class=\"material-icons text-sm-m text-md-lg text-2xl me-4\">\n      error_outline\n    </span>\n    <p class=\"text-sm-m text-md-lg text-2xl text-center\">\u7121\u76F8\u95DC\u666F\u9EDE\u8CC7\u6599\uFF0C\u8ACB\u91CD\u65B0\u641C\u5C0B\uFF01\n    </p>\n  </li>";
     toursList.innerHTML = str;
-    record.innerHTML = '本次搜尋共 0 筆資料';
+    record.innerHTML = '本次顯示共 0 筆資料';
   } else {
     data.forEach(function (item) {
       // console.log(item);
@@ -1153,7 +1203,7 @@ function renderToursList(data) {
 
     if (toursList) {
       toursList.innerHTML = str;
-      record.innerHTML = "\u672C\u6B21\u641C\u5C0B\u5171 ".concat(tourData.length, " \u7B46\u8CC7\u6599"); // classification.classList.add('d-none');
+      record.innerHTML = "\u672C\u6B21\u986F\u793A\u5171 ".concat(tourData.length, " \u7B46\u8CC7\u6599"); // classification.classList.add('d-none');
     }
   }
 } // 整體分頁功能
@@ -1308,5 +1358,26 @@ if (toursPages) {
       });
     }
   });
+} // 取得分頁預設景點資料
+
+
+function getDefaultToursList() {
+  var url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot?%24filter=Picture%2FPictureUrl1%20ne%20null&%24top=120&%24format=JSON';
+  axios.get(url, {
+    headers: GetAuthorizationHeader()
+  }).then(function (res) {
+    tourData = res.data;
+    renderToursPage(1);
+  })["catch"](function (error) {
+    console.log(error);
+  });
 }
+
+function initTours() {
+  if (toursList) {
+    getDefaultToursList();
+  }
+}
+
+initTours();
 //# sourceMappingURL=all.js.map
