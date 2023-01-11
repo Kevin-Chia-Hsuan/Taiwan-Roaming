@@ -270,3 +270,28 @@ if (roomsPages) {
     }
   });
 }
+
+// 取得分頁預設旅宿資料
+function getDefaultRoomsList() {
+  const url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/Hotel?%24filter=Picture%2FPictureUrl1%20ne%20null&%24top=120&%24format=JSON';
+  axios.get(
+    url,
+    {
+      headers: GetAuthorizationHeader(),
+    },
+    ).then((res) => {
+      roomData = res.data;
+      renderRoomsPage(1);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+function initRooms() {
+  if (roomsList) {
+    getDefaultRoomsList();
+  }
+}
+
+initRooms();

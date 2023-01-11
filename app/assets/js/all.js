@@ -79,7 +79,7 @@ const ActivitySpotModal = document.querySelector('#activityScenicSpotModal');
 const ActivitiesSpotModal = document.querySelector('#activitiesScenicSpotModal');
 
 // 渲染預設景點列表
-function rendertourList(data) {
+function renderTourList(data) {
   let str = '';
   // console.log(data.length);
   if (data.length === 0) {
@@ -143,7 +143,7 @@ function rendertourList(data) {
   }
 }
 // 取得預設景點資料
-function getAlltourList() {
+function getIndexTourList() {
   const url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot/Taipei?$filter=contains(Class1,%27%E9%81%8A%E6%86%A9%E9%A1%9E%27)&$top=6&$skip=9&$format=JSON';
   axios.get(
     url,
@@ -152,7 +152,7 @@ function getAlltourList() {
     },
     ).then((res) => {
       tourData = res.data;
-      rendertourList(tourData);
+      renderTourList(tourData);
       // console.log(tourData);
     })
     .catch((error) => {
@@ -168,6 +168,7 @@ ScenicSpotModal.addEventListener('show.bs.modal', (e) => {
   const title = ScenicSpotModal.querySelector('.card-title');
   const description = ScenicSpotModal.querySelector('.card-text');
   const openTime = ScenicSpotModal.querySelector('.openTime');
+  const address = ScenicSpotModal.querySelector('.address');
   const phone = ScenicSpotModal.querySelector('.phone');
 
   tourData.forEach((item) => {
@@ -185,6 +186,16 @@ ScenicSpotModal.addEventListener('show.bs.modal', (e) => {
           schedule
         </span>
         開放時間：${item.OpenTime}
+      `;
+      if (item.Address === undefined) {
+        // eslint-disable-next-line no-param-reassign
+        item.Address = '未提供';
+      }
+      address.innerHTML = `
+        <span class="material-icons-outlined text-sm-s text-m me-2">
+          place
+        </span>
+        所在地址：${item.Address}
       `;
       phone.innerHTML = `
         <span class="material-icons text-sm-s text-m me-2">
@@ -266,8 +277,8 @@ function renderFoodList(data) {
   }
 }
 // 取得預設美食資料
-function getAllFoodList() {
-  const url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant?%24filter=Picture%2FPictureUrl1%20ne%20null&%24orderby=Description&%24top=6&%24skip=200&%24format=JSON';
+function getIndexFoodList() {
+  const url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant?%24filter=Picture%2FPictureUrl1%20ne%20null&%24orderby=Description&%24top=6&%24skip=205&%24format=JSON';
   axios.get(
     url,
     {
@@ -378,7 +389,7 @@ function renderRoomList(data) {
 }
 
 // 取得預設景點資料
-function getAllRoomList() {
+function getIndexRoomList() {
   const url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/Hotel?%24filter=contains%28Class%2C%27%E5%9C%8B%E9%9A%9B%E8%A7%80%E5%85%89%E6%97%85%E9%A4%A8%27%29&%24orderby=HotelID&%24top=6&%24format=JSON';
   axios.get(
     url,
@@ -515,7 +526,7 @@ function renderActivityList(data) {
 }
 
 // 取得預設活動資料
-function getAllActivityList() {
+function getIndexActivityList() {
   const url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/Activity?%24filter=Picture%2FPictureUrl1%20ne%20null&%24format=JSON';
   axios.get(
     url,
@@ -612,13 +623,13 @@ function init() {
   // GetAuthorizationHeader();
 
   // 呼叫取得預設觀光景點資料
-  getAlltourList();
+  getIndexTourList();
   // 呼叫取得預設觀光美食資料
-  getAllFoodList();
+  getIndexFoodList();
   // 呼叫取得預設觀光旅宿資料
-  getAllRoomList();
+  getIndexRoomList();
   // 呼叫取得預設觀光活動資料
-  getAllActivityList();
+  getIndexActivityList();
 }
 
 init();

@@ -40,7 +40,7 @@ function renderToursList(data) {
     </p>
   </li>`;
     toursList.innerHTML = str;
-    record.innerHTML = '本次搜尋共 0 筆資料';
+    record.innerHTML = '本次顯示共 0 筆資料';
   } else {
     data.forEach((item) => {
       // console.log(item);
@@ -89,7 +89,7 @@ function renderToursList(data) {
     // 如果頁面中有 tourList 這個DOM時，則執行渲染頁面
     if (toursList) {
       toursList.innerHTML = str;
-      record.innerHTML = `本次搜尋共 ${tourData.length} 筆資料`;
+      record.innerHTML = `本次顯示共 ${tourData.length} 筆資料`;
       // classification.classList.add('d-none');
     }
   }
@@ -290,3 +290,28 @@ if (toursPages) {
     }
   });
 }
+
+// 取得分頁預設景點資料
+function getDefaultToursList() {
+  const url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot?%24filter=Picture%2FPictureUrl1%20ne%20null&%24top=120&%24format=JSON';
+  axios.get(
+    url,
+    {
+      headers: GetAuthorizationHeader(),
+    },
+    ).then((res) => {
+      tourData = res.data;
+      renderToursPage(1);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+function initTours() {
+  if (toursList) {
+    getDefaultToursList();
+  }
+}
+
+initTours();

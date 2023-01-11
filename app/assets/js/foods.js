@@ -294,3 +294,28 @@ if (foodsPages) {
     }
   });
 }
+
+// 取得分頁預設美食資料
+function getDefaultFoodsList() {
+  const url = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant?%24filter=Picture%2FPictureUrl1%20ne%20null&%24top=120&%24format=JSON';
+  axios.get(
+    url,
+    {
+      headers: GetAuthorizationHeader(),
+    },
+    ).then((res) => {
+      foodData = res.data;
+      renderFoodsPage(1);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+function initFoods() {
+  if (foodsList) {
+    getDefaultFoodsList();
+  }
+}
+
+initFoods();
