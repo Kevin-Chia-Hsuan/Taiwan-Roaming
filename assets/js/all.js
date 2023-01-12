@@ -642,6 +642,7 @@ function init() {
   getIndexRoomList(); // 呼叫取得預設觀光活動資料
 
   getIndexActivityList();
+  AOS.init();
 }
 
 init();
