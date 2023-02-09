@@ -42,7 +42,7 @@ function renderActivitiesList(data) {
   let str = '';
   // console.log(data.length);
   if (data.length === 0) {
-    str = `<li class="d-flex justify-content-center align-items-center">
+    str = `<li class="d-flex justify-content-center align-items-center vh-100">
     <span class="material-icons text-sm-m text-md-lg text-2xl me-4">
       error_outline
     </span>
@@ -102,7 +102,7 @@ function renderActivitiesList(data) {
     // 如果活動中有 activitiesList 這個DOM時，則執行渲染活動
     if (activitiesList) {
       activitiesList.innerHTML = str;
-      record.innerHTML = `本次搜尋共 ${activityData.length} 筆資料`;
+      record.innerHTML = `本次搜尋共 ${activityFilterData.length} 筆資料`;
       // classification.classList.add('d-none');
     }
   }
@@ -147,67 +147,73 @@ function renderActivitiesPage(nowPage) {
     isLast: nowPage == totalPages, // 是否為最後一頁
   };
 
-// 渲染觀光活動分頁按鈕
-function renderPageBtn(pageInfoData) {
-  let str = '';
-  const allTotalPages = pageInfo.totalPages;
+  // 渲染觀光活動分頁按鈕
+  function renderPageBtn(pageInfoData) {
+    let str = '';
+    const allTotalPages = pageInfo.totalPages;
 
-  // 是不是第一頁
-  if (pageInfoData.isFirst) {
-    str += `
-      <li class="page-item disabled">
-        <a class="page-link" href="#">
-          &laquo;
-        </a>
-      </li>
-    `;
-  } else {
-    str += `
-      <li class="page-item">
-        <a class="page-link" href="#" aria-label="Previous" data-page="${Number(pageInfoData.nowPage) - 1}">
-          &laquo;
-        </a>
-      </li>
-    `;
-  }
-
-  // 第 2 ~
-  for (let i = 1; i <= allTotalPages; i++) {
-    if (Number(pageInfoData.nowPage) === i) {
-      str += `
-        <li class="page-item active" aria-current="page">
-          <a class="page-link" href="#" data-page="${i}">${i}</a>
-        </li>
-      `;
-    } else {
-      str += `
-        <li class="page-item" aria-current="page">
-          <a class="page-link" href="#" data-page="${i}">${i}</a>
-        </li>
-      `;
+    // 如果總頁數大於0，才渲染按鈕
+    if (allTotalPages > 0) {
+      // 是不是第一頁
+      if (pageInfoData.isFirst) {
+        str += `
+          <li class="page-item disabled">
+            <a class="page-link" href="#">
+              &laquo;
+            </a>
+          </li>
+        `;
+      } else {
+        str += `
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous" data-page="${Number(pageInfoData.nowPage) - 1}">
+              &laquo;
+            </a>
+          </li>
+        `;
+      }
     }
-  }
 
-  // 是不是最後一頁
-  if (pageInfoData.isLast) {
-    str += `
-      <li class="page-item disabled">
-        <a class="page-link" href="#">
-          &raquo;
-        </a>
-      </li>
-    `;
-  } else {
-    str += `
-      <li class="page-item">
-        <a class="page-link" href="#" aria-label="Next" data-page="${Number(pageInfoData.nowPage) + 1}">
-          &raquo;
-        </a>
-      </li>
-    `;
-  }
+    // 第 2 ~
+    for (let i = 1; i <= allTotalPages; i++) {
+      if (Number(pageInfoData.nowPage) === i) {
+        str += `
+          <li class="page-item active" aria-current="page">
+            <a class="page-link" href="#" data-page="${i}">${i}</a>
+          </li>
+        `;
+      } else {
+        str += `
+          <li class="page-item" aria-current="page">
+            <a class="page-link" href="#" data-page="${i}">${i}</a>
+          </li>
+        `;
+      }
+    }
 
-  activitiesPages.innerHTML = str;
+    // 如果總頁數大於0，才渲染按鈕
+    if (allTotalPages > 0) {
+      // 是不是最後一頁
+      if (pageInfoData.isLast) {
+        str += `
+          <li class="page-item disabled">
+            <a class="page-link" href="#">
+              &raquo;
+            </a>
+          </li>
+        `;
+      } else {
+        str += `
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next" data-page="${Number(pageInfoData.nowPage) + 1}">
+              &raquo;
+            </a>
+          </li>
+        `;
+      }
+    }
+
+    activitiesPages.innerHTML = str;
   }
   // 呈現出該頁資料
   if (activitiesList) {
@@ -270,8 +276,8 @@ if (activitiesPages) {
       .then((res) => {
         activityData = res.data;
         // console.log(thisData);
-        activityFilterData = [];
-        // renderList(activityData);
+        // activityFilterData = [];
+        renderActivitiesFilter(activityData);
         // 初始取得資料渲染第一頁
         renderActivitiesPage(1);
       }).catch((error) => {
@@ -295,6 +301,7 @@ if (activitiesPages) {
         }).then((res) => {
           // console.log(res.data);
           activityData = res.data;
+          // activityFilterData = [];
           // console.log(activityData);
           renderActivitiesFilter(activityData);
         }).catch((error) => {
@@ -307,6 +314,7 @@ if (activitiesPages) {
       }).then((res) => {
         // console.log(res.data);
         activityData = res.data;
+        // activityFilterData = [];
         // console.log(activityData);
         renderActivitiesFilter(activityData);
       }).catch((error) => {

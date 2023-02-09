@@ -1,6 +1,6 @@
-// .hover-success:hover {
-//   color: $success !important;
-//   @include pad {
-//     color: $danger !important;
-//   }
-// }
+.hover-success:hover {
+  color: $success !important;
+  @include pad {
+    color: $danger !important;
+  }
+}

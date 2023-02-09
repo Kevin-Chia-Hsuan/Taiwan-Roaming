@@ -32,7 +32,7 @@ function renderRoomsList(data) {
   let str = '';
   // console.log(data.length);
   if (data.length === 0) {
-    str = `<li class="d-flex justify-content-center align-items-center">
+    str = `<li class="d-flex justify-content-center align-items-center vh-100">
     <span class="material-icons text-sm-m text-md-lg text-2xl me-4">
       error_outline
     </span>
@@ -102,67 +102,73 @@ function renderRoomsPage(nowPage) {
     isLast: nowPage == totalPages, // 是否為最後一頁
   };
 
-// 渲染分頁按鈕
-function renderPageBtn(pageInfoData) {
-  let str = '';
-  const allTotalPages = pageInfo.totalPages;
+  // 渲染分頁按鈕
+  function renderPageBtn(pageInfoData) {
+    let str = '';
+    const allTotalPages = pageInfo.totalPages;
 
-  // 是不是第一頁
-  if (pageInfoData.isFirst) {
-    str += `
-      <li class="page-item disabled">
-        <a class="page-link" href="#">
-          &laquo;
-        </a>
-      </li>
-    `;
-  } else {
-    str += `
-      <li class="page-item">
-        <a class="page-link" href="#" aria-label="Previous" data-page="${Number(pageInfoData.nowPage) - 1}">
-          &laquo;
-        </a>
-      </li>
-    `;
-  }
-
-  // 第 2 ~
-  for (let i = 1; i <= allTotalPages; i++) {
-    if (Number(pageInfoData.nowPage) === i) {
-      str += `
-        <li class="page-item active" aria-current="page">
-          <a class="page-link" href="#" data-page="${i}">${i}</a>
-        </li>
-      `;
-    } else {
-      str += `
-        <li class="page-item" aria-current="page">
-          <a class="page-link" href="#" data-page="${i}">${i}</a>
-        </li>
-      `;
+    // 如果總頁數大於0，才渲染按鈕
+    if (allTotalPages > 0) {
+      // 是不是第一頁
+      if (pageInfoData.isFirst) {
+        str += `
+          <li class="page-item disabled">
+            <a class="page-link" href="#">
+              &laquo;
+            </a>
+          </li>
+        `;
+      } else {
+        str += `
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous" data-page="${Number(pageInfoData.nowPage) - 1}">
+              &laquo;
+            </a>
+          </li>
+        `;
+      }
     }
-  }
 
-  // 是不是最後一頁
-  if (pageInfoData.isLast) {
-    str += `
-      <li class="page-item disabled">
-        <a class="page-link" href="#">
-          &raquo;
-        </a>
-      </li>
-    `;
-  } else {
-    str += `
-      <li class="page-item">
-        <a class="page-link" href="#" aria-label="Next" data-page="${Number(pageInfoData.nowPage) + 1}">
-          &raquo;
-        </a>
-      </li>
-    `;
-  }
+    // 第 2 ~
+    for (let i = 1; i <= allTotalPages; i++) {
+      if (Number(pageInfoData.nowPage) === i) {
+        str += `
+          <li class="page-item active" aria-current="page">
+            <a class="page-link" href="#" data-page="${i}">${i}</a>
+          </li>
+        `;
+      } else {
+        str += `
+          <li class="page-item" aria-current="page">
+            <a class="page-link" href="#" data-page="${i}">${i}</a>
+          </li>
+        `;
+      }
+    }
 
-  roomsPages.innerHTML = str;
+    // 如果總頁數大於0，才渲染按鈕
+    if (allTotalPages > 0) {
+      // 是不是最後一頁
+      if (pageInfoData.isLast) {
+        str += `
+          <li class="page-item disabled">
+            <a class="page-link" href="#">
+              &raquo;
+            </a>
+          </li>
+        `;
+      } else {
+        str += `
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next" data-page="${Number(pageInfoData.nowPage) + 1}">
+              &raquo;
+            </a>
+          </li>
+        `;
+      }
+    }
+
+    roomsPages.innerHTML = str;
   }
   // 呈現出該頁資料
   if (roomsList) {
