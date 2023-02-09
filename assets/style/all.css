@@ -14856,6 +14856,16 @@ a {
      object-fit: cover;
 }
 
+.hover-success:hover {
+  color: #6fb9a5 !important;
+}
+
+@media screen and (max-width: 768px) {
+  .hover-success:hover {
+    color: #ff5747 !important;
+  }
+}
+
 .nav-logo {
   background-image: url(../images/logo.png);
   text-indent: -99999px;

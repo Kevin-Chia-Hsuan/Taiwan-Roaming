@@ -36,7 +36,7 @@ function renderActivitiesList(data) {
   var str = ''; // console.log(data.length);
 
   if (data.length === 0) {
-    str = "<li class=\"d-flex justify-content-center align-items-center\">\n    <span class=\"material-icons text-sm-m text-md-lg text-2xl me-4\">\n      error_outline\n    </span>\n    <p class=\"text-sm-m text-md-lg text-2xl text-center\">\u7121\u76F8\u95DC\u6D3B\u52D5\u8CC7\u6599\uFF0C\u8ACB\u91CD\u65B0\u641C\u5C0B\uFF01\n    </p>\n  </li>";
+    str = "<li class=\"d-flex justify-content-center align-items-center vh-100\">\n    <span class=\"material-icons text-sm-m text-md-lg text-2xl me-4\">\n      error_outline\n    </span>\n    <p class=\"text-sm-m text-md-lg text-2xl text-center\">\u7121\u76F8\u95DC\u6D3B\u52D5\u8CC7\u6599\uFF0C\u8ACB\u91CD\u65B0\u641C\u5C0B\uFF01\n    </p>\n  </li>";
     activitiesList.innerHTML = str;
     record.innerHTML = '本次搜尋共 0 筆資料';
   } else {
@@ -56,7 +56,7 @@ function renderActivitiesList(data) {
 
     if (activitiesList) {
       activitiesList.innerHTML = str;
-      record.innerHTML = "\u672C\u6B21\u641C\u5C0B\u5171 ".concat(activityData.length, " \u7B46\u8CC7\u6599"); // classification.classList.add('d-none');
+      record.innerHTML = "\u672C\u6B21\u641C\u5C0B\u5171 ".concat(activityFilterData.length, " \u7B46\u8CC7\u6599"); // classification.classList.add('d-none');
     }
   }
 } // 整體觀光美食分頁功能
@@ -109,28 +109,34 @@ function renderActivitiesPage(nowPage) {
 
   function renderPageBtn(pageInfoData) {
     var str = '';
-    var allTotalPages = pageInfo.totalPages; // 是不是第一頁
+    var allTotalPages = pageInfo.totalPages; // 如果總頁數大於0，才渲染按鈕
 
-    if (pageInfoData.isFirst) {
-      str += "\n      <li class=\"page-item disabled\">\n        <a class=\"page-link\" href=\"#\">\n          &laquo;\n        </a>\n      </li>\n    ";
-    } else {
-      str += "\n      <li class=\"page-item\">\n        <a class=\"page-link\" href=\"#\" aria-label=\"Previous\" data-page=\"".concat(Number(pageInfoData.nowPage) - 1, "\">\n          &laquo;\n        </a>\n      </li>\n    ");
+    if (allTotalPages > 0) {
+      // 是不是第一頁
+      if (pageInfoData.isFirst) {
+        str += "\n          <li class=\"page-item disabled\">\n            <a class=\"page-link\" href=\"#\">\n              &laquo;\n            </a>\n          </li>\n        ";
+      } else {
+        str += "\n          <li class=\"page-item\">\n            <a class=\"page-link\" href=\"#\" aria-label=\"Previous\" data-page=\"".concat(Number(pageInfoData.nowPage) - 1, "\">\n              &laquo;\n            </a>\n          </li>\n        ");
+      }
     } // 第 2 ~
 
 
     for (var i = 1; i <= allTotalPages; i++) {
       if (Number(pageInfoData.nowPage) === i) {
-        str += "\n        <li class=\"page-item active\" aria-current=\"page\">\n          <a class=\"page-link\" href=\"#\" data-page=\"".concat(i, "\">").concat(i, "</a>\n        </li>\n      ");
+        str += "\n          <li class=\"page-item active\" aria-current=\"page\">\n            <a class=\"page-link\" href=\"#\" data-page=\"".concat(i, "\">").concat(i, "</a>\n          </li>\n        ");
       } else {
-        str += "\n        <li class=\"page-item\" aria-current=\"page\">\n          <a class=\"page-link\" href=\"#\" data-page=\"".concat(i, "\">").concat(i, "</a>\n        </li>\n      ");
+        str += "\n          <li class=\"page-item\" aria-current=\"page\">\n            <a class=\"page-link\" href=\"#\" data-page=\"".concat(i, "\">").concat(i, "</a>\n          </li>\n        ");
       }
-    } // 是不是最後一頁
+    } // 如果總頁數大於0，才渲染按鈕
 
 
-    if (pageInfoData.isLast) {
-      str += "\n      <li class=\"page-item disabled\">\n        <a class=\"page-link\" href=\"#\">\n          &raquo;\n        </a>\n      </li>\n    ";
-    } else {
-      str += "\n      <li class=\"page-item\">\n        <a class=\"page-link\" href=\"#\" aria-label=\"Next\" data-page=\"".concat(Number(pageInfoData.nowPage) + 1, "\">\n          &raquo;\n        </a>\n      </li>\n    ");
+    if (allTotalPages > 0) {
+      // 是不是最後一頁
+      if (pageInfoData.isLast) {
+        str += "\n          <li class=\"page-item disabled\">\n            <a class=\"page-link\" href=\"#\">\n              &raquo;\n            </a>\n          </li>\n        ";
+      } else {
+        str += "\n          <li class=\"page-item\">\n            <a class=\"page-link\" href=\"#\" aria-label=\"Next\" data-page=\"".concat(Number(pageInfoData.nowPage) + 1, "\">\n              &raquo;\n            </a>\n          </li>\n        ");
+      }
     }
 
     activitiesPages.innerHTML = str;
@@ -190,9 +196,9 @@ if (activitiesPages) {
 
       axios.get(url).then(function (res) {
         activityData = res.data; // console.log(thisData);
+        // activityFilterData = [];
 
-        activityFilterData = []; // renderList(activityData);
-        // 初始取得資料渲染第一頁
+        renderActivitiesFilter(activityData); // 初始取得資料渲染第一頁
 
         renderActivitiesPage(1);
       })["catch"](function (error) {
@@ -214,7 +220,8 @@ if (activitiesPages) {
         headers: GetAuthorizationHeader()
       }).then(function (res) {
         // console.log(res.data);
-        activityData = res.data; // console.log(activityData);
+        activityData = res.data; // activityFilterData = [];
+        // console.log(activityData);
 
         renderActivitiesFilter(activityData);
       })["catch"](function (error) {
@@ -225,7 +232,8 @@ if (activitiesPages) {
         headers: GetAuthorizationHeader()
       }).then(function (res) {
         // console.log(res.data);
-        activityData = res.data; // console.log(activityData);
+        activityData = res.data; // activityFilterData = [];
+        // console.log(activityData);
 
         renderActivitiesFilter(activityData);
       })["catch"](function (error) {
@@ -696,7 +704,7 @@ function renderFoodsList(data) {
   var str = ''; // console.log(data.length);
 
   if (data.length === 0) {
-    str = "<li class=\"d-flex justify-content-center align-items-center\">\n    <span class=\"material-icons text-sm-m text-md-lg text-2xl me-4\">\n      error_outline\n    </span>\n    <p class=\"text-sm-m text-md-lg text-2xl text-center\">\u7121\u76F8\u95DC\u7F8E\u98DF\u8CC7\u6599\uFF0C\u8ACB\u91CD\u65B0\u641C\u5C0B\uFF01\n    </p>\n  </li>";
+    str = "<li class=\"d-flex justify-content-center align-items-center vh-100\">\n    <span class=\"material-icons text-sm-m text-md-lg text-2xl me-4\">\n      error_outline\n    </span>\n    <p class=\"text-sm-m text-md-lg text-2xl text-center\">\u7121\u76F8\u95DC\u7F8E\u98DF\u8CC7\u6599\uFF0C\u8ACB\u91CD\u65B0\u641C\u5C0B\uFF01\n    </p>\n  </li>";
     foodsList.innerHTML = str;
     record.innerHTML = '本次搜尋共 0 筆資料';
   } else {
@@ -753,28 +761,35 @@ function renderFoodsPage(nowPage) {
 
   function renderPageBtn(pageInfoData) {
     var str = '';
-    var allTotalPages = pageInfo.totalPages; // 是不是第一頁
+    var allTotalPages = pageInfo.totalPages; // console.log(allTotalPages);
+    // 如果總頁數大於0，才渲染按鈕
 
-    if (pageInfoData.isFirst) {
-      str += "\n      <li class=\"page-item disabled\">\n        <a class=\"page-link\" href=\"#\">\n          &laquo;\n        </a>\n      </li>\n    ";
-    } else {
-      str += "\n      <li class=\"page-item\">\n        <a class=\"page-link\" href=\"#\" aria-label=\"Previous\" data-page=\"".concat(Number(pageInfoData.nowPage) - 1, "\">\n          &laquo;\n        </a>\n      </li>\n    ");
+    if (allTotalPages > 0) {
+      // 是不是第一頁
+      if (pageInfoData.isFirst) {
+        str += "\n          <li class=\"page-item disabled\">\n            <a class=\"page-link\" href=\"#\">\n              &laquo;\n            </a>\n          </li>\n        ";
+      } else {
+        str += "\n          <li class=\"page-item\">\n            <a class=\"page-link\" href=\"#\" aria-label=\"Previous\" data-page=\"".concat(Number(pageInfoData.nowPage) - 1, "\">\n              &laquo;\n            </a>\n          </li>\n        ");
+      }
     } // 第 2 ~
 
 
     for (var i = 1; i <= allTotalPages; i++) {
       if (Number(pageInfoData.nowPage) === i) {
-        str += "\n        <li class=\"page-item active\" aria-current=\"page\">\n          <a class=\"page-link\" href=\"#\" data-page=\"".concat(i, "\">").concat(i, "</a>\n        </li>\n      ");
+        str += "\n          <li class=\"page-item active\" aria-current=\"page\">\n            <a class=\"page-link\" href=\"#\" data-page=\"".concat(i, "\">").concat(i, "</a>\n          </li>\n        ");
       } else {
-        str += "\n        <li class=\"page-item\" aria-current=\"page\">\n          <a class=\"page-link\" href=\"#\" data-page=\"".concat(i, "\">").concat(i, "</a>\n        </li>\n      ");
+        str += "\n          <li class=\"page-item\" aria-current=\"page\">\n            <a class=\"page-link\" href=\"#\" data-page=\"".concat(i, "\">").concat(i, "</a>\n          </li>\n        ");
       }
-    } // 是不是最後一頁
+    } // 如果總頁數大於0，才渲染按鈕
 
 
-    if (pageInfoData.isLast) {
-      str += "\n      <li class=\"page-item disabled\">\n        <a class=\"page-link\" href=\"#\">\n          &raquo;\n        </a>\n      </li>\n    ";
-    } else {
-      str += "\n      <li class=\"page-item\">\n        <a class=\"page-link\" href=\"#\" aria-label=\"Next\" data-page=\"".concat(Number(pageInfoData.nowPage) + 1, "\">\n          &raquo;\n        </a>\n      </li>\n    ");
+    if (allTotalPages > 0) {
+      // 是不是最後一頁
+      if (pageInfoData.isLast) {
+        str += "\n          <li class=\"page-item disabled\">\n            <a class=\"page-link\" href=\"#\">\n              &raquo;\n            </a>\n          </li>\n        ";
+      } else {
+        str += "\n          <li class=\"page-item\">\n            <a class=\"page-link\" href=\"#\" aria-label=\"Next\" data-page=\"".concat(Number(pageInfoData.nowPage) + 1, "\">\n              &raquo;\n            </a>\n          </li>\n        ");
+      }
     }
 
     foodsPages.innerHTML = str;
@@ -926,7 +941,7 @@ function renderRoomsList(data) {
   var str = ''; // console.log(data.length);
 
   if (data.length === 0) {
-    str = "<li class=\"d-flex justify-content-center align-items-center\">\n    <span class=\"material-icons text-sm-m text-md-lg text-2xl me-4\">\n      error_outline\n    </span>\n    <p class=\"text-sm-m text-md-lg text-2xl text-center\">\u7121\u76F8\u95DC\u65C5\u5BBF\u8CC7\u6599\uFF0C\u8ACB\u91CD\u65B0\u641C\u5C0B\uFF01\n    </p>\n  </li>";
+    str = "<li class=\"d-flex justify-content-center align-items-center vh-100\">\n    <span class=\"material-icons text-sm-m text-md-lg text-2xl me-4\">\n      error_outline\n    </span>\n    <p class=\"text-sm-m text-md-lg text-2xl text-center\">\u7121\u76F8\u95DC\u65C5\u5BBF\u8CC7\u6599\uFF0C\u8ACB\u91CD\u65B0\u641C\u5C0B\uFF01\n    </p>\n  </li>";
     roomsList.innerHTML = str;
     record.innerHTML = '本次搜尋共 0 筆資料';
   } else {
@@ -979,28 +994,34 @@ function renderRoomsPage(nowPage) {
 
   function renderPageBtn(pageInfoData) {
     var str = '';
-    var allTotalPages = pageInfo.totalPages; // 是不是第一頁
+    var allTotalPages = pageInfo.totalPages; // 如果總頁數大於0，才渲染按鈕
 
-    if (pageInfoData.isFirst) {
-      str += "\n      <li class=\"page-item disabled\">\n        <a class=\"page-link\" href=\"#\">\n          &laquo;\n        </a>\n      </li>\n    ";
-    } else {
-      str += "\n      <li class=\"page-item\">\n        <a class=\"page-link\" href=\"#\" aria-label=\"Previous\" data-page=\"".concat(Number(pageInfoData.nowPage) - 1, "\">\n          &laquo;\n        </a>\n      </li>\n    ");
+    if (allTotalPages > 0) {
+      // 是不是第一頁
+      if (pageInfoData.isFirst) {
+        str += "\n          <li class=\"page-item disabled\">\n            <a class=\"page-link\" href=\"#\">\n              &laquo;\n            </a>\n          </li>\n        ";
+      } else {
+        str += "\n          <li class=\"page-item\">\n            <a class=\"page-link\" href=\"#\" aria-label=\"Previous\" data-page=\"".concat(Number(pageInfoData.nowPage) - 1, "\">\n              &laquo;\n            </a>\n          </li>\n        ");
+      }
     } // 第 2 ~
 
 
     for (var i = 1; i <= allTotalPages; i++) {
       if (Number(pageInfoData.nowPage) === i) {
-        str += "\n        <li class=\"page-item active\" aria-current=\"page\">\n          <a class=\"page-link\" href=\"#\" data-page=\"".concat(i, "\">").concat(i, "</a>\n        </li>\n      ");
+        str += "\n          <li class=\"page-item active\" aria-current=\"page\">\n            <a class=\"page-link\" href=\"#\" data-page=\"".concat(i, "\">").concat(i, "</a>\n          </li>\n        ");
       } else {
-        str += "\n        <li class=\"page-item\" aria-current=\"page\">\n          <a class=\"page-link\" href=\"#\" data-page=\"".concat(i, "\">").concat(i, "</a>\n        </li>\n      ");
+        str += "\n          <li class=\"page-item\" aria-current=\"page\">\n            <a class=\"page-link\" href=\"#\" data-page=\"".concat(i, "\">").concat(i, "</a>\n          </li>\n        ");
       }
-    } // 是不是最後一頁
+    } // 如果總頁數大於0，才渲染按鈕
 
 
-    if (pageInfoData.isLast) {
-      str += "\n      <li class=\"page-item disabled\">\n        <a class=\"page-link\" href=\"#\">\n          &raquo;\n        </a>\n      </li>\n    ";
-    } else {
-      str += "\n      <li class=\"page-item\">\n        <a class=\"page-link\" href=\"#\" aria-label=\"Next\" data-page=\"".concat(Number(pageInfoData.nowPage) + 1, "\">\n          &raquo;\n        </a>\n      </li>\n    ");
+    if (allTotalPages > 0) {
+      // 是不是最後一頁
+      if (pageInfoData.isLast) {
+        str += "\n          <li class=\"page-item disabled\">\n            <a class=\"page-link\" href=\"#\">\n              &raquo;\n            </a>\n          </li>\n        ";
+      } else {
+        str += "\n          <li class=\"page-item\">\n            <a class=\"page-link\" href=\"#\" aria-label=\"Next\" data-page=\"".concat(Number(pageInfoData.nowPage) + 1, "\">\n              &raquo;\n            </a>\n          </li>\n        ");
+      }
     }
 
     roomsPages.innerHTML = str;
@@ -1184,7 +1205,7 @@ function renderToursList(data) {
   var str = ''; // console.log(data.length);
 
   if (data.length === 0) {
-    str = "<li class=\"d-flex justify-content-center align-items-center\">\n    <span class=\"material-icons text-sm-m text-md-lg text-2xl me-4\">\n      error_outline\n    </span>\n    <p class=\"text-sm-m text-md-lg text-2xl text-center\">\u7121\u76F8\u95DC\u666F\u9EDE\u8CC7\u6599\uFF0C\u8ACB\u91CD\u65B0\u641C\u5C0B\uFF01\n    </p>\n  </li>";
+    str = "<li class=\"d-flex justify-content-center align-items-center vh-100\">\n    <span class=\"material-icons text-sm-m text-md-lg text-2xl me-4\">\n      error_outline\n    </span>\n    <p class=\"text-sm-m text-md-lg text-2xl text-center\">\u7121\u76F8\u95DC\u666F\u9EDE\u8CC7\u6599\uFF0C\u8ACB\u91CD\u65B0\u641C\u5C0B\uFF01\n    </p>\n  </li>";
     toursList.innerHTML = str;
     record.innerHTML = '本次顯示共 0 筆資料';
   } else {
@@ -1241,28 +1262,34 @@ function renderToursPage(nowPage) {
 
   function renderPageBtn(pageInfoData) {
     var str = '';
-    var allTotalPages = pageInfo.totalPages; // 是不是第一頁
+    var allTotalPages = pageInfo.totalPages; // 如果總頁數大於0，才渲染按鈕
 
-    if (pageInfoData.isFirst) {
-      str += "\n      <li class=\"page-item disabled\">\n        <a class=\"page-link\" href=\"#\">\n          &laquo;\n        </a>\n      </li>\n    ";
-    } else {
-      str += "\n      <li class=\"page-item\">\n        <a class=\"page-link\" href=\"#\" aria-label=\"Previous\" data-page=\"".concat(Number(pageInfoData.nowPage) - 1, "\">\n          &laquo;\n        </a>\n      </li>\n    ");
+    if (allTotalPages > 0) {
+      // 是不是第一頁
+      if (pageInfoData.isFirst) {
+        str += "\n          <li class=\"page-item disabled\">\n            <a class=\"page-link\" href=\"#\">\n              &laquo;\n            </a>\n          </li>\n        ";
+      } else {
+        str += "\n          <li class=\"page-item\">\n            <a class=\"page-link\" href=\"#\" aria-label=\"Previous\" data-page=\"".concat(Number(pageInfoData.nowPage) - 1, "\">\n              &laquo;\n            </a>\n          </li>\n        ");
+      }
     } // 第 2 ~
 
 
     for (var i = 1; i <= allTotalPages; i++) {
       if (Number(pageInfoData.nowPage) === i) {
-        str += "\n        <li class=\"page-item active\" aria-current=\"page\">\n          <a class=\"page-link\" href=\"#\" data-page=\"".concat(i, "\">").concat(i, "</a>\n        </li>\n      ");
+        str += "\n          <li class=\"page-item active\" aria-current=\"page\">\n            <a class=\"page-link\" href=\"#\" data-page=\"".concat(i, "\">").concat(i, "</a>\n          </li>\n        ");
       } else {
-        str += "\n        <li class=\"page-item\" aria-current=\"page\">\n          <a class=\"page-link\" href=\"#\" data-page=\"".concat(i, "\">").concat(i, "</a>\n        </li>\n      ");
+        str += "\n          <li class=\"page-item\" aria-current=\"page\">\n            <a class=\"page-link\" href=\"#\" data-page=\"".concat(i, "\">").concat(i, "</a>\n          </li>\n        ");
       }
-    } // 是不是最後一頁
+    } // 如果總頁數大於0，才渲染按鈕
 
 
-    if (pageInfoData.isLast) {
-      str += "\n      <li class=\"page-item disabled\">\n        <a class=\"page-link\" href=\"#\">\n          &raquo;\n        </a>\n      </li>\n    ";
-    } else {
-      str += "\n      <li class=\"page-item\">\n        <a class=\"page-link\" href=\"#\" aria-label=\"Next\" data-page=\"".concat(Number(pageInfoData.nowPage) + 1, "\">\n          &raquo;\n        </a>\n      </li>\n    ");
+    if (allTotalPages > 0) {
+      // 是不是最後一頁
+      if (pageInfoData.isLast) {
+        str += "\n          <li class=\"page-item disabled\">\n            <a class=\"page-link\" href=\"#\">\n              &raquo;\n            </a>\n          </li>\n        ";
+      } else {
+        str += "\n          <li class=\"page-item\">\n            <a class=\"page-link\" href=\"#\" aria-label=\"Next\" data-page=\"".concat(Number(pageInfoData.nowPage) + 1, "\">\n              &raquo;\n            </a>\n          </li>\n        ");
+      }
     }
 
     toursPages.innerHTML = str;
