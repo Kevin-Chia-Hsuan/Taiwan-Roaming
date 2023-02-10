@@ -324,6 +324,7 @@ FoodSpotModal.addEventListener('show.bs.modal', (e) => {
       title.textContent = `${item.RestaurantName}`;
       description.textContent = `美食介紹：${item.Description}`;
       // 如果資料中沒有 OpenTime，則開放時間顯示未提供相關時間
+      // OpenTime部份來源資料自帶有P標籤，使用.replace(/<(\/*)p[^>]*>/g, '')來消除多餘P標籤
       if (item.OpenTime === undefined) {
         // eslint-disable-next-line no-param-reassign
         item.OpenTime = '未提供';
@@ -332,7 +333,7 @@ FoodSpotModal.addEventListener('show.bs.modal', (e) => {
         <span class="material-icons-outlined text-sm-s text-m me-2">
           schedule
         </span>
-        開放時間：${item.OpenTime}
+        開放時間：${item.OpenTime.replace(/<(\/*)p[^>]*>/g, '')}
       `;
       if (item.Address === undefined) {
         // eslint-disable-next-line no-param-reassign

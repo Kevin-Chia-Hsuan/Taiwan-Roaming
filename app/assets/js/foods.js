@@ -50,6 +50,7 @@ function renderFoodsList(data) {
       //   return;
       // }
       // 如果資料中沒有 OpenTime，則開放時間顯示未提供相關時間
+      // OpenTime部份來源資料自帶有P標籤，使用.replace(/<(\/*)p[^>]*>/g, '')來消除多餘P標籤
       if (item.OpenTime === undefined) {
         str += `<li class="col-md-6 col-lg-4 d-flex flex-column">
         <div class="card my-2 my-md-4 my-lg-6 card-shadow-hover h-100">
@@ -80,7 +81,7 @@ function renderFoodsList(data) {
           </a>
           <div class="card-body">
             <h4 class="text-sm-m text-lg text-warning">${item.RestaurantName}</h4>
-            <p class="text-s text-primary mt-2">開放時間：${item.OpenTime}</p>
+            <p class="text-s text-primary mt-2">開放時間：${item.OpenTime.replace(/<(\/*)p[^>]*>/g, '')}</p>
             <p class="text-s text-primary mt-2">所在地址：${item.Address}</p>
             <p class="text-s text-primary mt-2">連絡電話：${item.Phone}</p>
           </div>
