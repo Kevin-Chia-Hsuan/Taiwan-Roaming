@@ -14805,6 +14805,10 @@ a {
   }
 }
 
+.z-index-1 {
+  z-index: 1000;
+}
+
 .subscription {
   background: url(../images/subscription.jpg) center 70%/cover;
   height: 250px;
@@ -14973,6 +14977,43 @@ a {
 
 .pagination li {
   padding: 4px;
+}
+
+.scrollTopBtn {
+  text-decoration: none;
+  position: fixed;
+  /*圓形圖示*/
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  /*^圖示*/
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  /*^圖示置中*/
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  /*^圖示置中*/
+  width: 50px;
+  height: 50px;
+  right: 25px;
+  bottom: 80px;
+  border-radius: 50px;
+  background: #bc6262;
+}
+
+@media screen and (max-width: 576px) {
+  .scrollTopBtn {
+    width: 40px;
+    height: 40px;
+    bottom: 45px;
+  }
+}
+
+.scrollTopBtn:hover {
+  text-decoration: none;
+  background: #ff5747;
 }
 
 /*# sourceMappingURL=all.css.map */
