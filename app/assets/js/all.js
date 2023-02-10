@@ -40,6 +40,18 @@ subscriptionBtn.addEventListener('click', () => {
     }
 });
 
+/* 頁面返回頂端按鈕JS */
+const scrollTopBtn = document.querySelector('.scrollTopBtn');
+
+scrollTopBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  // console.log('點擊到了');
+  window.scrollTo({
+    top: 0,
+    left: 0,
+  });
+});
+
 // API 的 filter 用法：例如: 沒有圖片時
 // $filter=Picture/PictureUrl1 ne null
 
