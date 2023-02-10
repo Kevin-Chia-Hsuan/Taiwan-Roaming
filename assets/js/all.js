@@ -454,13 +454,14 @@ FoodSpotModal.addEventListener('show.bs.modal', function (e) {
       img.setAttribute('src', "".concat(item.Picture.PictureUrl1));
       title.textContent = "".concat(item.RestaurantName);
       description.textContent = "\u7F8E\u98DF\u4ECB\u7D39\uFF1A".concat(item.Description); // 如果資料中沒有 OpenTime，則開放時間顯示未提供相關時間
+      // OpenTime部份來源資料自帶有P標籤，使用.replace(/<(\/*)p[^>]*>/g, '')來消除多餘P標籤
 
       if (item.OpenTime === undefined) {
         // eslint-disable-next-line no-param-reassign
         item.OpenTime = '未提供';
       }
 
-      openTime.innerHTML = "\n        <span class=\"material-icons-outlined text-sm-s text-m me-2\">\n          schedule\n        </span>\n        \u958B\u653E\u6642\u9593\uFF1A".concat(item.OpenTime, "\n      ");
+      openTime.innerHTML = "\n        <span class=\"material-icons-outlined text-sm-s text-m me-2\">\n          schedule\n        </span>\n        \u958B\u653E\u6642\u9593\uFF1A".concat(item.OpenTime.replace(/<(\/*)p[^>]*>/g, ''), "\n      ");
 
       if (item.Address === undefined) {
         // eslint-disable-next-line no-param-reassign
@@ -726,10 +727,11 @@ function renderFoodsList(data) {
       //   return;
       // }
       // 如果資料中沒有 OpenTime，則開放時間顯示未提供相關時間
+      // OpenTime部份來源資料自帶有P標籤，使用.replace(/<(\/*)p[^>]*>/g, '')來消除多餘P標籤
       if (item.OpenTime === undefined) {
         str += "<li class=\"col-md-6 col-lg-4 d-flex flex-column\">\n        <div class=\"card my-2 my-md-4 my-lg-6 card-shadow-hover h-100\">\n          <a href=\"\" class=\"stretched-link\" data-bs-toggle=\"modal\" data-bs-target=\"#foodScenicSpotModal\"\n            data-bs-whatever=\"".concat(item.RestaurantID, "\">\n            <img src=\"").concat(item.Picture.PictureUrl1, "\"\n              onerror=\"this.src='https://live.staticflickr.com/65535/52604011765_6050fc5f05_o.jpg';this.onerror = null\"\n              class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n          </a>\n          <div class=\"card-body\">\n            <h4 class=\"text-sm-m text-lg text-warning\">").concat(item.RestaurantName, "</h4>\n            <div class=\"d-flex\">\n              <p class=\"text-s text-primary mt-2\">\u958B\u653E\u6642\u9593\uFF1A\u672A\u63D0\u4F9B\u76F8\u95DC\u6642\u9593</p>\n            </div>\n            <p class=\"text-s text-primary mt-2\">\u6240\u5728\u5730\u5740\uFF1A").concat(item.Address, "</p>\n            <p class=\"text-s text-primary mt-2\">\u9023\u7D61\u96FB\u8A71\uFF1A").concat(item.Phone, "</p>\n          </div>\n        </div>\n      </li>");
       } else {
-        str += "<li class=\"col-md-6 col-lg-4 d-flex flex-column\">\n        <div class=\"card my-2 my-md-4 my-lg-6 card-shadow-hover h-100\">\n          <a href=\"\" class=\"stretched-link\" data-bs-toggle=\"modal\" data-bs-target=\"#foodScenicSpotModal\"\n            data-bs-whatever=\"".concat(item.RestaurantID, "\">\n            <img src=\"").concat(item.Picture.PictureUrl1, "\"\n              onerror=\"this.src='https://live.staticflickr.com/65535/52604011765_6050fc5f05_o.jpg';this.onerror = null\"\n              class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n          </a>\n          <div class=\"card-body\">\n            <h4 class=\"text-sm-m text-lg text-warning\">").concat(item.RestaurantName, "</h4>\n            <p class=\"text-s text-primary mt-2\">\u958B\u653E\u6642\u9593\uFF1A").concat(item.OpenTime, "</p>\n            <p class=\"text-s text-primary mt-2\">\u6240\u5728\u5730\u5740\uFF1A").concat(item.Address, "</p>\n            <p class=\"text-s text-primary mt-2\">\u9023\u7D61\u96FB\u8A71\uFF1A").concat(item.Phone, "</p>\n          </div>\n        </div>\n      </li>");
+        str += "<li class=\"col-md-6 col-lg-4 d-flex flex-column\">\n        <div class=\"card my-2 my-md-4 my-lg-6 card-shadow-hover h-100\">\n          <a href=\"\" class=\"stretched-link\" data-bs-toggle=\"modal\" data-bs-target=\"#foodScenicSpotModal\"\n            data-bs-whatever=\"".concat(item.RestaurantID, "\">\n            <img src=\"").concat(item.Picture.PictureUrl1, "\"\n              onerror=\"this.src='https://live.staticflickr.com/65535/52604011765_6050fc5f05_o.jpg';this.onerror = null\"\n              class=\"card-img-top img-fluid\" alt=\".").concat(item.Picture.PictureDescription1, "\">\n          </a>\n          <div class=\"card-body\">\n            <h4 class=\"text-sm-m text-lg text-warning\">").concat(item.RestaurantName, "</h4>\n            <p class=\"text-s text-primary mt-2\">\u958B\u653E\u6642\u9593\uFF1A").concat(item.OpenTime.replace(/<(\/*)p[^>]*>/g, ''), "</p>\n            <p class=\"text-s text-primary mt-2\">\u6240\u5728\u5730\u5740\uFF1A").concat(item.Address, "</p>\n            <p class=\"text-s text-primary mt-2\">\u9023\u7D61\u96FB\u8A71\uFF1A").concat(item.Phone, "</p>\n          </div>\n        </div>\n      </li>");
       }
     }); // 如果美食中有 tourList 這個DOM時，則執行渲染美食
 
