@@ -108,8 +108,8 @@ function renderActivitiesList(data) {
     // 如果活動中有 activitiesList 這個DOM時，則執行渲染活動
     if (activitiesList) {
       activitiesList.innerHTML = str;
-      // console.log(activityFilterData.length);
       record.innerHTML = `本次搜尋共 ${activityFilterData.length} 筆資料`;
+      // console.log(activityFilterData.length);
       // classification.classList.add('d-none');
     }
   }
@@ -121,7 +121,7 @@ function renderActivitiesPage(nowPage) {
   const dataPerPage = 12; // 一頁 12 筆資料 1~12 13~24 25~
   let totalPages = 0;
   if (activityFilterData.length == 0) {
-    totalPages = Math.ceil(activityData.length / dataPerPage); // 需要的頁數（無條件進位）
+    totalPages = Math.ceil(activityFilterData.length / dataPerPage); // 需要的頁數（無條件進位）
   }
   totalPages = Math.ceil(activityFilterData.length / dataPerPage); // 需要的頁數（無條件進位）
 
@@ -131,8 +131,8 @@ function renderActivitiesPage(nowPage) {
 
   // 取出當前頁數的景點資料
   const currentData = [];
-  if (activityFilterData.length === 0) {
-    activityData.forEach((item, index) => {
+  if (activityFilterData.length == 0) {
+    activityFilterData.forEach((item, index) => {
       if (index + 1 >= minData && index + 1 <= maxData) {
         currentData.push(item);
       }
@@ -227,6 +227,7 @@ function renderActivitiesPage(nowPage) {
   // 呈現出該頁資料
   if (activitiesList) {
     renderActivitiesList(currentData);
+    // console.log(currentData);
   }
 
   // 呈現分頁按鈕
@@ -243,12 +244,13 @@ function renderActivitiesFilter(data) {
     const endTime = Date.parse(item.EndTime);
     if (Number.isNaN(selectTime)) {
       filterData.push(item);
-      // console.log(filterData);
+      // console.log(item);
     } else if (selectTime > startTime && selectTime < endTime) {
       filterData.push(item);
     }
   });
   activityFilterData = filterData;
+  // console.log(activityFilterData);
   // 初始取得資料渲染第一頁
   renderActivitiesPage(1);
 }
@@ -283,11 +285,9 @@ if (activitiesPages) {
       // console.log(keyword);
       axios.get(url)
       .then((res) => {
-        activityData = res.data;
-        // console.log(thisData);
+        activityFilterData = res.data;
+        // console.log(activityData);
         // activityFilterData = [];
-        renderActivitiesFilter(activityData);
-        // 初始取得資料渲染第一頁
         renderActivitiesPage(1);
         activitiesSelectForm.reset();
       }).catch((error) => {

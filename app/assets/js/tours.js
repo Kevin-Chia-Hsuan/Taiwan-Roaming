@@ -234,7 +234,7 @@ if (toursPages) {
     if (toursCity === 'Default' || toursClassifications === 'Default') {
       Swal.fire(
         '出錯了',
-        '請選擇欲搜尋之縣市及類別資料',
+        '請選擇欲搜尋之縣市及主題資料',
         'error',
       );
     } else if (toursCity === 'All' && toursClassifications === 'All') {
