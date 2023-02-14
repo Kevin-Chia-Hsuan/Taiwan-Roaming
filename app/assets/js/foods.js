@@ -10,11 +10,14 @@ const foodsCitySelect = document.querySelector('.foods-city-select');
 const foodsClassificationSelect = document.querySelector('.foods-classification-select');
 // 宣告觀光美食縣市搜尋按鈕
 const foodsSendSelect = document.querySelector('.foods-send-select');
-
 // 宣告觀光美食關鍵字input輸入
 const foodsSearch = document.querySelector('.foods-search');
 // 宣告觀光美食關鍵字搜尋按鈕
 const foodsSearchBtn = document.querySelector('.foods-search-btn');
+// 關鍵字搜尋form
+const foodsKeywordForm = document.querySelector('.foods-keyword-form');
+// 下拉搜尋form
+const foodsSelectForm = document.querySelector('.foods-select-form');
 
 // 宣告觀光美食頁碼
 const foodsPages = document.querySelector('.foods-pages');
@@ -193,6 +196,8 @@ function renderFoodsPage(nowPage) {
     }
 
     foodsPages.innerHTML = str;
+    // 切換頁面後，返回頁面最上層
+    scrollTop();
   }
   // 呈現出該頁資料
   if (foodsList) {
@@ -228,49 +233,66 @@ if (foodsPages) {
     if (foodsClassifications === '其��') {
       foodsClassifications = '其他';
     }
-    const url = `https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant/${foodsCity}?%24format=JSON`;
-    const url2 = `https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant/${foodsCity}?$filter=contains(Class,'${foodsClassifications}')&$format=JSON`;
-    const url3 = `https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant?$filter=contains(Class,'${foodsClassifications}')&$format=JSON`;
+    const allUrl = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant?%24format=JSON';
+    const cityUrl = `https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant/${foodsCity}?%24format=JSON`;
+    const bothUrl = `https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant/${foodsCity}?$filter=contains(Class,'${foodsClassifications}')&$format=JSON`;
+    const classUrl = `https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant?$filter=contains(Class,'${foodsClassifications}')&$format=JSON`;
 
-    if (foodsCity === 'All' && foodsClassifications === 'All') {
+    if (foodsCity === 'Default' || foodsClassifications === 'Default') {
       Swal.fire(
         '出錯了',
-        '請至少選擇一個下拉選項',
+        '請選擇欲搜尋之縣市及分類資料',
         'error',
       );
-    } else if (foodsCity !== 'All' && foodsClassifications !== 'All') {
-      // 呼叫 API 服務，取得指定縣市、指定分類之觀光美食資料
-    axios.get(url2,
-      {
-        headers: GetAuthorizationHeader(),
-      }).then((res) => {
-        // console.log(res.data);
-        foodData = res.data;
-        renderFoodsPage(1);
-      }).catch((error) => {
-        console.log(error);
-      });
-    } else if (foodsCity === 'All' && foodsClassifications !== 'All') {
-      // 呼叫 API 服務，取得全部縣市、指定分類之觀光美食資料
-    axios.get(url3,
-      {
-        headers: GetAuthorizationHeader(),
-      }).then((res) => {
-        // console.log(res.data);
-        foodData = res.data;
-        renderFoodsPage(1);
-      }).catch((error) => {
-        console.log(error);
-      });
-    } else {
-      // 呼叫 API 服務，取得指定縣市、未指定分類之觀光美食資料
-      axios.get(url,
+    } else if (foodsCity === 'All' && foodsClassifications === 'All') {
+      // 呼叫 API 服務，取得全部縣市、全部分類之觀光美食資料
+      axios.get(allUrl,
         {
           headers: GetAuthorizationHeader(),
         }).then((res) => {
           // console.log(res.data);
           foodData = res.data;
           renderFoodsPage(1);
+          foodsKeywordForm.reset();
+        }).catch((error) => {
+          console.log(error);
+        });
+    } else if (foodsCity !== 'All' && foodsClassifications !== 'All') {
+      // 呼叫 API 服務，取得指定縣市、指定分類之觀光美食資料
+    axios.get(bothUrl,
+      {
+        headers: GetAuthorizationHeader(),
+      }).then((res) => {
+        // console.log(res.data);
+        foodData = res.data;
+        renderFoodsPage(1);
+        foodsKeywordForm.reset();
+      }).catch((error) => {
+        console.log(error);
+      });
+    } else if (foodsCity === 'All' && foodsClassifications !== 'All') {
+      // 呼叫 API 服務，取得全部縣市、指定分類之觀光美食資料
+    axios.get(classUrl,
+      {
+        headers: GetAuthorizationHeader(),
+      }).then((res) => {
+        // console.log(res.data);
+        foodData = res.data;
+        renderFoodsPage(1);
+        foodsKeywordForm.reset();
+      }).catch((error) => {
+        console.log(error);
+      });
+    } else {
+      // 呼叫 API 服務，取得指定縣市、未指定分類之觀光美食資料
+      axios.get(cityUrl,
+        {
+          headers: GetAuthorizationHeader(),
+        }).then((res) => {
+          // console.log(res.data);
+          foodData = res.data;
+          renderFoodsPage(1);
+          foodsKeywordForm.reset();
         }).catch((error) => {
           console.log(error);
       });
@@ -296,6 +318,7 @@ if (foodsPages) {
         // renderList(foodData);
         // 初始取得資料渲染第一頁
         renderFoodsPage(1);
+        foodsSelectForm.reset();
       }).catch((error) => {
         console.log(error);
       });

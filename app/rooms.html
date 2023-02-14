@@ -10,22 +10,26 @@ current: rooms
 
         <section>
             <div class="my-4 my-md-7" data-aos="fade-up" data-aos-duration="1000">
-                <div class="col-md-8 Small shadow">
+                <label for="rooms-keyword" class="form-label text-m text-primary">依關鍵字搜尋</label>
+                <form class="col-md-8 Small shadow rooms-keyword-form">
                     <div class="input-group">
-                        <input type="text" class="form-control rooms-search" placeholder="請輸入關鍵字"
+                        <input type="text" id="rooms-keyword" class="form-control rooms-search" placeholder="請輸入關鍵字"
                             aria-label="Recipient's username" aria-describedby="button-addon">
                         <button class="btn btn-primary rooms-search-btn text-light" type="button"
                             id="button-addon">搜尋</button>
                     </div>
-                </div>
+                </form>
             </div>
 
             <div class="mb-4 mb-md-7" data-aos="fade-up" data-aos-duration="1000">
-                <form class="d-flex align-items-center">
+                <label for="rooms-select" class="form-label text-m text-primary">依縣市及主題搜尋</label>
+                <form class="d-flex align-items-center rooms-select-form">
                     <div class="col-md-4 Small shadow">
                         <!-- 顯示篩選 -->
-                        <select class="form-select rooms-city-select" aria-label="Default select example">
-                            <option value="All" selected>全部縣市</option>
+                        <select id="rooms-select" class="form-select rooms-city-select"
+                            aria-label="Default select example">
+                            <option value="Default" selected disabled="disabled">請選擇縣市</option>
+                            <option value="All">全部縣市</option>
                             <option value="Taipei">台北市</option>
                             <option value="NewTaipei">新北市</option>
                             <option value="Taoyuan">桃園市</option>
@@ -53,7 +57,8 @@ current: rooms
                     <div class="col-md-4 ms-3 Small shadow">
                         <!-- 顯示篩選 -->
                         <select class="form-select rooms-classification-select" aria-label="Default select example">
-                            <option value="All" selected>所有類型</option>
+                            <option value="Default" selected disabled="disabled">請選擇類型</option>
+                            <option value="All">所有類型</option>
                             <option value="一般旅館">一般旅館</option>
                             <option value="一般觀光旅館">一般觀光旅館</option>
                             <option value="國際觀光旅館">國際觀光旅館</option>

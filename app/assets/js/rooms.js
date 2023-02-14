@@ -10,11 +10,14 @@ const roomsCitySelect = document.querySelector('.rooms-city-select');
 const roomsClassificationSelect = document.querySelector('.rooms-classification-select');
 // 縣市搜尋按鈕
 const roomsSendSelect = document.querySelector('.rooms-send-select');
-
 // 關鍵字input輸入
 const roomsSearch = document.querySelector('.rooms-search');
 // 關鍵字搜尋按鈕
 const roomsSearchBtn = document.querySelector('.rooms-search-btn');
+// 關鍵字搜尋form
+const roomsKeywordForm = document.querySelector('.rooms-keyword-form');
+// 下拉搜尋form
+const roomsSelectForm = document.querySelector('.rooms-select-form');
 
 // 頁碼
 const roomsPages = document.querySelector('.rooms-pages');
@@ -169,6 +172,8 @@ function renderRoomsPage(nowPage) {
     }
 
     roomsPages.innerHTML = str;
+    // 切換頁面後，返回頁面最上層
+    scrollTop();
   }
   // 呈現出該頁資料
   if (roomsList) {
@@ -201,50 +206,66 @@ if (roomsPages) {
     const roomsClassifications = roomsClassificationSelect.value;
     // console.log(roomsCity);
     // console.log(roomsClassifications);
-    const url = `https://tdx.transportdata.tw/api/basic/v2/Tourism/Hotel/${roomsCity}?%24format=JSON`;
-    const url2 = `https://tdx.transportdata.tw/api/basic/v2/Tourism/Hotel/${roomsCity}?$filter=contains(Class,'${roomsClassifications}')&$format=JSON`;
-    const url3 = `https://tdx.transportdata.tw/api/basic/v2/Tourism/Hotel?$filter=contains(Class,'${roomsClassifications}')&$format=JSON`;
+    const allUrl = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/Hotel?%24format=JSON';
+    const cityUrl = `https://tdx.transportdata.tw/api/basic/v2/Tourism/Hotel/${roomsCity}?%24format=JSON`;
+    const bothUrl = `https://tdx.transportdata.tw/api/basic/v2/Tourism/Hotel/${roomsCity}?$filter=contains(Class,'${roomsClassifications}')&$format=JSON`;
+    const classUrl = `https://tdx.transportdata.tw/api/basic/v2/Tourism/Hotel?$filter=contains(Class,'${roomsClassifications}')&$format=JSON`;
 
-    if (roomsCity === 'All' && roomsClassifications === 'All') {
-      // getAllRoomsList();
+    if (roomsCity === 'Default' || roomsClassifications === 'Default') {
       Swal.fire(
         '出錯了',
-        '請至少選擇一個下拉選項',
+        '請選擇欲搜尋之縣市及類型資料',
         'error',
       );
-    } else if (roomsCity !== 'All' && roomsClassifications !== 'All') {
-      // 呼叫 API 服務，取得指定縣市、指定分類之觀光旅宿資料
-    axios.get(url2,
-      {
-        headers: GetAuthorizationHeader(),
-      }).then((res) => {
-        // console.log(res.data);
-        roomData = res.data;
-        renderRoomsPage(1);
-      }).catch((error) => {
-        console.log(error);
-      });
-    } else if (roomsCity === 'All' && roomsClassifications !== 'All') {
-      // 呼叫 API 服務，取得全部縣市、指定分類之觀光旅宿資料
-    axios.get(url3,
-      {
-        headers: GetAuthorizationHeader(),
-      }).then((res) => {
-        // console.log(res.data);
-        roomData = res.data;
-        renderRoomsPage(1);
-      }).catch((error) => {
-        console.log(error);
-      });
-    } else {
-      // 呼叫 API 服務，取得指定縣市、未指定分類之觀光旅宿資料
-      axios.get(url,
+    } else if (roomsCity === 'All' && roomsClassifications === 'All') {
+      // 呼叫 API 服務，取得全部縣市、全部分類之觀光旅宿資料
+      axios.get(allUrl,
         {
           headers: GetAuthorizationHeader(),
         }).then((res) => {
           // console.log(res.data);
           roomData = res.data;
           renderRoomsPage(1);
+          roomsKeywordForm.reset();
+        }).catch((error) => {
+          console.log(error);
+        });
+    } else if (roomsCity !== 'All' && roomsClassifications !== 'All') {
+      // 呼叫 API 服務，取得指定縣市、指定分類之觀光旅宿資料
+    axios.get(bothUrl,
+      {
+        headers: GetAuthorizationHeader(),
+      }).then((res) => {
+        // console.log(res.data);
+        roomData = res.data;
+        renderRoomsPage(1);
+        roomsKeywordForm.reset();
+      }).catch((error) => {
+        console.log(error);
+      });
+    } else if (roomsCity === 'All' && roomsClassifications !== 'All') {
+      // 呼叫 API 服務，取得全部縣市、指定分類之觀光旅宿資料
+    axios.get(classUrl,
+      {
+        headers: GetAuthorizationHeader(),
+      }).then((res) => {
+        // console.log(res.data);
+        roomData = res.data;
+        renderRoomsPage(1);
+        roomsKeywordForm.reset();
+      }).catch((error) => {
+        console.log(error);
+      });
+    } else {
+      // 呼叫 API 服務，取得指定縣市、未指定分類之觀光旅宿資料
+      axios.get(cityUrl,
+        {
+          headers: GetAuthorizationHeader(),
+        }).then((res) => {
+          // console.log(res.data);
+          roomData = res.data;
+          renderRoomsPage(1);
+          roomsKeywordForm.reset();
         }).catch((error) => {
           console.log(error);
       });
@@ -270,6 +291,7 @@ if (roomsPages) {
         // renderList(roomData);
         // 初始取得資料渲染第一頁
         renderRoomsPage(1);
+        roomsSelectForm.reset();
       }).catch((error) => {
         console.log(error);
       });

@@ -22,6 +22,12 @@ const eventTime = document.querySelector('.eventTime');
 // 宣告觀光活動縣市搜尋按鈕
 const activitiesSendSelect = document.querySelector('.activities-send-select');
 
+// 關鍵字搜尋form
+const activitiesKeywordForm = document.querySelector('.activities-keyword-form');
+
+// 下拉搜尋form
+const activitiesSelectForm = document.querySelector('.activities-select-form');
+
 // 宣告觀光活動頁碼
 const activitiesPages = document.querySelector('.activities-pages');
 
@@ -102,6 +108,7 @@ function renderActivitiesList(data) {
     // 如果活動中有 activitiesList 這個DOM時，則執行渲染活動
     if (activitiesList) {
       activitiesList.innerHTML = str;
+      // console.log(activityFilterData.length);
       record.innerHTML = `本次搜尋共 ${activityFilterData.length} 筆資料`;
       // classification.classList.add('d-none');
     }
@@ -124,7 +131,7 @@ function renderActivitiesPage(nowPage) {
 
   // 取出當前頁數的景點資料
   const currentData = [];
-  if (activityFilterData.length == 0) {
+  if (activityFilterData.length === 0) {
     activityData.forEach((item, index) => {
       if (index + 1 >= minData && index + 1 <= maxData) {
         currentData.push(item);
@@ -214,6 +221,8 @@ function renderActivitiesPage(nowPage) {
     }
 
     activitiesPages.innerHTML = str;
+    // 切換頁面後，返回頁面最上層
+    scrollTop();
   }
   // 呈現出該頁資料
   if (activitiesList) {
@@ -234,7 +243,7 @@ function renderActivitiesFilter(data) {
     const endTime = Date.parse(item.EndTime);
     if (Number.isNaN(selectTime)) {
       filterData.push(item);
-      // console.log(eventData);
+      // console.log(filterData);
     } else if (selectTime > startTime && selectTime < endTime) {
       filterData.push(item);
     }
@@ -280,6 +289,7 @@ if (activitiesPages) {
         renderActivitiesFilter(activityData);
         // 初始取得資料渲染第一頁
         renderActivitiesPage(1);
+        activitiesSelectForm.reset();
       }).catch((error) => {
         console.log(error);
       });
@@ -304,6 +314,7 @@ if (activitiesPages) {
           // activityFilterData = [];
           // console.log(activityData);
           renderActivitiesFilter(activityData);
+          activitiesKeywordForm.reset();
         }).catch((error) => {
           console.log(error);
         });
@@ -317,6 +328,7 @@ if (activitiesPages) {
         // activityFilterData = [];
         // console.log(activityData);
         renderActivitiesFilter(activityData);
+        activitiesKeywordForm.reset();
       }).catch((error) => {
         console.log(error);
       });

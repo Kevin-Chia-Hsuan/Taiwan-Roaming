@@ -10,11 +10,14 @@ const toursCitySelect = document.querySelector('.tours-city-select');
 const toursClassificationSelect = document.querySelector('.tours-classification-select');
 // 縣市搜尋按鈕
 const toursSendSelect = document.querySelector('.tours-send-select');
-
 // 關鍵字input輸入
 const toursSearch = document.querySelector('.tours-search');
 // 關鍵字搜尋按鈕
 const toursSearchBtn = document.querySelector('.tours-search-btn');
+// 關鍵字搜尋form
+const toursKeywordForm = document.querySelector('.tours-keyword-form');
+// 下拉搜尋form
+const toursSelectForm = document.querySelector('.tours-select-form');
 
 // 頁碼
 const toursPages = document.querySelector('.tours-pages');
@@ -189,6 +192,8 @@ function renderToursPage(nowPage) {
     }
 
     toursPages.innerHTML = str;
+    // 切換頁面後，返回頁面最上層
+    scrollTop();
   }
   // 呈現出該頁資料
   if (toursList) {
@@ -221,50 +226,66 @@ if (toursPages) {
     const toursClassifications = toursClassificationSelect.value;
     // console.log(city);
     // console.log(classification);
-    const url = `https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot/${toursCity}?%24format=JSON`;
-    const url2 = `https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot/${toursCity}?$filter=contains(Class1,'${toursClassifications}')&$format=JSON`;
-    const url3 = `https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot?$filter=contains(Class1,'${toursClassifications}')&$format=JSON`;
+    const allUrl = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot?%24format=JSON';
+    const cityUrl = `https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot/${toursCity}?%24format=JSON`;
+    const bothUrl = `https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot/${toursCity}?$filter=contains(Class1,'${toursClassifications}')&$format=JSON`;
+    const classUrl = `https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot?$filter=contains(Class1,'${toursClassifications}')&$format=JSON`;
 
-    if (toursCity === 'All' && toursClassifications === 'All') {
-      // getAlltourList();
+    if (toursCity === 'Default' || toursClassifications === 'Default') {
       Swal.fire(
         '出錯了',
-        '請至少選擇一個下拉選項',
+        '請選擇欲搜尋之縣市及類別資料',
         'error',
       );
-    } else if (toursCity !== 'All' && toursClassifications !== 'All') {
-      // 呼叫 API 服務，取得指定縣市、指定分類之觀光景點資料
-    axios.get(url2,
-      {
-        headers: GetAuthorizationHeader(),
-      }).then((res) => {
-        // console.log(res.data);
-        tourData = res.data;
-        renderToursPage(1);
-      }).catch((error) => {
-        console.log(error);
-      });
-    } else if (toursCity === 'All' && toursClassifications !== 'All') {
-      // 呼叫 API 服務，取得全部縣市、指定分類之觀光景點資料
-    axios.get(url3,
-      {
-        headers: GetAuthorizationHeader(),
-      }).then((res) => {
-        // console.log(res.data);
-        tourData = res.data;
-        renderToursPage(1);
-      }).catch((error) => {
-        console.log(error);
-      });
-    } else {
-      // 呼叫 API 服務，取得指定縣市、未指定分類之觀光景點資料
-      axios.get(url,
+    } else if (toursCity === 'All' && toursClassifications === 'All') {
+      // 呼叫 API 服務，取得全部縣市、全部分類之觀光景點資料
+      axios.get(allUrl,
         {
           headers: GetAuthorizationHeader(),
         }).then((res) => {
           // console.log(res.data);
           tourData = res.data;
           renderToursPage(1);
+          toursKeywordForm.reset();
+        }).catch((error) => {
+          console.log(error);
+        });
+    } else if (toursCity !== 'All' && toursClassifications !== 'All') {
+      // 呼叫 API 服務，取得指定縣市、指定分類之觀光景點資料
+    axios.get(bothUrl,
+      {
+        headers: GetAuthorizationHeader(),
+      }).then((res) => {
+        // console.log(res.data);
+        tourData = res.data;
+        renderToursPage(1);
+        toursKeywordForm.reset();
+      }).catch((error) => {
+        console.log(error);
+      });
+    } else if (toursCity === 'All' && toursClassifications !== 'All') {
+      // 呼叫 API 服務，取得全部縣市、指定分類之觀光景點資料
+    axios.get(classUrl,
+      {
+        headers: GetAuthorizationHeader(),
+      }).then((res) => {
+        // console.log(res.data);
+        tourData = res.data;
+        renderToursPage(1);
+        toursKeywordForm.reset();
+      }).catch((error) => {
+        console.log(error);
+      });
+    } else {
+      // 呼叫 API 服務，取得指定縣市、未指定分類之觀光景點資料
+      axios.get(cityUrl,
+        {
+          headers: GetAuthorizationHeader(),
+        }).then((res) => {
+          // console.log(res.data);
+          tourData = res.data;
+          renderToursPage(1);
+          toursKeywordForm.reset();
         }).catch((error) => {
           console.log(error);
       });
@@ -290,6 +311,7 @@ if (toursPages) {
         // renderList(tourData);
         // 初始取得資料渲染第一頁
         renderToursPage(1);
+        toursSelectForm.reset();
       }).catch((error) => {
         console.log(error);
       });

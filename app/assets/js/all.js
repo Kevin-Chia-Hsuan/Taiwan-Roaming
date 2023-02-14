@@ -52,6 +52,13 @@ scrollTopBtn.addEventListener('click', (e) => {
   });
 });
 
+function scrollTop() {
+  window.scrollTo({
+    top: 0,
+    left: 0,
+  });
+}
+
 // API 的 filter 用法：例如: 沒有圖片時
 // $filter=Picture/PictureUrl1 ne null
 
