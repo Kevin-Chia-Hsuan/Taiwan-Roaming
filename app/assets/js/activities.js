@@ -285,11 +285,13 @@ if (activitiesPages) {
       // console.log(keyword);
       axios.get(url)
       .then((res) => {
-        activityFilterData = res.data;
+        activityData = res.data;
         // console.log(activityData);
         // activityFilterData = [];
-        renderActivitiesPage(1);
+
+        // 先執行activitiesSelectForm.reset()，才不會又把日期資料帶進去篩選。
         activitiesSelectForm.reset();
+        renderActivitiesFilter(activityData);
       }).catch((error) => {
         console.log(error);
       });
