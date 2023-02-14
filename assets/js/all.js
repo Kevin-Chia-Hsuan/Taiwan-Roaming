@@ -59,9 +59,9 @@ function renderActivitiesList(data) {
     }); // 如果活動中有 activitiesList 這個DOM時，則執行渲染活動
 
     if (activitiesList) {
-      activitiesList.innerHTML = str; // console.log(activityFilterData.length);
-
-      record.innerHTML = "\u672C\u6B21\u641C\u5C0B\u5171 ".concat(activityFilterData.length, " \u7B46\u8CC7\u6599"); // classification.classList.add('d-none');
+      activitiesList.innerHTML = str;
+      record.innerHTML = "\u672C\u6B21\u641C\u5C0B\u5171 ".concat(activityFilterData.length, " \u7B46\u8CC7\u6599"); // console.log(activityFilterData.length);
+      // classification.classList.add('d-none');
     }
   }
 } // 整體觀光美食分頁功能
@@ -74,7 +74,7 @@ function renderActivitiesPage(nowPage) {
   var totalPages = 0;
 
   if (activityFilterData.length == 0) {
-    totalPages = Math.ceil(activityData.length / dataPerPage); // 需要的頁數（無條件進位）
+    totalPages = Math.ceil(activityFilterData.length / dataPerPage); // 需要的頁數（無條件進位）
   }
 
   totalPages = Math.ceil(activityFilterData.length / dataPerPage); // 需要的頁數（無條件進位）
@@ -85,8 +85,8 @@ function renderActivitiesPage(nowPage) {
 
   var currentData = [];
 
-  if (activityFilterData.length === 0) {
-    activityData.forEach(function (item, index) {
+  if (activityFilterData.length == 0) {
+    activityFilterData.forEach(function (item, index) {
       if (index + 1 >= minData && index + 1 <= maxData) {
         currentData.push(item);
       }
@@ -151,7 +151,7 @@ function renderActivitiesPage(nowPage) {
 
 
   if (activitiesList) {
-    renderActivitiesList(currentData);
+    renderActivitiesList(currentData); // console.log(currentData);
   } // 呈現分頁按鈕
 
 
@@ -168,12 +168,13 @@ function renderActivitiesFilter(data) {
     var endTime = Date.parse(item.EndTime);
 
     if (Number.isNaN(selectTime)) {
-      filterData.push(item); // console.log(filterData);
+      filterData.push(item); // console.log(item);
     } else if (selectTime > startTime && selectTime < endTime) {
       filterData.push(item);
     }
   });
-  activityFilterData = filterData; // 初始取得資料渲染第一頁
+  activityFilterData = filterData; // console.log(activityFilterData);
+  // 初始取得資料渲染第一頁
 
   renderActivitiesPage(1);
 } // 如果觀光活動頁碼DOM存在頁面中時
@@ -202,10 +203,8 @@ if (activitiesPages) {
       var url = "https://tdx.transportdata.tw/api/basic/v2/Tourism/Activity?$filter=contains(ActivityName,'".concat(keyword, "')&$format=JSON"); // console.log(keyword);
 
       axios.get(url).then(function (res) {
-        activityData = res.data; // console.log(thisData);
+        activityFilterData = res.data; // console.log(activityData);
         // activityFilterData = [];
-
-        renderActivitiesFilter(activityData); // 初始取得資料渲染第一頁
 
         renderActivitiesPage(1);
         activitiesSelectForm.reset();
@@ -1412,7 +1411,7 @@ if (toursPages) {
     var classUrl = "https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot?$filter=contains(Class1,'".concat(toursClassifications, "')&$format=JSON");
 
     if (toursCity === 'Default' || toursClassifications === 'Default') {
-      Swal.fire('出錯了', '請選擇欲搜尋之縣市及類別資料', 'error');
+      Swal.fire('出錯了', '請選擇欲搜尋之縣市及主題資料', 'error');
     } else if (toursCity === 'All' && toursClassifications === 'All') {
       // 呼叫 API 服務，取得全部縣市、全部分類之觀光景點資料
       axios.get(allUrl, {
