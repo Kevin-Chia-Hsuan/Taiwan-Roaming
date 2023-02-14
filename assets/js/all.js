@@ -16,7 +16,11 @@ var activitiesCitySelect = document.querySelector('.activities-city-select'); //
 
 var eventTime = document.querySelector('.eventTime'); // 宣告觀光活動縣市搜尋按鈕
 
-var activitiesSendSelect = document.querySelector('.activities-send-select'); // 宣告觀光活動頁碼
+var activitiesSendSelect = document.querySelector('.activities-send-select'); // 關鍵字搜尋form
+
+var activitiesKeywordForm = document.querySelector('.activities-keyword-form'); // 下拉搜尋form
+
+var activitiesSelectForm = document.querySelector('.activities-select-form'); // 宣告觀光活動頁碼
 
 var activitiesPages = document.querySelector('.activities-pages'); // 如果觀光活動日期input按鈕DOM存在頁面中時
 
@@ -55,7 +59,8 @@ function renderActivitiesList(data) {
     }); // 如果活動中有 activitiesList 這個DOM時，則執行渲染活動
 
     if (activitiesList) {
-      activitiesList.innerHTML = str;
+      activitiesList.innerHTML = str; // console.log(activityFilterData.length);
+
       record.innerHTML = "\u672C\u6B21\u641C\u5C0B\u5171 ".concat(activityFilterData.length, " \u7B46\u8CC7\u6599"); // classification.classList.add('d-none');
     }
   }
@@ -80,7 +85,7 @@ function renderActivitiesPage(nowPage) {
 
   var currentData = [];
 
-  if (activityFilterData.length == 0) {
+  if (activityFilterData.length === 0) {
     activityData.forEach(function (item, index) {
       if (index + 1 >= minData && index + 1 <= maxData) {
         currentData.push(item);
@@ -139,7 +144,9 @@ function renderActivitiesPage(nowPage) {
       }
     }
 
-    activitiesPages.innerHTML = str;
+    activitiesPages.innerHTML = str; // 切換頁面後，返回頁面最上層
+
+    scrollTop();
   } // 呈現出該頁資料
 
 
@@ -161,7 +168,7 @@ function renderActivitiesFilter(data) {
     var endTime = Date.parse(item.EndTime);
 
     if (Number.isNaN(selectTime)) {
-      filterData.push(item); // console.log(eventData);
+      filterData.push(item); // console.log(filterData);
     } else if (selectTime > startTime && selectTime < endTime) {
       filterData.push(item);
     }
@@ -201,6 +208,7 @@ if (activitiesPages) {
         renderActivitiesFilter(activityData); // 初始取得資料渲染第一頁
 
         renderActivitiesPage(1);
+        activitiesSelectForm.reset();
       })["catch"](function (error) {
         console.log(error);
       });
@@ -224,6 +232,7 @@ if (activitiesPages) {
         // console.log(activityData);
 
         renderActivitiesFilter(activityData);
+        activitiesKeywordForm.reset();
       })["catch"](function (error) {
         console.log(error);
       });
@@ -236,6 +245,7 @@ if (activitiesPages) {
         // console.log(activityData);
 
         renderActivitiesFilter(activityData);
+        activitiesKeywordForm.reset();
       })["catch"](function (error) {
         console.log(error);
       });
@@ -283,10 +293,18 @@ scrollTopBtn.addEventListener('click', function (e) {
     top: 0,
     left: 0
   });
-}); // API 的 filter 用法：例如: 沒有圖片時
+});
+
+function scrollTop() {
+  window.scrollTo({
+    top: 0,
+    left: 0
+  });
+} // API 的 filter 用法：例如: 沒有圖片時
 // $filter=Picture/PictureUrl1 ne null
 // 宣告List列表
 // 景點列表
+
 
 var tourList = document.querySelector('.tour-list'); // 美食列表
 
@@ -702,7 +720,11 @@ var foodsSendSelect = document.querySelector('.foods-send-select'); // 宣告觀
 
 var foodsSearch = document.querySelector('.foods-search'); // 宣告觀光美食關鍵字搜尋按鈕
 
-var foodsSearchBtn = document.querySelector('.foods-search-btn'); // 宣告觀光美食頁碼
+var foodsSearchBtn = document.querySelector('.foods-search-btn'); // 關鍵字搜尋form
+
+var foodsKeywordForm = document.querySelector('.foods-keyword-form'); // 下拉搜尋form
+
+var foodsSelectForm = document.querySelector('.foods-select-form'); // 宣告觀光美食頁碼
 
 var foodsPages = document.querySelector('.foods-pages'); // foodsSendSelect.addEventListener('click', (e) => {
 //     console.log(foodsCitySelect.value, foodsClassificationSelect.value);
@@ -805,7 +827,9 @@ function renderFoodsPage(nowPage) {
       }
     }
 
-    foodsPages.innerHTML = str;
+    foodsPages.innerHTML = str; // 切換頁面後，返回頁面最上層
+
+    scrollTop();
   } // 呈現出該頁資料
 
 
@@ -841,42 +865,58 @@ if (foodsPages) {
       foodsClassifications = '其他';
     }
 
-    var url = "https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant/".concat(foodsCity, "?%24format=JSON");
-    var url2 = "https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant/".concat(foodsCity, "?$filter=contains(Class,'").concat(foodsClassifications, "')&$format=JSON");
-    var url3 = "https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant?$filter=contains(Class,'".concat(foodsClassifications, "')&$format=JSON");
+    var allUrl = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant?%24format=JSON';
+    var cityUrl = "https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant/".concat(foodsCity, "?%24format=JSON");
+    var bothUrl = "https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant/".concat(foodsCity, "?$filter=contains(Class,'").concat(foodsClassifications, "')&$format=JSON");
+    var classUrl = "https://tdx.transportdata.tw/api/basic/v2/Tourism/Restaurant?$filter=contains(Class,'".concat(foodsClassifications, "')&$format=JSON");
 
-    if (foodsCity === 'All' && foodsClassifications === 'All') {
-      Swal.fire('出錯了', '請至少選擇一個下拉選項', 'error');
-    } else if (foodsCity !== 'All' && foodsClassifications !== 'All') {
-      // 呼叫 API 服務，取得指定縣市、指定分類之觀光美食資料
-      axios.get(url2, {
+    if (foodsCity === 'Default' || foodsClassifications === 'Default') {
+      Swal.fire('出錯了', '請選擇欲搜尋之縣市及分類資料', 'error');
+    } else if (foodsCity === 'All' && foodsClassifications === 'All') {
+      // 呼叫 API 服務，取得全部縣市、全部分類之觀光美食資料
+      axios.get(allUrl, {
         headers: GetAuthorizationHeader()
       }).then(function (res) {
         // console.log(res.data);
         foodData = res.data;
         renderFoodsPage(1);
+        foodsKeywordForm.reset();
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    } else if (foodsCity !== 'All' && foodsClassifications !== 'All') {
+      // 呼叫 API 服務，取得指定縣市、指定分類之觀光美食資料
+      axios.get(bothUrl, {
+        headers: GetAuthorizationHeader()
+      }).then(function (res) {
+        // console.log(res.data);
+        foodData = res.data;
+        renderFoodsPage(1);
+        foodsKeywordForm.reset();
       })["catch"](function (error) {
         console.log(error);
       });
     } else if (foodsCity === 'All' && foodsClassifications !== 'All') {
       // 呼叫 API 服務，取得全部縣市、指定分類之觀光美食資料
-      axios.get(url3, {
+      axios.get(classUrl, {
         headers: GetAuthorizationHeader()
       }).then(function (res) {
         // console.log(res.data);
         foodData = res.data;
         renderFoodsPage(1);
+        foodsKeywordForm.reset();
       })["catch"](function (error) {
         console.log(error);
       });
     } else {
       // 呼叫 API 服務，取得指定縣市、未指定分類之觀光美食資料
-      axios.get(url, {
+      axios.get(cityUrl, {
         headers: GetAuthorizationHeader()
       }).then(function (res) {
         // console.log(res.data);
         foodData = res.data;
         renderFoodsPage(1);
+        foodsKeywordForm.reset();
       })["catch"](function (error) {
         console.log(error);
       });
@@ -897,6 +937,7 @@ if (foodsPages) {
         // 初始取得資料渲染第一頁
 
         renderFoodsPage(1);
+        foodsSelectForm.reset();
       })["catch"](function (error) {
         console.log(error);
       });
@@ -940,7 +981,11 @@ var roomsSendSelect = document.querySelector('.rooms-send-select'); // 關鍵字
 
 var roomsSearch = document.querySelector('.rooms-search'); // 關鍵字搜尋按鈕
 
-var roomsSearchBtn = document.querySelector('.rooms-search-btn'); // 頁碼
+var roomsSearchBtn = document.querySelector('.rooms-search-btn'); // 關鍵字搜尋form
+
+var roomsKeywordForm = document.querySelector('.rooms-keyword-form'); // 下拉搜尋form
+
+var roomsSelectForm = document.querySelector('.rooms-select-form'); // 頁碼
 
 var roomsPages = document.querySelector('.rooms-pages'); // toursSendSelect.addEventListener('click', (e) => {
 //     console.log(toursCitySelect.value, toursClassificationSelect.value);
@@ -1037,7 +1082,9 @@ function renderRoomsPage(nowPage) {
       }
     }
 
-    roomsPages.innerHTML = str;
+    roomsPages.innerHTML = str; // 切換頁面後，返回頁面最上層
+
+    scrollTop();
   } // 呈現出該頁資料
 
 
@@ -1069,43 +1116,58 @@ if (roomsPages) {
     var roomsClassifications = roomsClassificationSelect.value; // console.log(roomsCity);
     // console.log(roomsClassifications);
 
-    var url = "https://tdx.transportdata.tw/api/basic/v2/Tourism/Hotel/".concat(roomsCity, "?%24format=JSON");
-    var url2 = "https://tdx.transportdata.tw/api/basic/v2/Tourism/Hotel/".concat(roomsCity, "?$filter=contains(Class,'").concat(roomsClassifications, "')&$format=JSON");
-    var url3 = "https://tdx.transportdata.tw/api/basic/v2/Tourism/Hotel?$filter=contains(Class,'".concat(roomsClassifications, "')&$format=JSON");
+    var allUrl = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/Hotel?%24format=JSON';
+    var cityUrl = "https://tdx.transportdata.tw/api/basic/v2/Tourism/Hotel/".concat(roomsCity, "?%24format=JSON");
+    var bothUrl = "https://tdx.transportdata.tw/api/basic/v2/Tourism/Hotel/".concat(roomsCity, "?$filter=contains(Class,'").concat(roomsClassifications, "')&$format=JSON");
+    var classUrl = "https://tdx.transportdata.tw/api/basic/v2/Tourism/Hotel?$filter=contains(Class,'".concat(roomsClassifications, "')&$format=JSON");
 
-    if (roomsCity === 'All' && roomsClassifications === 'All') {
-      // getAllRoomsList();
-      Swal.fire('出錯了', '請至少選擇一個下拉選項', 'error');
-    } else if (roomsCity !== 'All' && roomsClassifications !== 'All') {
-      // 呼叫 API 服務，取得指定縣市、指定分類之觀光旅宿資料
-      axios.get(url2, {
+    if (roomsCity === 'Default' || roomsClassifications === 'Default') {
+      Swal.fire('出錯了', '請選擇欲搜尋之縣市及類型資料', 'error');
+    } else if (roomsCity === 'All' && roomsClassifications === 'All') {
+      // 呼叫 API 服務，取得全部縣市、全部分類之觀光旅宿資料
+      axios.get(allUrl, {
         headers: GetAuthorizationHeader()
       }).then(function (res) {
         // console.log(res.data);
         roomData = res.data;
         renderRoomsPage(1);
+        roomsKeywordForm.reset();
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    } else if (roomsCity !== 'All' && roomsClassifications !== 'All') {
+      // 呼叫 API 服務，取得指定縣市、指定分類之觀光旅宿資料
+      axios.get(bothUrl, {
+        headers: GetAuthorizationHeader()
+      }).then(function (res) {
+        // console.log(res.data);
+        roomData = res.data;
+        renderRoomsPage(1);
+        roomsKeywordForm.reset();
       })["catch"](function (error) {
         console.log(error);
       });
     } else if (roomsCity === 'All' && roomsClassifications !== 'All') {
       // 呼叫 API 服務，取得全部縣市、指定分類之觀光旅宿資料
-      axios.get(url3, {
+      axios.get(classUrl, {
         headers: GetAuthorizationHeader()
       }).then(function (res) {
         // console.log(res.data);
         roomData = res.data;
         renderRoomsPage(1);
+        roomsKeywordForm.reset();
       })["catch"](function (error) {
         console.log(error);
       });
     } else {
       // 呼叫 API 服務，取得指定縣市、未指定分類之觀光旅宿資料
-      axios.get(url, {
+      axios.get(cityUrl, {
         headers: GetAuthorizationHeader()
       }).then(function (res) {
         // console.log(res.data);
         roomData = res.data;
         renderRoomsPage(1);
+        roomsKeywordForm.reset();
       })["catch"](function (error) {
         console.log(error);
       });
@@ -1126,6 +1188,7 @@ if (roomsPages) {
         // 初始取得資料渲染第一頁
 
         renderRoomsPage(1);
+        roomsSelectForm.reset();
       })["catch"](function (error) {
         console.log(error);
       });
@@ -1204,7 +1267,11 @@ var toursSendSelect = document.querySelector('.tours-send-select'); // 關鍵字
 
 var toursSearch = document.querySelector('.tours-search'); // 關鍵字搜尋按鈕
 
-var toursSearchBtn = document.querySelector('.tours-search-btn'); // 頁碼
+var toursSearchBtn = document.querySelector('.tours-search-btn'); // 關鍵字搜尋form
+
+var toursKeywordForm = document.querySelector('.tours-keyword-form'); // 下拉搜尋form
+
+var toursSelectForm = document.querySelector('.tours-select-form'); // 頁碼
 
 var toursPages = document.querySelector('.tours-pages'); // toursSendSelect.addEventListener('click', (e) => {
 //     console.log(toursCitySelect.value, toursClassificationSelect.value);
@@ -1305,7 +1372,9 @@ function renderToursPage(nowPage) {
       }
     }
 
-    toursPages.innerHTML = str;
+    toursPages.innerHTML = str; // 切換頁面後，返回頁面最上層
+
+    scrollTop();
   } // 呈現出該頁資料
 
 
@@ -1337,43 +1406,58 @@ if (toursPages) {
     var toursClassifications = toursClassificationSelect.value; // console.log(city);
     // console.log(classification);
 
-    var url = "https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot/".concat(toursCity, "?%24format=JSON");
-    var url2 = "https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot/".concat(toursCity, "?$filter=contains(Class1,'").concat(toursClassifications, "')&$format=JSON");
-    var url3 = "https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot?$filter=contains(Class1,'".concat(toursClassifications, "')&$format=JSON");
+    var allUrl = 'https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot?%24format=JSON';
+    var cityUrl = "https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot/".concat(toursCity, "?%24format=JSON");
+    var bothUrl = "https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot/".concat(toursCity, "?$filter=contains(Class1,'").concat(toursClassifications, "')&$format=JSON");
+    var classUrl = "https://tdx.transportdata.tw/api/basic/v2/Tourism/ScenicSpot?$filter=contains(Class1,'".concat(toursClassifications, "')&$format=JSON");
 
-    if (toursCity === 'All' && toursClassifications === 'All') {
-      // getAlltourList();
-      Swal.fire('出錯了', '請至少選擇一個下拉選項', 'error');
-    } else if (toursCity !== 'All' && toursClassifications !== 'All') {
-      // 呼叫 API 服務，取得指定縣市、指定分類之觀光景點資料
-      axios.get(url2, {
+    if (toursCity === 'Default' || toursClassifications === 'Default') {
+      Swal.fire('出錯了', '請選擇欲搜尋之縣市及類別資料', 'error');
+    } else if (toursCity === 'All' && toursClassifications === 'All') {
+      // 呼叫 API 服務，取得全部縣市、全部分類之觀光景點資料
+      axios.get(allUrl, {
         headers: GetAuthorizationHeader()
       }).then(function (res) {
         // console.log(res.data);
         tourData = res.data;
         renderToursPage(1);
+        toursKeywordForm.reset();
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    } else if (toursCity !== 'All' && toursClassifications !== 'All') {
+      // 呼叫 API 服務，取得指定縣市、指定分類之觀光景點資料
+      axios.get(bothUrl, {
+        headers: GetAuthorizationHeader()
+      }).then(function (res) {
+        // console.log(res.data);
+        tourData = res.data;
+        renderToursPage(1);
+        toursKeywordForm.reset();
       })["catch"](function (error) {
         console.log(error);
       });
     } else if (toursCity === 'All' && toursClassifications !== 'All') {
       // 呼叫 API 服務，取得全部縣市、指定分類之觀光景點資料
-      axios.get(url3, {
+      axios.get(classUrl, {
         headers: GetAuthorizationHeader()
       }).then(function (res) {
         // console.log(res.data);
         tourData = res.data;
         renderToursPage(1);
+        toursKeywordForm.reset();
       })["catch"](function (error) {
         console.log(error);
       });
     } else {
       // 呼叫 API 服務，取得指定縣市、未指定分類之觀光景點資料
-      axios.get(url, {
+      axios.get(cityUrl, {
         headers: GetAuthorizationHeader()
       }).then(function (res) {
         // console.log(res.data);
         tourData = res.data;
         renderToursPage(1);
+        toursKeywordForm.reset();
       })["catch"](function (error) {
         console.log(error);
       });
@@ -1394,6 +1478,7 @@ if (toursPages) {
         // 初始取得資料渲染第一頁
 
         renderToursPage(1);
+        toursSelectForm.reset();
       })["catch"](function (error) {
         console.log(error);
       });
