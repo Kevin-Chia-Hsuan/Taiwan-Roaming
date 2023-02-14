@@ -203,11 +203,12 @@ if (activitiesPages) {
       var url = "https://tdx.transportdata.tw/api/basic/v2/Tourism/Activity?$filter=contains(ActivityName,'".concat(keyword, "')&$format=JSON"); // console.log(keyword);
 
       axios.get(url).then(function (res) {
-        activityFilterData = res.data; // console.log(activityData);
+        activityData = res.data; // console.log(activityData);
         // activityFilterData = [];
+        // 先執行activitiesSelectForm.reset()，才不會又把日期資料帶進去篩選。
 
-        renderActivitiesPage(1);
         activitiesSelectForm.reset();
+        renderActivitiesFilter(activityData);
       })["catch"](function (error) {
         console.log(error);
       });
